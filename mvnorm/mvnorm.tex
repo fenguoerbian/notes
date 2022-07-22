@@ -1,0 +1,255 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{geometry}
+\geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+\renewcommand{\textfraction}{0.15}
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\bottomfraction}{0.65}
+\renewcommand{\floatpagefraction}{0.60}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{mathrsfs}
+\usepackage{amsthm}
+\usepackage{extarrows}
+\usepackage{bm}
+% \newcommand{\bm}{\symbfit}    % `bm` confilicts with `unicode-math`. In that case use \symbfit for bold math symbols
+\usepackage{graphicx}
+\usepackage[section]{placeins}
+\usepackage{flafter}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{color}
+\usepackage{multirow}
+\usepackage{natbib}
+% \usepackage{enumerate}
+\usepackage{enumitem}    % more flexible than `enumerate` package, the reference will carry the whole label appearance, not just the counter, unlike the `enumerate` package.
+\usepackage{upgreek}    % 'upgreek' letters
+
+% \pdfstringdefDisableCommands{\let\bm=\relax}
+
+\newtheorem{thm}{Theorem}
+\newtheorem{cor}{Corollary}
+\newtheorem{assum}{Assumption}
+\newtheorem{rem}{Remark}
+\newtheorem{lem}{Lemma}
+
+\setcounter{topnumber}{5}    % Maximum number of floats that can appear at the top of a text page; default 2. 
+\setcounter{bottomnumber}{5}   % Maximum number of floats that can appear at the bottom of a text page; default 1. 
+\setcounter{totalnumber}{10}    % Maximum number of floats that can appear on a text page; default 3. 
+
+\DeclareMathOperator*{\argmaxdown}{arg\,max}
+\DeclareMathOperator*{\argmindown}{arg\,min}
+\DeclareMathOperator{\argmax}{arg\,max}
+\DeclareMathOperator{\argmin}{arg\,min}
+
+% cross-reference to other files
+% the externaldocument should be compiled 
+%   (and at least twice if you're using xr-hyper)
+% \usepackage{xr-hyper}
+% \usepackage{xr}
+
+% --- external document (ordinary setting) ---
+% \externaldocument{external_tex_file}
+% --- end of ordinary setting ---
+
+% --- external document (overleaf setting) ---
+% externaldocument settings for Overleaf
+% \makeatletter
+% \newcommand*{\addFileDependency}[1]{% argument=file name and extension
+%   \typeout{(#1)}
+%   \@addtofilelist{#1}
+%   \IfFileExists{#1}{}{\typeout{No file #1.}}
+% }
+% \makeatother
+% \newcommand*{\myexternaldocument}[1]{%
+%     \externaldocument{#1}%
+%     \addFileDependency{#1.tex}%
+%     \addFileDependency{#1.aux}%
+% }
+% \myexternaldocument{external_tex_file}
+% --- end of overleaf setting ---
+
+% mathtools can be used to define labeling format for equations
+% one can use \eqref for a reference to a labeled equation.
+\usepackage{mathtools}
+\newtagform{supp}{(S-}{)}    % define a equation labeling format for suppliment
+\usetagform{supp}            % use the supp format
+\usetagform{default}         % use the default format
+
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+% package for hyperlinks
+% It's error-prone because hyper link is quite difficult
+% due to the fact the typesetting environment is complex.
+% So you can disable this package and finish the document.
+% Then sort out the hyperlink thing.
+\usepackage[colorlinks,linkcolor=red,anchorcolor=blue,citecolor=green,CJKbookmarks=True]{hyperref}
+
+% package for displaying highlighted codes
+\usepackage{minted}
+
+% package for input codec and output rendering font
+\usepackage[utf8]{inputenc}    % it is always good practice to use utf8
+                               % you can also try latin1, latin2, cp1252 and cp1250
+\usepackage[T1]{fontenc}    % the default is T0, which only contains 128 characters
+                            % you can try T1, T2A, T2B
+% you can refer to https://www.overleaf.com/learn/latex/international_language_support#Font_encoding
+% for more details.
+
+
+\title{Multivariate Normal Distirbution}
+\author{Chao Cheng}
+\date{\today}
+
+
+
+\begin{document}
+\maketitle
+
+For a multivariate normal distribution denoted by
+\[
+  \bm{x} \sim
+  N\left(
+    \bm{\mu}, \bm{\Sigma}
+  \right)
+  ,
+\]
+where $\bm{x} = \left(x_1, \cdots, x_n\right)^T\in\mathcal{R}^n$, $\bm{\mu} = \left(\mu_1, \cdots, \mu_n\right)^T$ is the mean vector and
+\[
+  \bm{\Sigma} = \left(
+    \rho_{ij}\sigma_i\sigma_j
+  \right)_{n\times n}
+  =
+  \begin{pmatrix}
+    \sigma_1^2 & \cdots & \rho_{1n}\sigma_1\sigma_n    \\
+    \vdots & \rho_{ij}\sigma_i\sigma_j & \vdots    \\
+    \rho_{n1}\sigma_n\sigma_1 & \cdots & \sigma_n^2
+  \end{pmatrix}
+\]
+is the $n\times n$ covariance matrix. Here $\sigma_1^2, \cdots, \sigma_n^2$ is the variance of $x_1, \cdots, x_n$ and $\rho_{ij}$ is the correlation between $x_i$ and $x_j$. Since it's symmetric, $\rho_{ij} = \rho_{ji}$ and $\rho_{ii} = 1$ for $i = 1, \cdots, n$.
+\par
+The density function is
+\[
+  f\left(\bm{x}\right) =
+  \left(2\pi\right)^{-n / 2}
+  \left|\bm{\Sigma}\right|^{-1 / 2}
+  \mathrm{exp}\left(
+    -\frac{1}{2}
+    \left(\bm{x} - \bm{\mu}\right)^T
+    \bm{\Sigma}^{-1}
+    \left(\bm{x} - \bm{\mu}\right)
+  \right)
+  .
+\]
+
+\section{Bivariate normal distribution}
+\label{sec:bivar-norm-distr}
+
+For a bivarite normal variable $\left(x, y\right)$ following
+\[
+  \begin{pmatrix}
+    x    \\
+    y
+  \end{pmatrix}
+  \sim N\left(
+    \begin{pmatrix}
+      \mu_1    \\
+      \mu_2
+    \end{pmatrix},
+    \begin{pmatrix}
+      \sigma_1^2 & \rho\sigma_1\sigma_2    \\
+      \rho\sigma_1\sigma_2 & \sigma_2^2
+    \end{pmatrix}
+  \right)
+  ,
+\]
+
+
+
+
+
+
+
+\clearpage
+\appendix
+
+\section{R codes}
+\begin{verbatim}
+R codes
+\end{verbatim}
+
+
+
+\end{document}
+
+
+%%%%%%%%%%%%%%%%%%%%%Subfigure
+\begin{figure}[htb]
+\centering
+\begin{subfigure}[h]{0.49\textwidth}
+\centering
+\includegraphics[width=\textwidth]{5_23contour}
+\caption{Contour Graphic}
+\end{subfigure}
+\begin{subfigure}[h]{0.49\textwidth}
+\centering
+\includegraphics[width=\textwidth]{5_23lattice}
+\caption{Lattice Graphic}
+\end{subfigure}
+\caption{\label{fig:5.23.contour}}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%TukeyHSD
+\par
+\makeatletter\def\@captype{figure}\makeatother
+\begin{minipage}{.45\textwidth}
+  \begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{5_10tukeyplot}
+    \caption{Comparing Yield according to Pressure}
+    \label{fig:5.10.tukeyplot}
+  \end{figure}
+\end{minipage}
+\makeatletter\def\@captype{table}\makeatother
+\begin{minipage}{.45\textwidth}
+  \begin{table}
+    \centering
+    \begin{tabular}{rrrrr}
+      \hline
+      & diff & lwr & upr & p adj \\
+      \hline
+      215-200 & 0.32 & 0.11 & 0.52 & 0.00 \\
+      230-200 & -0.18 & -0.39 & 0.02 & 0.08 \\
+      230-215 & -0.50 & -0.70 & -0.30 & 0.00 \\
+      \hline
+    \end{tabular}
+    \caption{Tukey multiple comparisons}
+    \label{tab:5.10.tukeytable}
+  \end{table}
+\end{minipage}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%custimize \item
+\newcounter{Lcount}
+\setcounter{Lcount}{0}
+\begin{list}{2.1.\arabic{Lcount}}{\usecounter{Lcount}}
+\item
+\arabic 1, 2, 3 ...
+\alph a, b, c ...
+\Alph A, B, C ...
+\roman i, ii, iii ...
+\Roman I, II, III ...
+\fnsymbol 星号，单剑号，双剑号等
+
+
+\end{list}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
