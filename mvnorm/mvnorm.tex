@@ -171,9 +171,72 @@ For a bivarite normal variable $\left(x, y\right)$ following
   \right)
   ,
 \]
+and the density function is
+\[
+  \begin{aligned}
+    f_{X, Y}\left(x, y\right) =&
+    \frac{1}{2\pi}
+    \left(\sigma_1^2\sigma_2^2 - \rho^2\sigma_1^2\sigma_2^2\right)^{-1 / 2}
+    \mathrm{exp}\left(
+      - \frac{
+        \begin{pmatrix}
+          x - \mu_1 & y - \mu_2
+        \end{pmatrix}
+        \begin{pmatrix}
+          \sigma_2^2 & -\rho\sigma_1\sigma_2    \\
+          -\rho\sigma_1\sigma_2 & \sigma_1^2
+        \end{pmatrix}
+        \begin{pmatrix}
+          x - \mu_1    \\
+          y - \mu_2
+        \end{pmatrix}
+      }{
+        2\left(
+          \sigma_1^2\sigma_2^2 - \rho^2\sigma_1^2\sigma_2^2
+        \right)}    
+    \right)    \\
+    =& \frac{1}{
+      2\pi\sigma_1\sigma_2\sqrt{1 - \rho^2}}
+     \mathrm{exp}\left(
+        \frac{
+          \sigma_2^2\left(x - \mu_1\right)^2
+          -2\rho\sigma_1\sigma_2\left(x - \mu_1\right)\left(y - \mu_2\right)
+          + \sigma_1^2\left(y - \mu_2\right)^2
+        }{
+          2\sigma_1^2\sigma_2^2\left(1 - \rho^2\right)
+        }
+      \right)
+      .
+  \end{aligned}
+\]
 
+The probability function $F_{X, Y}\left(x, y\right) = P\left(X \leq x, Y \leq y\right)$ is
+\[
+  \begin{aligned}
+    F_{X, Y}\left(x, y\right)
+    =& \int_{-\infty}^x\int_{-\infty}^y f_{X, Y}\left(s, t\right)\mathrm{d}s\mathrm{d}t    \\
+    =& \int_{-\infty}^x\int_{-\infty}^y f_{Y|X}\left(s\middle|t\right)f_{X}\left(t\right)\mathrm{d}s\mathrm{d}t    \\
+    =& \int_{-\infty}^x f_X\left(t\right)
+    \left(
+      \int_{-\infty}^y f_{Y|X}\left(s\middle|t\right) \mathrm{d}s
+    \right)
+    \mathrm{d}t
+    .
+  \end{aligned}
+\]
 
-
+For the conditional distribution $Y|X$, the density is
+\[
+  \begin{aligned}
+    f_{Y|X}\left(y\middle|x\right)
+    =& \frac{
+      f_{X, Y}\left(x, y\right)
+    }{
+      f_X\left(x\right)
+    }    \\
+    \overset{\text{focus on } y}{\propto} &
+  \end{aligned}
+\]
 
 
 
