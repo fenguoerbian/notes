@@ -148,7 +148,73 @@ The density function is
 \section{Conditional distribution}
 \label{sec:cond-distr}
 
+The inverse of a block matrix is
 
+\[
+  \begin{pmatrix}
+    A & B    \\
+    C & D
+  \end{pmatrix}^{-1}
+  =
+  \begin{pmatrix}
+    \left( A - BD^{-1}C \right)^{-1} &  - \left( A - BD^{-1}C \right)^{-1}BD^{-1}    \\
+    -D^{-1}C\left( A - BD^{-1}C \right)^{-1} & D^{-1} + D^{-1}C\left( A - BD^{-1}C \right)^{-1}BD^{-1}
+  \end{pmatrix}
+\]
+and
+\[
+  \begin{vmatrix}
+    A & B    \\
+    C & D
+  \end{vmatrix}
+  = \left|D\right| \cdot \left|A - BD^{-1}C\right|
+  .
+\]
+
+Then for
+\[
+  \begin{pmatrix}
+    \bm{x}_1    \\
+    \bm{x}_2
+  \end{pmatrix}
+  \sim N\left(
+    \begin{pmatrix}
+      \bm{\mu}_1    \\
+      \bm{\mu}_2
+    \end{pmatrix},
+    \begin{pmatrix}
+      \Sigma_{11} & \Sigma_{12}    \\
+      \Sigma_{21} & \Sigma_{22}
+    \end{pmatrix}
+  \right)
+\]
+we have
+\[
+  \bm{x}_1|\bm{x}_2
+  \sim N\left(
+    \bm{\mu}_1 + \Sigma_{12}\Sigma_{22}^{-1}\left(\bm{x}_2 - \bm{\mu}_2\right),
+    \Sigma_{11} - \Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21}
+  \right)
+  .
+\]
+
+One can brute force compute the conditional density of $\bm{x}_1|\bm{x}_2$ to get this result. But since the conditional distribution of a multivariate normal is also (multivariate) normal, we can just try to figure out the mean and covariance of $\bm{x}_1|\bm{x}_2$ by introducing $\bm{z} = \bm{x}_1 + A\bm{x}_2$ where
+\[
+  A = -\Sigma_{12}\Sigma_{22}^{-1}
+  .
+\]
+Then we can show that
+\[
+  \begin{aligned}
+    & \mathrm{cov}\left(\bm{z}, \bm{x}_2\right) = \bm{0}    \\
+    & \mathrm{E}\left(\bm{x}_1\middle|\bm{x}_2\right)
+    = \mathrm{E}\left(\bm{z} - A\bm{x}_2\middle|\bm{x}_2\right)
+    = \bm{\mu}_1 + \Sigma_{12}\Sigma_{22}^{-1}\left(\bm{x}_2 - \bm{\mu}_2\right)    \\
+    & \mathrm{Var}\left(\bm{x}_1\middle| \bm{x}_2\right) = \mathrm{Var}\left(\bm{z}\right) = \Sigma_{11} - \Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21}
+    .
+  \end{aligned}
+\]
+The key point of constructing this $\bm{z}$ is that $\bm{x}_1 + A\bm{x}_2$ is the residual in $\bm{x}_1$ that can not be explained by $\bm{x}_2$. Therefore it should be independent (uncorrelated actually, but we are in multivariate normal distribution scenario) of $\bm{x}_2$.
 
 \section{Bivariate normal distribution}
 \label{sec:bivar-norm-distr}
@@ -197,16 +263,17 @@ and the density function is
     \right)    \\
     =& \frac{1}{
       2\pi\sigma_1\sigma_2\sqrt{1 - \rho^2}}
-     \mathrm{exp}\left(
-        \frac{
-          \sigma_2^2\left(x - \mu_1\right)^2
-          -2\rho\sigma_1\sigma_2\left(x - \mu_1\right)\left(y - \mu_2\right)
-          + \sigma_1^2\left(y - \mu_2\right)^2
-        }{
-          2\sigma_1^2\sigma_2^2\left(1 - \rho^2\right)
-        }
-      \right)
-      .
+    \mathrm{exp}\left(
+      -
+      \frac{
+        \sigma_2^2\left(x - \mu_1\right)^2
+        -2\rho\sigma_1\sigma_2\left(x - \mu_1\right)\left(y - \mu_2\right)
+        + \sigma_1^2\left(y - \mu_2\right)^2
+      }{
+        2\sigma_1^2\sigma_2^2\left(1 - \rho^2\right)
+      }
+    \right)
+    .
   \end{aligned}
 \]
 
@@ -234,10 +301,59 @@ For the conditional distribution $Y|X$, the density is
     }{
       f_X\left(x\right)
     }    \\
-    \overset{\text{focus on } y}{\propto} &
+    \overset{\text{focus on } y}{\propto} & f_{X, Y}\left(x, y\right)    \\
+    \propto& \mathrm{exp}\left(
+      - \frac{
+        \sigma_1^2y^2 - 2\sigma_1^2\mu_2y - 2\rho\sigma_1\sigma_2\left(x - \mu_1\right)y
+      }{
+        2\sigma_1^2\sigma_2^2\left(1 - \rho^2\right)
+      }
+    \right)    \\
+    \propto & \mathrm{exp}\left(
+      - \frac{
+        y^2 - 2\left(\mu_2 + \rho\frac{\sigma_2}{\sigma_1}\left(x - \mu_1\right)\right)y
+      }{2\sigma_2^2\left(1 - \rho^2\right)}
+    \right)
+    ,
   \end{aligned}
 \]
-
+which is a kernel of normal distribution hence
+\[
+  Y|X \sim N\left(
+    \mu_2 + \rho\frac{\sigma_2}{\sigma_1}\left(x - \mu_1\right),
+    \sigma_2^2\left(1 - \rho^2\right)
+  \right)
+\]
+Therefore
+\[
+  \int_{-\infty}^y f_{Y|X}\left(s\middle|t\right)\mathrm{d}s
+  = P\left(
+    Y \leq y\middle| X = t
+  \right)
+  = \Phi\left(
+    \frac{y - \mu_2 - \rho\frac{\sigma_2}{\sigma_1}\left(t - \mu_1\right)}{\sigma_2\sqrt{1 - \rho^2}}
+  \right)
+\]
+where $\Phi\left(t\right)$ is the cdf of standard normal distribution. Therefore
+\[
+  \begin{aligned}
+    F_{X, Y}\left(x, y\right)
+    =& \int_{-\infty}^x
+    f_X\left(t\right)
+    \Phi\left(
+      \frac{y - \mu_2 - \rho\frac{\sigma_2}{\sigma_1}\left(t - \mu_1\right)}{\sigma_2\sqrt{1 - \rho^2}}
+    \right)
+    \mathrm{d}t    \\
+    = & \int_{-\infty}^x
+    \frac{1}{\sigma_1}\phi\left(\frac{t - \mu_1}{\sigma_1}\right)
+    \Phi\left(
+      \frac{y - \mu_2 - \rho\frac{\sigma_2}{\sigma_1}\left(t - \mu_1\right)}{\sigma_2\sqrt{1 - \rho^2}}
+    \right)
+    \mathrm{d}t
+    ,
+  \end{aligned}
+\]
+where $\phi\left(t\right)$ is the pdf of standard normal distribution.
 
 
 
