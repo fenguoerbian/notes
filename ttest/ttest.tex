@@ -112,6 +112,12 @@
 \section{Basic knowledge}
 \label{sec:basic-knowledge}
 
+$\phi\left(x\right)$ and $\Phi\left(x\right)$ are pdf and cdf of standard normal distribution, respectively. We use $Z$ to represent a random variable that follows standard normal distribution and $z_{\alpha}$ the lower $\alpha$ quantile of standard normal distribution. Therefore
+\[
+  P\left(Z \leq z_{\alpha}\right) = \Phi\left(z_{\alpha}\right) = \alpha
+  .
+\]
+
 \begin{thm}
   Let $x_1, \cdots, x_n$ be a random sample from a population with mean $\mu$ and variance $\sigma^2 <\infty$. Then
   \begin{enumerate}
@@ -130,13 +136,145 @@
   \end{enumerate}
 \end{thm}
 
+
+
 \section{One-sample test}
 \label{sec:one-sample}
 
-Consider a random sample $x_1, \cdots, x_n$ from $N\left(\mu, \sigma^2\right)$.
-
+Consider a random sample $x_1, \cdots, x_n$ from $N\left(\mu, \sigma^2\right)$. The likelihood is
+\[
+  \begin{aligned}
+    f\left(x_1, \cdots, x_n\right)
+    =& \prod\limits_{i = 1}^n
+       \left(2\pi\sigma^2\right)^{-1/2}
+       \mathrm{exp}\left(
+       -\frac{
+       \left(x_i - \mu\right)^2
+       }{2\sigma^2}
+       \right)    \\
+    =& \left(2\pi\sigma^2\right)^{-n / 2}
+       \mathrm{exp}\left(
+       -\frac{\sum\limits_{i = 1}^n\left(x_i - \mu\right)^2}{2\sigma^2}
+       \right)
+       .
+  \end{aligned}
+\]
+We propose the test
+\[
+  H_0:\; \mu = \mu_0
+  \textbf{\quad v.s\quad}
+  H_1:\; \mu \neq \mu_0
+\]
 \subsection{variance known}
 \label{sec:variance-known}
+
+Construct LRT
+\[
+  LR = \frac{
+    \underset{\mu\in H_0}{\mathrm{max}}\;
+    f\left(x_1, \cdots, x_n\middle|\mu\right)
+  }{
+    \underset{\mu\in H_0\cup H_1}{\mathrm{max}}\;
+    f\left(x_1, \cdots, x_n\middle|\mu\right)
+  }
+  =\frac{
+    f\left(x_1, \cdots, x_n\middle|\mu = \mu_0\right)
+  }{
+    f\left(x_1, \cdots, x_n\middle|\mu = \bar{x}\right)
+  }
+  = \mathrm{exp}\left(
+    -\frac{\left(\bar{x} - \mu_0\right)^2}{2\sigma^2 / n}
+  \right)
+\]
+
+Therefore rejecting $H_0$ when LR is smaller than some constant $C$ is equivalent to rejecting $H_0$ when $\left|\bar{x} - \mu_0\right|$ is larger than some other constant $C$. Hence
+\[
+  \text{Reject Region: }
+  \left\{
+    \bar{x}
+    :\quad
+    \left|\bar{x}-\mu_0\right| > C
+  \right\}
+\]
+
+\subsubsection{Decide $C$ from $\alpha$}
+\label{sec:decide-c-from}
+
+From definition of $\alpha$ we know that $C$ in the reject region is chosen such that
+\[
+  P\left(
+    \left|\bar{x} - \mu_0\right| > C
+    \middle| H_0\text{ is true }\right)
+  \leq \alpha
+  .
+\]
+But to fully utilize the test, we choose to use equal sign instead of $\leq$. Therefore
+\[
+  P\left(
+    \left|\bar{x} - \mu_0\right| > C
+    \middle| \mu = \mu_0
+  \right)
+  = \alpha
+  .
+\]
+Note that $\bar{x}\sim N\left(\mu, \sigma^2 / n\right)$. Then under the condition $\mu = \mu_0$,
+\[
+  \frac{\bar{x} - \mu_0}{\sqrt{\sigma^2 / n}}
+  \sim N\left(0, 1\right)
+  .
+\]
+Therefore we propose the reject region for $H_0$ being
+\[
+  \left|
+    \frac{\bar{x} - \mu_0}{\sqrt{\sigma^2 / n}}
+  \right|
+  \geq z_{1 - \alpha / 2}
+  .
+\]
+
+\subsubsection{Power at given underlying $\mu$}
+\label{sec:power-at-given}
+
+The power (the probability to reject $H_0$, when $H_1$ is true) of the proposed test procedure for any given underlying $\mu \neq \mu_0$ is computed as
+\[
+  \begin{aligned}
+    & P\left(
+      \left|
+      \frac{\bar{x} - \mu_0}{\sqrt{\sigma^2 / n}}
+      \right|
+      \geq z_{1 - \alpha / 2}
+      \right)    \\
+    = & P\left(
+        \frac{\bar{x} - \mu_0}{\sqrt{\sigma^2 / n}}
+        \leq z_{\alpha / 2}
+        \right)
+        + P\left(
+        \frac{\bar{x} - \mu_0}{\sqrt{\sigma^2 / n}}
+        \geq z_{1 - \alpha / 2}
+        \right)    \\
+    = & P\left(
+        \frac{\bar{x} - \mu}{\sqrt{\sigma^2 / n}}
+        \leq z_{\alpha / 2}
+        + \frac{\mu_0 - \mu}{\sqrt{\sigma^2 / n}}
+        \right)
+        + P\left(
+        \frac{\bar{x} - \mu}{\sqrt{\sigma^2 / n}}
+        \geq z_{1 - \alpha / 2}
+        + \frac{\mu_0 - \mu}{\sqrt{\sigma^2 / n}}
+        \right)    \\
+    = & P\left(
+        Z
+        \leq z_{\alpha / 2}
+        + \frac{\mu_0 - \mu}{\sqrt{\sigma^2 / n}}
+        \right)
+        + P\left(
+        Z
+        \geq z_{1 - \alpha / 2}
+        + \frac{\mu_0 - \mu}{\sqrt{\sigma^2 / n}}
+        \right)    \\
+  \end{aligned}
+\]
+Here we use the fact that $  \frac{\bar{x} - \mu}{\sqrt{\sigma^2 / n}} \sim N\left(0, 1\right)$. 
 
 \subsection{variance unknown}
 \label{sec:variance-unknown}
