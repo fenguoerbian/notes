@@ -274,7 +274,30 @@ The power (the probability to reject $H_0$, when $H_1$ is true) of the proposed 
         \right)    \\
   \end{aligned}
 \]
-Here we use the fact that $  \frac{\bar{x} - \mu}{\sqrt{\sigma^2 / n}} \sim N\left(0, 1\right)$. 
+Here we use the fact that $  \frac{\bar{x} - \mu}{\sqrt{\sigma^2 / n}} \sim N\left(0, 1\right)$. W.l.o.g, assume that $\mu > \mu_0$, then
+\[
+  P\left(
+    Z
+    \leq z_{\alpha / 2}
+    + \frac{\mu_0 - \mu}{\sqrt{\sigma^2 / n}}
+  \right)
+\]
+would be really close to zero and
+\[
+  P\left(
+    Z
+    \geq z_{1 - \alpha / 2}
+    + \frac{\mu_0 - \mu}{\sqrt{\sigma^2 / n}}
+  \right) 
+\]
+will offer most of the power. In order to guarantee a power of at least $1 - \beta$, we could simply set
+\[
+    P\left(
+    Z
+    \geq z_{1 - \alpha / 2}
+    + \frac{\mu_0 - \mu}{\sqrt{\sigma^2 / n}}
+  \right)  = 1 - \beta
+\]
 
 \subsection{variance unknown}
 \label{sec:variance-unknown}
