@@ -119,6 +119,7 @@ $\phi\left(x\right)$ and $\Phi\left(x\right)$ are pdf and cdf of standard normal
 \]
 
 \begin{thm}
+  \label{thm:sample_thm}
   Let $x_1, \cdots, x_n$ be a random sample from a population with mean $\mu$ and variance $\sigma^2 <\infty$. Then
   \begin{enumerate}
   \item $\mathrm{E}\bar{x} = \mu$.
@@ -128,6 +129,7 @@ $\phi\left(x\right)$ and $\Phi\left(x\right)$ are pdf and cdf of standard normal
 \end{thm}
 
 \begin{thm}
+  \label{thm:normal_thm}
   Let $x_1, \cdots, x_n$ be a random sample from $N\left(\mu, \sigma^2\right)$. Then
   \begin{enumerate}
   \item $\bar{X} \sim N\left(\mu, \sigma^2 / n\right)$.
@@ -231,12 +233,14 @@ Therefore we propose the reject region for $H_0$ being
   \geq z_{1 - \alpha / 2}
   .
 \]
+\textbf{Note: } Here, even if the sample distribution is not normal, the result still holds due to CLT under large sample.
 
 \subsubsection{Power at given underlying $\mu$}
 \label{sec:power-at-given}
 
 The power (the probability to reject $H_0$, when $H_1$ is true) of the proposed test procedure for any given underlying $\mu \neq \mu_0$ is computed as
-\[
+\begin{equation}
+  \label{eq:power_equation_one_sample_sigma_known}
   \begin{aligned}
     & P\left(
       \left|
@@ -272,9 +276,15 @@ The power (the probability to reject $H_0$, when $H_1$ is true) of the proposed 
         \geq z_{1 - \alpha / 2}
         + \frac{\mu_0 - \mu}{\sqrt{\sigma^2 / n}}
         \right)    \\
-  \end{aligned}
-\]
-Here we use the fact that $  \frac{\bar{x} - \mu}{\sqrt{\sigma^2 / n}} \sim N\left(0, 1\right)$. W.l.o.g, assume that $\mu > \mu_0$, then
+  \end{aligned}  
+\end{equation}
+
+Here we use the fact that $  \frac{\bar{x} - \mu}{\sqrt{\sigma^2 / n}} \sim N\left(0, 1\right)$. 
+
+\subsubsection{Sample size at given $\alpha$, $\beta$ and underlying $\mu$}
+\label{sec:sample-size-at}
+
+W.l.o.g, assume that $\mu > \mu_0$, then in previous power equation \eqref{eq:power_equation_one_sample_sigma_known}
 \[
   P\left(
     Z
@@ -296,13 +306,243 @@ will offer most of the power. In order to guarantee a power of at least $1 - \be
     Z
     \geq z_{1 - \alpha / 2}
     + \frac{\mu_0 - \mu}{\sqrt{\sigma^2 / n}}
-  \right)  = 1 - \beta
+  \right) \geq 1 - \beta
+  ,
 \]
+which means
+\[
+  z_{1 - \alpha / 2} + \frac{\mu_0 - \mu}{\sqrt{\sigma^2 / n}} \leq z_{\beta}
+  .
+\]
+Normally in test settings, $\alpha < 0.1$ and $\beta < 0.5$, which means $z_{1 - \alpha / 2}$ is positive and $z_\beta$ is negative. Also $\mu_0 - \mu < 0$ in our assumption. This leads to
+\[
+  - z_{\alpha / 2} - z_{\beta} \leq \frac{\sqrt{n}\left(\mu - \mu_0\right)}{\sigma}
+  .
+\]
+Hence the sample size requirement is
+\begin{equation}
+  \label{eq:samplesize_one_sample_sigma_known}
+  n \geq \frac{\sigma^2\left(z_{\alpha / 2} + z_{\beta}\right)^2}{\left(\mu - \mu_0\right)^2}
+  .  
+\end{equation}
+\textbf{Note:} The sample size requirement can be deduced the same way when $\mu < \mu_0$. And the result is just the same as \eqref{eq:samplesize_one_sample_sigma_known}.
 
 \subsection{variance unknown}
 \label{sec:variance-unknown}
 
+When $\sigma^2$ is unknown, the MLE under $H_0$ is
+\[
+  \mu_{\left(0\right)} = \mu_0
+  ,\quad
+  \sigma^2_{\left(0\right)} = \frac{1}{n}\sum\limits_{i = 1}^n\left(x_i - \mu_0\right)^2
+  .
+\]
+And the MLE under $H_0\cup H_1$ is
+\[
+  \mu_{\left(0 \cup 1\right)} = \bar{x}
+  ,\quad
+  \sigma^2_{\left(0 \cup 1\right)} = \frac{1}{n}\sum\limits_{i = 1}^n\left(x_i - \bar{x}\right)^2
+  .
+\]
+\textbf{Note: } MLE for $\sigma^2$ offers smaller MSE than $S^2$, but it's biased.
+\par
+Then the likelihood ratio is
+\[
+  LR = \frac{
+    f\left(x_1, \cdots, x_n\middle|\mu = \mu_{\left(0\right)}, \sigma^2 = \sigma^2_{\left(0\right)}\right)
+  }{
+    f\left(x_1, \cdots, x_n\middle|\mu = \mu_{\left(0\cup 1\right)}, \sigma^2 = \sigma^2_{\left(0\cup 1\right)}\right)
+  }
+  = \left(
+    \frac{
+      \sum\limits_{i = 1}^n\left(x_i - \mu_0\right)^2
+    }{
+      \sum\limits_{i = 1}^n\left(x_i - \bar{x}\right)^2
+    }
+  \right)^{-n / 2}
+  \propto \left(
+    \frac{
+      \sum\limits_{i = 1}^n\left(\bar{x} - \mu_0\right)^2
+    }{
+      \sum\limits_{i = 1}^n\left(x_i - \bar{x}\right)^2
+    }
+  \right)^{-n / 2}  
+  ,
+\]
+where for the last part we mainly focus on terms related to $\mu_0$. So to reject $H_0$ when LR is small is equivalent to
+\[
+  \text{Reject Region: }
+  \left\{
+    \bar{x}
+    :\quad
+    \frac{\left|\bar{x}-\mu_0\right|}{\sqrt{\sum\limits_{i = 1}^n\left(x_i - \bar{x}\right)^2}} > C
+  \right\}
+\]
 
+The idea is similar to that in Section~\ref{sec:variance-known}. But we replace $\sigma^2$ with $S^2$.
+
+\subsection{Decide $C$ from $\alpha$}
+\label{sec:decide-c-from-1}
+
+First we can write
+\[
+  P\left(
+    \frac{\left|\bar{x}-\mu_0\right|}{\sqrt{\sum\limits_{i = 1}^n\left(x_i - \bar{x}\right)^2}} > C
+    \middle| \mu = \mu_0
+  \right)
+  = P\left(
+    \frac{\left|\bar{x}-\mu_0\right|}{\sqrt{\left(n - 1\right)S^2}} > C
+    \middle| \mu = \mu_0
+  \right)
+  = \alpha
+  .  
+\]
+
+From Theorem~\ref{thm:normal_thm} we know that
+\[
+  \frac{\bar{x} - \mu}{\sqrt{\sigma^2 / n}} \sim N\left(0, 1\right)
+  ,\quad
+  \left(n - 1\right)S^2 / \sigma^2 \sim \chi^2\left(n - 1\right)
+  ,\quad
+  \bar{x} \perp S^2
+\]
+Therefore
+\[
+  \frac{
+    \frac{\bar{x} - \mu}{\sqrt{\sigma^2 / n}}
+  }{
+    \sqrt{
+      \frac{\left(n - 1\right)S^2}{\left(n - 1\right)\sigma^2}
+    }
+  }
+  = \frac{\bar{x} - \mu}{\sqrt{S^2 / n}}
+  \sim t(n - 1)
+  .
+\]
+Then we know the reject rejion is
+\[
+  \left|
+    \frac{\bar{x} - \mu}{\sqrt{S^2 / n}}
+  \right|
+  > t_{1 - \alpha / 2}\left(n - 1\right)
+  .
+\]
+
+\textbf{Note: } Here we need Theorem~\ref{thm:normal_thm}, which means the normal assumption of the sample is \textbf{necessary}.
+
+\subsection{Power at given underlying $\mu$ and $\sigma^2$}
+\label{sec:power-at-given-1}
+
+Before any computation, we introduce the \textbf{non-central} t-distribution.
+\begin{equation}
+  \label{eq:noncentral-t-definition}
+  T = \frac{Z + \mu}{\sqrt{V / v}}
+  ,  
+\end{equation}
+where $Z$ follows standard normal and $V$ follows $\chi^2\left(v\right)$ and $Z\perp V$. Then $T$ follows a non-central t-distribution with degree of freedom $v$ and non-central parameter $\mu$, denoted by $t\left(v, \mu\right)$.
+\par
+Then we know that
+\[
+  \frac{\bar{x} - \mu_0}{\sqrt{S^2 / n}}
+  = \frac{
+    \frac{\bar{x} - \mu_0}{\sqrt{\sigma^2 / n}}
+  }{
+    \sqrt{
+      \frac{\left(n - 1\right)S^2}{\left(n - 1\right)\sigma^2}
+    }
+  }
+  = \frac{
+    \frac{\bar{x} - \mu}{\sqrt{\sigma^2 / n}}
+    + \frac{\mu - \mu_0}{\sqrt{\sigma^2 / n}}
+  }{
+    \sqrt{
+      \frac{\left(n - 1\right)S^2}{\left(n - 1\right)\sigma^2}
+    }
+  }
+  \sim t\left(n - 1, \frac{\mu - \mu_0}{\sqrt{\sigma^2 / n}}\right)
+  ,
+\]
+which means $\frac{\bar{x} - \mu_0}{\sqrt{S^2 / n}}$ follows a non-central t-distribution $t\left(n - 1, \frac{\mu - \mu_0}{\sqrt{\sigma^2 / n}}\right)$. Therefore the power can be computed as
+\begin{equation}
+  \label{eq:power_equation_one_sample_sigma_unknown}
+  \begin{aligned}
+    & P\left(
+      \left|
+      \frac{\bar{x} - \mu_0}{\sqrt{S^2 / n}}
+      \right|
+      \geq t_{1 - \alpha / 2}\left(n - 1\right)
+      \right)    \\
+    =& P\left(
+       \left|
+       T\left(n - 1,  \frac{\mu - \mu_0}{\sqrt{\sigma^2 / n}}\right)
+       \right|
+       \geq t_{1 - \alpha / 2}\left(n - 1\right)
+       \right)    \\
+    =& P\left(
+       T\left(n - 1,  \frac{\mu - \mu_0}{\sqrt{\sigma^2 / n}}\right)
+       \leq t_{\alpha / 2}\left(n - 1\right)
+       \right)
+       + P\left(
+       T\left(n - 1,  \frac{\mu - \mu_0}{\sqrt{\sigma^2 / n}}\right)
+       \geq t_{1 - \alpha / 2}\left(n - 1\right)
+       \right)
+       .
+  \end{aligned}  
+\end{equation}
+
+\subsection{Sample size at given $\alpha$, $\beta$ and underlying $\mu$ and $\sigma^2$}
+\label{sec:sample-size-at-1}
+
+W.l.o.g, assume $\mu > \mu_0$, then in the previous power equation~\eqref{eq:power_equation_one_sample_sigma_unknown}
+\[
+  P\left(
+    T\left(n - 1,  \frac{\mu - \mu_0}{\sqrt{\sigma^2 / n}}\right)
+    \leq t_{\alpha / 2}\left(n - 1\right)
+  \right)
+\]
+would be close to zero and
+\[
+  P\left(
+    T\left(n - 1,  \frac{\mu - \mu_0}{\sqrt{\sigma^2 / n}}\right)
+    \geq t_{1 - \alpha / 2}\left(n - 1\right)
+  \right)
+\]
+will offer the most power. In order to guarantee a power of at least $1 - \beta$, we could simply set
+\[
+  P\left(
+    T\left(n - 1,  \frac{\mu - \mu_0}{\sqrt{\sigma^2 / n}}\right)
+    \geq t_{1 - \alpha / 2}\left(n - 1\right)
+  \right)
+  \geq 1 - \beta
+  , 
+\]
+which means
+\[
+  t_{1 - \alpha / 2}\left(n - 1\right)
+  \leq t_{\beta}\left(n - 1, \frac{\mu - \mu_0}{\sqrt{\sigma^2 / n}}\right)
+  .
+\]
+There's no close form for this inequality, we should use some numerical method to solve for $n$.
+\par
+\textbf{Note: } If $\mu < \mu_0$, then similarly we can get the requirement as
+\[
+  t_{\alpha / 2}\left(n - 1\right) \geq t_{1 - \beta}\left(n - 1, \frac{\mu - \mu_0}{\sqrt{\sigma^2 / n}}\right)
+  .
+\]
+Use the fact that $t_{\alpha}\left(n, \mu\right) = -t_{1 - \alpha}\left(n, -\mu\right)$, we can arrange the previous inequality as
+\[
+  t_{1 - \alpha / 2}\left(n - 1\right)
+  \leq
+  t_{\beta}\left(n - 1, \frac{\mu_0 - \mu}{\sqrt{\sigma^2 / n}}\right)
+  .
+\]
+Therefore in summary the sample size requirement is
+\[
+  t_{1 - \alpha / 2}\left(n - 1\right)
+  \leq
+  t_{\beta}\left(n - 1, \frac{\left|\mu_0 - \mu\right|}{\sqrt{\sigma^2 / n}}\right)
+  .
+\]
 \section{Two sample test}
 \label{sec:two-sample-test}
 
