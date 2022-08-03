@@ -428,7 +428,14 @@ Then we know the reject rejion is
   .
 \]
 
-\textbf{Note: } Here we need Theorem~\ref{thm:normal_thm}, which means the normal assumption of the sample is \textbf{necessary}.
+\textbf{Note: } Here we need Theorem~\ref{thm:normal_thm}, which means the normal assumption of the sample is \textbf{necessary}. Though one might argue that without normal assumption, under large sample scenario, using Slutsky's theorem, asymptotically
+\[
+  \frac{\bar{x} - \mu}{\sqrt{S^2 / n}}
+  = \frac{\bar{x} - \mu}{\sqrt{\sigma^2 / n}}
+  \sqrt{\frac{\sigma^2}{S^2}}
+  \rightarrow N\left(0, 1\right)
+  .
+\]
 
 \subsection{Power at given underlying $\mu$ and $\sigma^2$}
 \label{sec:power-at-given-1}
