@@ -550,12 +550,46 @@ Therefore in summary the sample size requirement is
   t_{\beta}\left(n - 1, \frac{\left|\mu_0 - \mu\right|}{\sqrt{\sigma^2 / n}}\right)
   .
 \]
+
 \section{Two sample test}
 \label{sec:two-sample-test}
 
+Consider two random samples $x_1, \cdots, x_{n_1} \sim N\left(\mu_1, \sigma_1^2\right)$ and $y_1, \cdots, y_{n_2}\sim N\left(\mu_2, \sigma_2^2\right)$. Then the likelihood of the data is
+\[
+  \begin{aligned}
+    & f\left(x_1, \cdots, x_{n_1}, y_1, \cdots, y_{n_2}
+      \middle|\mu_1, \mu_2, \sigma_1^2, \sigma_2^2\right)    \\
+    =& \left( 2\pi\sigma_1^2\right)^{-n_1 / 2}
+       \left(2\pi\sigma_2^2\right)^{-n_2 / 2}
+       \mathrm{exp}\left(
+       - \frac{\sum\limits_{i = 1}^{n_1}\left(x_i - \mu_1\right)^2}{2\sigma_1^2}
+       - \frac{\sum\limits_{i = 1}^{n_2}\left(y_i - \mu_2\right)^2}{2\sigma_2^2}
+       \right)    \\
+    =& 
+  \end{aligned}
+\]
+We propose the test
+\[
+  H_0:\; \mu_1 = \mu_2
+  \quad\textbf{v.s.}\quad
+  H_1:\; \mu_1 \neq \mu_2
+  .
+\]
 
 \subsection{Two-sample, variance known}
 \label{sec:two-sample-variance}
+When $\sigma_1^2$ and $\sigma_2^2$ are known, the likelihood satisfies
+\[
+ f\left(x_1, \cdots, x_{n_1}, y_1, \cdots, y_{n_2}
+   \middle|\mu_1, \mu_2\right)
+ \propto
+ \mathrm{exp}\left(
+   -\frac{n_1\left(\bar{x} - \mu_1\right)^2}{2\sigma_1^2}
+   -\frac{n_2\left(\bar{y} - \mu_2\right)^2}{2\sigma_2^2}
+ \right)
+ .
+\]
+Therefore the LRT
 
 \subsection{Two-sample, variance unknown but equal}
 \label{sec:two-sample-variance-1}
