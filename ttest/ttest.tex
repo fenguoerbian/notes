@@ -589,7 +589,270 @@ When $\sigma_1^2$ and $\sigma_2^2$ are known, the likelihood satisfies
  \right)
  .
 \]
-Therefore the LRT
+
+Therefore under $H_0$, the MLE for $\mu_1$ and $\mu_2$ is
+\[
+  \mu_{1\left(0\right)} = \mu_{2\left(0\right)} = \mu_{\left(0\right)}
+  = \frac{
+    \sigma_2^2n_1\bar{x} + \sigma_1^2n_2\bar{y}
+  }{
+    \sigma_2^2n_1 + \sigma_1^2n_2
+  }
+  .
+\]
+And under $H_0\cup H_1$, the MLE for $\mu_1$ and $\mu_2$ is
+\[
+  \mu_{1\left(0\cup1\right)} = \bar{x}
+  ,\quad
+  \mu_{2\left(0\cup1\right)} = \bar{y}
+  .
+\]
+Then the likelihood ratio is 
+\[
+  \begin{aligned}
+    LR =& \frac{
+            \underset{H_0}{\mathrm{max}}\;
+            f\left(\bm{x}, \bm{y}\middle|\mu_1 = \mu_2 = \mu_{\left(0\right)}\right)
+          }{
+            \underset{H_0\cup H_1}{\mathrm{max}}\;
+            f\left(\bm{x}, \bm{y}\middle|\mu_1 = \mu_{1\left(0\cup1\right)}, \mu_2 = \mu_{2\left(0\cup1\right)}\right)
+          }    \\
+    \propto&
+             \mathrm{exp}\left(
+               -\frac{1}{2}\left(
+               \frac{n_1\left(\bar{x} - \mu_{\left(0\right)}\right)^2}{\sigma_1^2}
+               +\frac{n_2\left(\bar{y} - \mu_{\left(0\right)}\right)^2}{\sigma_2^2}
+               \right)
+             \right)    \\
+    =& \mathrm{exp}\left(
+       -\frac{1}{2}
+       \frac{n_1n_2}{\sigma_2^2n_1 + \sigma_1^2 n_2}
+       \left(\bar{x} - \bar{y}\right)^2
+       \right)
+       .
+  \end{aligned}
+\]
+
+From the idea of LRT, $H_0$ is rejected when $LR$ is small enough, which means the reject rule is
+\[
+  \text{Reject Region: }
+  \left\{
+    \left(\bar{x}, \bar{y}\right)
+    \middle|
+    \left|\bar{x} - \bar{y}\right| > C
+  \right\}
+\]
+
+\subsubsection{Decide $C$ from $\alpha$}
+\label{sec:decide-c-from-2}
+
+From the definition of $\alpha$ we know that 
+\[
+  P\left(
+    \left|\bar{x} - \bar{y}\right| >C
+    \middle|
+    H_0\text{ is true}
+  \right)
+  \leq \alpha
+  .
+\]
+
+Note that $\bar{x}\sim N\left(\mu_1, \sigma_1^2 / n_1\right)$, $\bar{y}\sim N\left(\mu_2, \sigma_2^2 / n_2\right)$ and $\bar{x}\perp\bar{y}$. Therefore
+\[
+  \bar{x} - \bar{y} \sim N\left(\mu_1 - \mu_2, \sigma_1^2/n_1 + \sigma_2^2 / n_2\right)
+  .
+\]
+Then under $H_0$, $\mu_1 = \mu_2$ and
+\[
+  \frac{
+    \bar{x} - \bar{y}
+  }{
+    \sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}}
+  }
+  \sim
+  N\left(0, 1\right)
+  ,
+\]
+which means
+\[
+  P\left(\left|\bar{x} - \bar{y}\right| > C
+    \middle| \mu_1 = \mu_2
+  \right)
+  = P\left(
+    \left|Z\right|
+    > \frac{
+      C
+    }{
+      \sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}}
+    }
+  \right)
+  \leq \alpha
+  .
+\]
+Here to fully utilize the test, we choose the equal sign. Hence
+\[
+  z_{1 - \alpha / 2} =
+  \frac{
+    C
+  }{
+    \sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}}
+  }
+  .
+\]
+Here the reject region is
+\[
+  \frac{\left|\bar{x} - \bar{y}\right|}{
+    \sqrt{
+      \frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}
+    }
+  }
+  > z_{1 - \alpha /2}
+  .
+\]
+\textbf{Note: } Even the samples does not follow normal distribution, by CLT this test still holds true for large sample.
+
+\subsubsection{Power at given $\Delta = \mu_1 - \mu_2$}
+\label{sec:power-at-given-2}
+
+The power at a given $\Delta = \mu_1 - \mu_2$ is
+\[
+  \begin{aligned}
+    & P\left(
+      \frac{\left|\bar{x} - \bar{y}\right|}{
+      \sqrt{
+      \frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}
+      }
+      }
+      > z_{1 - \alpha /2}
+      \middle| \Delta = \mu_1 - \mu_2
+      \right)    \\
+    =& P\left(
+       \frac{
+       \bar{x} - \bar{y}
+       }{
+       \sqrt{
+       \frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}
+       }
+       }
+       > z_{1 - \alpha / 2}
+       \right)
+       + P\left(
+       \frac{
+       \bar{x} - \bar{y}
+       }{
+       \sqrt{
+       \frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}
+       }
+       }
+       < z_{\alpha / 2}
+       \right)    \\
+    =& P\left(
+       \frac{
+       \bar{x} - \bar{y}
+       - \Delta
+       }{
+       \sqrt{
+       \frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}
+       }
+       }
+       > z_{1 - \alpha / 2}
+       - \frac{\Delta}{\sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}}}
+       \right)
+       + P\left(
+       \frac{
+       \bar{x} - \bar{y} - \Delta
+       }{
+       \sqrt{
+       \frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}
+       }
+       }
+       < z_{\alpha / 2}
+       - \frac{\Delta}{\sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}}}
+       \right)    \\
+    =& P\left(
+       Z
+       > z_{1 - \alpha / 2}
+       - \frac{\Delta}{\sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}}}
+       \right)
+       + P\left(
+       Z
+       < z_{\alpha / 2}
+       - \frac{\Delta}{\sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}}}
+       \right)
+  \end{aligned}
+\]
+
+\subsubsection{Sample size at given $\alpha$, $\beta$, $\Delta$ and $k = \frac{n_1}{n_2}$}
+\label{sec:sample-size-at-2}
+
+W.l.o.g, assume $\Delta > 0$, then the power of the test comes mostly from
+\[
+  P\left(
+    Z
+    > z_{1 - \alpha / 2}
+    - \frac{\Delta}{\sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}}}
+  \right)
+  .
+\]
+So to achieve the power, we can set
+\[
+  P\left(
+    Z
+    > z_{1 - \alpha / 2}
+    - \frac{\Delta}{\sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}}}
+  \right)
+  \geq 1 -\beta
+  .
+\]
+And this means
+\[
+  z_{1 - \alpha / 2}
+  - \frac{\Delta}{\sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}}}
+  \leq z_{\beta}
+  .
+\]
+Rearrange this inequality we have
+\[
+  \frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}
+  \leq
+  \frac{\Delta^2}{
+    \left(
+      z_{\alpha / 2} + z_{\beta}
+    \right)^2
+  }
+  .
+\]
+
+\begin{enumerate}
+\item When $n_1$ is fixed and given, we need
+  \[
+    n_2 \geq
+    \frac{
+      \sigma_2^2
+    }{
+      \left(
+        \frac{\Delta^2}{
+          \left(
+            z_{\alpha / 2} + z_{\beta}
+          \right)^2
+        }
+        - \frac{\sigma_1^2}{n_1}
+      \right)
+    }
+    .
+  \]
+  Also this fixed and given $n_1$ must satisfiy
+  \[
+    \frac{\Delta^2}{
+      \left(
+        z_{\alpha / 2} + z_{\beta}
+      \right)^2
+    }
+    >
+    \frac{\sigma_1^2}{n_1}
+  \]
+  for the test to be feasible.
+\end{enumerate}
 
 \subsection{Two-sample, variance unknown but equal}
 \label{sec:two-sample-variance-1}
