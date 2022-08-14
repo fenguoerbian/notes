@@ -921,7 +921,7 @@ When $\sigma_1$ and $\sigma_2$ are both unknown but equal, denoted by $\sigma$. 
 \]
 So the MLE under $H_0$ is
 \[
-  \mu_{1\left(0\right)} = \mu_{2\left(0\right)} = \mu_{\left(0\right)} = \frac{n1\bar{x} + n_2\bar{y}}{n_1 + n_2}
+  \mu_{1\left(0\right)} = \mu_{2\left(0\right)} = \mu_{\left(0\right)} = \frac{n_1\bar{x} + n_2\bar{y}}{n_1 + n_2}
   ,\quad
   \sigma^2_{\left(0\right)} = \frac{
     \sum\limits_{i = 1}^{n_1}\left(x_i - \mu_{\left(0\right)}\right)^2
@@ -956,7 +956,253 @@ Then the likelihood ratio is
           }    \\
     =& \left(
        \frac{\sigma_{\left(0\right)}^2}{\sigma_{\left(0\cup1\right)}^2}
+       \right)^{-n_1 / 2 - n_2 / 2}    \\
+    =& \left(
+       \frac{
+       \sum\limits_{i = 1}^{n_1}\left(x_i - \bar{x} + \bar{x} - \mu_{\left(0\right)}\right)
+       + \sum\limits_{i = 1}^{n_2}\left(y_i - \bar{y} + \bar{y} - \mu_{\left(0\right)}\right)
+       }{
+       \sum\limits_{i = 1}^{n_1}\left(x_i - \bar{x}\right)^2
+       + \sum\limits_{i = 1}^{n_2}\left(y_i - \bar{y}\right)^2
+       }
+       \right)^{-n_1 / 2 - n_2 / 2}    \\
+    =& \left(
+       1 + \frac{
+       n_1\left(\bar{x} - \mu_{\left(0\right)}\right)^2
+       + n_2\left(\bar{y} - \mu_{\left(0\right)}\right)^2
+       }{
+       \sum\limits_{i = 1}^{n_1}\left(x_i - \bar{x}\right)^2
+       + \sum\limits_{i = 1}^{n_2}\left(y_i - \bar{y}\right)^2
+       }
+       \right)^{-n_1 / 2 - n_2 / 2}    \\
+    =& \left(
+       1 + \frac{n_1n_2}{n_1 + n_2}
+       \cdot
+       \frac{\left(\bar{x} - \bar{y}\right)^2}{
+       \sum\limits_{i = 1}^{n_1}\left(x_i - \bar{x}\right)^2
+       + \sum\limits_{i = 1}^{n_2}\left(y_i - \bar{y}\right)^2       
+       }
        \right)^{-n_1 / 2 - n_2 / 2}
+       .
+  \end{aligned}
+\]
+So to rejact $H_0$ when the likelihood ratio is small enough implies that the reject region is
+\[
+  \text{Reject region: }
+  \left\{
+    \left(\bm{x}, \bm{y}\right)
+    \middle|
+    \frac{\left|\bar{x} - \bar{y}\right|}{
+      \sqrt{
+               \sum\limits_{i = 1}^{n_1}\left(x_i - \bar{x}\right)^2
+       + \sum\limits_{i = 1}^{n_2}\left(y_i - \bar{y}\right)^2 
+      }
+    }
+    > C
+  \right\}
+  .
+\]
+
+\subsubsection{Decide $C$ from $\alpha$}
+\label{sec:decide-c-from-3}
+
+Like before, we know that
+\[
+  \bar{x} \sim N\left(\mu_1, \frac{\sigma^2}{n_1}\right)
+  ,\quad
+  \left(n_1 - 1\right)S_x^2 / \sigma^2 \sim \chi^2\left(n_1 - 1\right)
+  ,\quad
+  \bar{x}\perp S_x^2
+  ,
+\]
+and
+\[ 
+  \bar{y} \sim N\left(\mu_2, \frac{\sigma^2}{n_2}\right)
+  ,\quad
+  \left(n_2 - 1\right)S_y^2 / \sigma^2 \sim \chi^2\left(n_2 - 1\right)
+  ,\quad
+  \bar{y}\perp S_y^2
+  .
+\]
+Since these two samples $\bm{x}$ and $\bm{y}$ are independent, we have
+\[
+  \bar{x} - \bar{y}
+  \sim N\left(
+    \mu_1 - \mu_2,\;
+    \frac{n_1 + n_2}{n_1n_2}\sigma^2
+  \right)
+  ,
+\]
+which implies
+\[
+  \frac{\bar{x} - \bar{y} - \left(\mu_1 - \mu_2\right)}{
+    \sqrt{
+      \frac{n_1 + n_2}{n_1n_2}\sigma^2
+    }
+  }
+  \sim N\left(0, 1\right)
+  .
+\]
+And more importantly ({\color{red} the summation of independent $\chi^2$ variables})
+\[
+  \frac{
+    \left(n_1 - 1\right)S_x^2 + \left(n_2 - 1\right)S_y^2
+  }{\sigma_2}
+  \sim \chi^2\left(n_1 + n_2 - 2\right)
+\]
+and
+\[
+    \frac{\bar{x} - \bar{y} - \left(\mu_1 - \mu_2\right)}{
+    \sqrt{
+      \frac{n_1 + n_2}{n_1n_2}\sigma^2
+    }
+  }
+  \;\bm{\perp}\;
+    \frac{
+    \left(n_1 - 1\right)S_x^2 + \left(n_2 - 1\right)S_y^2
+  }{\sigma_2}
+  .
+\]
+This leads us to
+\[
+  \frac{
+    \frac{\bar{x} - \bar{y} - \left(\mu_1 - \mu_2\right)}{
+      \sqrt{
+        \frac{n_1 + n_2}{n_1n_2}\sigma^2
+      }
+    }
+  }{
+    \sqrt{
+      \frac{1}{n_1 + n_2 - 2}
+      \frac{
+        \left(n_1 - 1\right)S_x^2 + \left(n_2 - 1\right)S_y^2
+      }{\sigma_2}
+    }
+  }
+  = \frac{
+    \bar{x} - \bar{y} - \left(\mu_1 - \mu_2\right)
+  }{\sqrt{
+      \left(
+        \frac{1}{n_1} + \frac{1}{n_2}
+      \right)
+      \cdot
+      \frac{
+        \left(n_1 - 1\right)S_x^2 + \left(n_2 - 1\right)S_y^2
+      }{
+        n_1 + n_2 - 2
+      }
+    }
+  }
+  \sim t(n_1 + n_2 - 2)
+  .
+\]
+Here we use $S_p$ to represent the pooled standard deviation of the data, i.e.
+\[
+  S_p = \sqrt{
+    \frac{
+      \left(n_1 - 1\right)S_x^2 + \left(n_2 - 1\right)S_y^2
+    }{
+      n_1 + n_2 - 2
+    }
+  }
+  .
+\]
+Under $H_0$, the type-I error is controlled as
+\[
+  P\left(
+        \frac{\left|\bar{x} - \bar{y}\right|}{
+      \sqrt{
+               \sum\limits_{i = 1}^{n_1}\left(x_i - \bar{x}\right)^2
+       + \sum\limits_{i = 1}^{n_2}\left(y_i - \bar{y}\right)^2 
+      }
+    }
+    > C
+    \middle| \mu_1 = \mu_2
+  \right)
+  \leq \alpha
+  .
+\]
+Therefore we can write
+\[
+  P\left(
+    \frac{\left|\bar{x} - \bar{y}\right|}{
+      \sqrt{
+        \sum\limits_{i = 1}^{n_1}\left(x_i - \bar{x}\right)^2
+        + \sum\limits_{i = 1}^{n_2}\left(y_i - \bar{y}\right)^2 
+      }
+    }
+    > C
+    \middle| \mu_1 = \mu_2
+  \right)
+  = P\left(
+    \left|T_{\left(n_1 + n_2 - 2\right)}\right|
+    > \frac{C}{
+      \sqrt{\frac{
+          \left(\frac{1}{n_1} + \frac{1}{n_2}\right)  
+        }{
+          n_1 + n_2 - 2
+        }
+      }
+    }
+  \right)
+  = \alpha
+  .
+\]
+Here in the last part we use the equal sign instead of $\leq$ for fully utilize the test. So we can construct the test to reject $H_0$ when
+\[
+  \frac{
+    \left|\bar{x} - \bar{y}\right|
+  }{
+    \sqrt{
+      \left(\frac{1}{n_1} + \frac{1}{n_2}\right)
+      S_p^2
+    }
+  }
+  > t_{1 - \alpha / 2}\left(n_1 + n_2 - 2\right)
+  .
+\]
+
+\subsubsection{Power at given underlying $\Delta = \mu_1 - \mu_2$ and $\sigma^2$}
+\label{sec:power-at-given-3}
+
+The distribution of the test statistics is derived as
+\[
+  \begin{aligned}
+  & \frac{
+    \bar{x} - \bar{y}
+  }{
+    \sqrt{
+      \left(\frac{1}{n_1} + \frac{1}{n_2}\right)
+      S_p^2
+    }
+  }    \\
+  =& \frac{
+    \bar{x} - \bar{y}
+    - \Delta
+    + \Delta
+  }{
+    \sqrt{
+      \left(\frac{1}{n_1} + \frac{1}{n_2}\right)
+      S_p^2
+    }
+  }    \\
+  =& \frac{
+    \frac{
+      \bar{x} - \bar{y} - \Delta
+    }{
+      \sqrt{\left(\frac{1}{n_1} + \frac{1}{n_2}\right)\sigma^2}
+    }
+    + \frac{\Delta}{\sqrt{\left(\frac{1}{n_1} + \frac{1}{n_2}\right)\sigma^2}}    
+  }{
+    \sqrt{
+      \frac{\left(n_1 + n_2 - 2\right)S_p^2}{\sigma^2}
+      \cdot \frac{1}{n_1 + n_2 - 2}
+    }
+  }
+  \sim t(
+  n_1 + n_2 - 2,
+  \frac{\Delta}{\sqrt{\left(\frac{1}{n_1} + \frac{1}{n_2}\right)\sigma^2}}
+  )    
   \end{aligned}
 \]
 
