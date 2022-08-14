@@ -612,11 +612,16 @@ Then the likelihood ratio is
   \begin{aligned}
     LR =& \frac{
             \underset{H_0}{\mathrm{max}}\;
-            f\left(\bm{x}, \bm{y}\middle|\mu_1 = \mu_2 = \mu_{\left(0\right)}\right)
+            f\left(\bm{x}, \bm{y}\middle|\mu_1, \mu_2\right)
           }{
             \underset{H_0\cup H_1}{\mathrm{max}}\;
-            f\left(\bm{x}, \bm{y}\middle|\mu_1 = \mu_{1\left(0\cup1\right)}, \mu_2 = \mu_{2\left(0\cup1\right)}\right)
+            f\left(\bm{x}, \bm{y}\middle|\mu_1, \mu_2\right)
           }    \\
+    =& \frac{
+       f\left(\bm{x}, \bm{y}\middle|\mu_1 = \mu_2 = \mu_{\left(0\right)}\right)
+       }{
+       f\left(\bm{x}, \bm{y}\middle|\mu_1 = \mu_{1\left(0\cup1\right)}, \mu_2 = \mu_{2\left(0\cup1\right)}\right)
+       }    \\
     \propto&
              \mathrm{exp}\left(
                -\frac{1}{2}\left(
@@ -830,14 +835,12 @@ Rearrange this inequality we have
     \frac{
       \sigma_2^2
     }{
-      \left(
-        \frac{\Delta^2}{
-          \left(
-            z_{\alpha / 2} + z_{\beta}
-          \right)^2
-        }
-        - \frac{\sigma_1^2}{n_1}
-      \right)
+      \frac{\Delta^2}{
+        \left(
+          z_{\alpha / 2} + z_{\beta}
+        \right)^2
+      }
+      - \frac{\sigma_1^2}{n_1}
     }
     .
   \]
@@ -852,10 +855,110 @@ Rearrange this inequality we have
     \frac{\sigma_1^2}{n_1}
   \]
   for the test to be feasible.
+\item Similarly, when $n_2$ is given and fixed, we need
+  \[
+    n_1 \geq
+    \frac{\sigma_1^2}{
+      \frac{\Delta^2}{
+        \left(
+          z_{\alpha / 2} + z_{\beta}
+        \right)^2
+      }
+      - \frac{\sigma_2^2}{n_2}
+    }
+    .
+  \]
+  Also this fixed and given $n_2$ must satisfy
+  \[
+        \frac{\Delta^2}{
+      \left(
+        z_{\alpha / 2} + z_{\beta}
+      \right)^2
+    }
+    >
+    \frac{\sigma_2^2}{n_2}
+  \]
+  for the test to be feasible.
+\item For a fixed and given sample size ratio $k = n_2 / n_1$, we need
+  \[
+    n_1 \geq
+    \frac{
+      \left(\sigma_1^2 + \sigma_2^2 / k\right)
+      \left(
+        z_{\alpha / 2} + z_{\beta}
+      \right)^2
+    }{
+      \Delta^2
+    }
+  \]
 \end{enumerate}
+\textbf{Note: } These results hold the same form when $\Delta < 0$.
 
 \subsection{Two-sample, variance unknown but equal}
 \label{sec:two-sample-variance-1}
+
+When $\sigma_1$ and $\sigma_2$ are both unknown but equal, denoted by $\sigma$. The likelihood of the data becomes
+\[
+  \begin{aligned}
+    & f\left(
+      x_1, \cdots, x_{n_1}, y_1, \cdots, y_{n_2}
+      \middle|
+      \mu_1, \mu_2, \sigma^2
+      \right)    \\
+    = & \left(
+        2\pi\sigma^2
+        \right)^{-n_1 / 2 - n_2 / 2}
+        \mathrm{exp}\left(
+        -\frac{
+        \sum\limits_{i = 1}^{n_1}\left(x_i - \mu_1\right)^2
+        + \sum\limits_{i = 1}^{n_2}\left(y_i - \mu_2\right)^2
+        }{
+        2\sigma^2
+        }
+        \right)
+        .
+  \end{aligned}
+\]
+So the MLE under $H_0$ is
+\[
+  \mu_{1\left(0\right)} = \mu_{2\left(0\right)} = \mu_{\left(0\right)} = \frac{n1\bar{x} + n_2\bar{y}}{n_1 + n_2}
+  ,\quad
+  \sigma^2_{\left(0\right)} = \frac{
+    \sum\limits_{i = 1}^{n_1}\left(x_i - \mu_{\left(0\right)}\right)^2
+    + \sum\limits_{i = 1}^{n_2}\left(y_i  - \mu_{\left(0\right)}\right)^2
+  }{
+    n_1 + n_2
+  }
+\]
+And the MLE under $H_0\cup H_1$ is
+\[
+  \mu_{1\left(0\cup1\right)} = \bar{x},\quad \mu_{2\left(0\cup1\right)} = \bar{y}
+  ,\quad
+  \sigma^2_{\left(0\cup1\right)} =
+  \frac{
+    \sum\limits_{i = 1}^{n_1}\left(x_i - \bar{x}\right)^2
+    + \sum\limits_{i = 1}^{n_2}\left(y_i - \bar{y}\right)^2
+  }{
+    n_1 + n_2
+  }
+  .
+\]
+Then the likelihood ratio is
+\[
+  \begin{aligned}
+    LR =& \frac{
+          f\left(\bm{x}, \bm{y}\middle|\mu_1 = \mu_2 = \mu_{\left(0\right)}, \sigma^2 = \sigma_{\left(0\right)}^2\right)
+          }{
+          f\left(\bm{x}, \bm{y}\middle|
+          \mu_1 = \mu_{1\left(0\cup1\right)},
+          \mu_2 = \mu_{2\left(0\cup1\right)},
+          \sigma^2 = \sigma_{\left(0\cup1\right)}^2\right)
+          }    \\
+    =& \left(
+       \frac{\sigma_{\left(0\right)}^2}{\sigma_{\left(0\cup1\right)}^2}
+       \right)^{-n_1 / 2 - n_2 / 2}
+  \end{aligned}
+\]
 
 \subsection{Two-sample, variance unknown and unequal}
 \label{sec:two-sample-variance-2}
