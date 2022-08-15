@@ -381,7 +381,7 @@ where for the last part we mainly focus on terms related to $\mu_0$. So to rejec
 
 The idea is similar to that in Section~\ref{sec:variance-known}. But we replace $\sigma^2$ with $S^2$.
 
-\subsection{Decide $C$ from $\alpha$}
+\subsubsection{Decide $C$ from $\alpha$}
 \label{sec:decide-c-from-1}
 
 First we can write
@@ -437,7 +437,7 @@ Then we know the reject rejion is
   .
 \]
 
-\subsection{Power at given underlying $\mu$ and $\sigma^2$}
+\subsubsection{Power at given underlying $\mu$ and $\sigma^2$}
 \label{sec:power-at-given-1}
 
 Before any computation, we introduce the \textbf{non-central} t-distribution.
@@ -497,7 +497,7 @@ which means $\frac{\bar{x} - \mu_0}{\sqrt{S^2 / n}}$ follows a non-central t-dis
   \end{aligned}  
 \end{equation}
 
-\subsection{Sample size at given $\alpha$, $\beta$ and underlying $\mu$ and $\sigma^2$}
+\subsubsection{Sample size at given $\alpha$, $\beta$ and underlying $\mu$ and $\sigma^2$}
 \label{sec:sample-size-at-1}
 
 W.l.o.g, assume $\mu > \mu_0$, then in the previous power equation~\eqref{eq:power_equation_one_sample_sigma_unknown}
@@ -1168,42 +1168,162 @@ Here in the last part we use the equal sign instead of $\leq$ for fully utilize 
 The distribution of the test statistics is derived as
 \[
   \begin{aligned}
-  & \frac{
-    \bar{x} - \bar{y}
-  }{
-    \sqrt{
+    & \frac{
+      \bar{x} - \bar{y}
+      }{
+      \sqrt{
       \left(\frac{1}{n_1} + \frac{1}{n_2}\right)
       S_p^2
-    }
-  }    \\
-  =& \frac{
-    \bar{x} - \bar{y}
-    - \Delta
-    + \Delta
-  }{
-    \sqrt{
-      \left(\frac{1}{n_1} + \frac{1}{n_2}\right)
-      S_p^2
-    }
-  }    \\
-  =& \frac{
-    \frac{
-      \bar{x} - \bar{y} - \Delta
-    }{
-      \sqrt{\left(\frac{1}{n_1} + \frac{1}{n_2}\right)\sigma^2}
-    }
-    + \frac{\Delta}{\sqrt{\left(\frac{1}{n_1} + \frac{1}{n_2}\right)\sigma^2}}    
-  }{
-    \sqrt{
-      \frac{\left(n_1 + n_2 - 2\right)S_p^2}{\sigma^2}
-      \cdot \frac{1}{n_1 + n_2 - 2}
-    }
-  }
-  \sim t(
-  n_1 + n_2 - 2,
-  \frac{\Delta}{\sqrt{\left(\frac{1}{n_1} + \frac{1}{n_2}\right)\sigma^2}}
-  )    
+      }
+      }    \\
+    =& \frac{
+       \bar{x} - \bar{y}
+       - \Delta
+       + \Delta
+       }{
+       \sqrt{
+       \left(\frac{1}{n_1} + \frac{1}{n_2}\right)
+       S_p^2
+       }
+       }    \\
+    =& \frac{
+       \frac{
+       \bar{x} - \bar{y} - \Delta
+       }{
+       \sqrt{\left(\frac{1}{n_1} + \frac{1}{n_2}\right)\sigma^2}
+       }
+       + \frac{\Delta}{\sqrt{\left(\frac{1}{n_1} + \frac{1}{n_2}\right)\sigma^2}}    
+       }{
+       \sqrt{
+       \frac{\left(n_1 + n_2 - 2\right)S_p^2}{\sigma^2}
+       \cdot \frac{1}{n_1 + n_2 - 2}
+       }
+       }
+       \sim t(
+       n_1 + n_2 - 2,
+       \frac{\Delta}{\sqrt{\left(\frac{1}{n_1} + \frac{1}{n_2}\right)\sigma^2}}
+       )
+       .
   \end{aligned}
+\]
+So the test statistic follows a non-central t-distribution with degree of freedom $n_1 + n_2 - 2$ and non-central parameter $\frac{\Delta}{\sqrt{\left(\frac{1}{n_1} + \frac{1}{n_2}\right)\sigma^2}}$. Then the power of the test
+\begin{equation}
+  \label{eq:power_equation_two_sample_variance_equal_but_unknown}
+    \begin{aligned}
+    & P\left(
+      \frac{
+      \left|\bar{x} - \bar{y}\right|
+      }{
+      \sqrt{
+      \left(\frac{1}{n_1} + \frac{1}{n_2}\right)
+      S_p^2
+      }
+      }
+      > t_{1 - \alpha / 2}\left(n_1 + n_2 - 2\right)
+      \right)    \\
+    =& P\left(
+       \left|
+       T{\left(
+       n_1 + n_2 - 2,
+       \frac{\Delta}{\sqrt{\left(\frac{1}{n_1} + \frac{1}{n_2}\right)\sigma^2}}
+       \right)}
+       \right|
+       > t_{1 - \alpha / 2}\left(n_1 + n_2 - 2\right)
+       \right)    \\
+    =& P\left(
+       T{\left(
+       n_1 + n_2 - 2,
+       \frac{\Delta}{\sqrt{\left(\frac{1}{n_1} + \frac{1}{n_2}\right)\sigma^2}}
+       \right)}
+       > t_{1 - \alpha / 2}\left(n_1 + n_2 - 2\right)
+       \right)    \\
+    &+ P\left(
+       T{\left(
+       n_1 + n_2 - 2,
+       \frac{\Delta}{\sqrt{\left(\frac{1}{n_1} + \frac{1}{n_2}\right)\sigma^2}}
+       \right)}
+       < t_{\alpha / 2}\left(n_1 + n_2 - 2\right)
+       \right)    \\
+  \end{aligned}
+\end{equation}
+
+\subsubsection{Sample size at given $\alpha$, $\beta$, $\Delta$ and $\sigma^2$}
+\label{sec:sample-size-at-3}
+
+W.l.o.g, assume $\Delta = \mu_1 - \mu_2 > 0$. Then in the previous power equation~\eqref{eq:power_equation_two_sample_variance_equal_but_unknown},
+\[
+  P\left(
+    T{\left(
+        n_1 + n_2 - 2,
+        \frac{\Delta}{\sqrt{\left(\frac{1}{n_1} + \frac{1}{n_2}\right)\sigma^2}}
+      \right)}
+    < t_{\alpha / 2}\left(n_1 + n_2 - 2\right)
+  \right)
+\]
+will be close to zero and
+\[
+  P\left(
+    T{\left(
+        n_1 + n_2 - 2,
+        \frac{\Delta}{\sqrt{\left(\frac{1}{n_1} + \frac{1}{n_2}\right)\sigma^2}}
+      \right)}
+    > t_{1 - \alpha / 2}\left(n_1 + n_2 - 2\right)
+  \right) 
+\]
+will offer most of the power. So to guarantee a $1 - \beta$ power we can simply set
+\[
+    P\left(
+    T{\left(
+        n_1 + n_2 - 2,
+        \frac{\Delta}{\sqrt{\left(\frac{1}{n_1} + \frac{1}{n_2}\right)\sigma^2}}
+      \right)}
+    > t_{1 - \alpha / 2}\left(n_1 + n_2 - 2\right)
+  \right)
+  \geq 1 - \beta
+  .
+\]
+Therefore
+\[
+  t_{1 - \alpha / 2}\left(n_1 + n_2 - 2\right)
+  \leq
+  t_{\beta}\left(
+    n_1 + n_2 - 2,
+    \frac{\Delta}{\sqrt{\left(\frac{1}{n_1} + \frac{1}{n_2}\right)\sigma^2}}
+  \right)
+  .
+\]
+If in another way around $\Delta < 0$, then we set the power inequality
+\[
+    P\left(
+    T{\left(
+        n_1 + n_2 - 2,
+        \frac{\Delta}{\sqrt{\left(\frac{1}{n_1} + \frac{1}{n_2}\right)\sigma^2}}
+      \right)}
+    < t_{\alpha / 2}\left(n_1 + n_2 - 2\right)
+  \right)
+  \geq 1 - \beta
+  ,
+\]
+which means
+\[
+  t_{\alpha / 2}\left(n_1 + n_2 - 2\right)
+  \geq
+  t_{1 - \beta}\left(
+    n_1 + n_2 - 2,
+    \frac{\Delta}{\sqrt{\left(\frac{1}{n_1} + \frac{1}{n_2}\right)\sigma^2}}
+  \right)
+  .
+\]
+So in summary (using $t_{\alpha}\left(v, \delta\right) + t_{1 - \alpha}\left(v, -\delta\right) = 0$),
+\[
+  0
+  \leq
+  t_{\alpha / 2}\left(n_1 + n_2 - 2\right)
+  + t_{\beta}\left(
+    n_1 + n_2 - 2,
+    \frac{\left|\Delta\right|}{\sqrt{\left(\frac{1}{n_1} + \frac{1}{n_2}\right)\sigma^2}}
+  \right)
+  .
 \]
 
 \subsection{Two-sample, variance unknown and unequal}
