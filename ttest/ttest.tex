@@ -1170,80 +1170,80 @@ The distribution of the test statistics is derived as
   \begin{aligned}
     & \frac{
       \bar{x} - \bar{y}
-      }{
+    }{
       \sqrt{
-      \left(\frac{1}{n_1} + \frac{1}{n_2}\right)
-      S_p^2
+        \left(\frac{1}{n_1} + \frac{1}{n_2}\right)
+        S_p^2
       }
-      }    \\
+    }    \\
     =& \frac{
-       \bar{x} - \bar{y}
-       - \Delta
-       + \Delta
-       }{
-       \sqrt{
-       \left(\frac{1}{n_1} + \frac{1}{n_2}\right)
-       S_p^2
-       }
-       }    \\
+      \bar{x} - \bar{y}
+      - \Delta
+      + \Delta
+    }{
+      \sqrt{
+        \left(\frac{1}{n_1} + \frac{1}{n_2}\right)
+        S_p^2
+      }
+    }    \\
     =& \frac{
-       \frac{
-       \bar{x} - \bar{y} - \Delta
-       }{
-       \sqrt{\left(\frac{1}{n_1} + \frac{1}{n_2}\right)\sigma^2}
-       }
-       + \frac{\Delta}{\sqrt{\left(\frac{1}{n_1} + \frac{1}{n_2}\right)\sigma^2}}    
-       }{
-       \sqrt{
-       \frac{\left(n_1 + n_2 - 2\right)S_p^2}{\sigma^2}
-       \cdot \frac{1}{n_1 + n_2 - 2}
-       }
-       }
-       \sim t(
-       n_1 + n_2 - 2,
-       \frac{\Delta}{\sqrt{\left(\frac{1}{n_1} + \frac{1}{n_2}\right)\sigma^2}}
-       )
-       .
+      \frac{
+        \bar{x} - \bar{y} - \Delta
+      }{
+        \sqrt{\left(\frac{1}{n_1} + \frac{1}{n_2}\right)\sigma^2}
+      }
+      + \frac{\Delta}{\sqrt{\left(\frac{1}{n_1} + \frac{1}{n_2}\right)\sigma^2}}    
+    }{
+      \sqrt{
+        \frac{\left(n_1 + n_2 - 2\right)S_p^2}{\sigma^2}
+        \cdot \frac{1}{n_1 + n_2 - 2}
+      }
+    }
+    \sim t(
+    n_1 + n_2 - 2,
+    \frac{\Delta}{\sqrt{\left(\frac{1}{n_1} + \frac{1}{n_2}\right)\sigma^2}}
+    )
+    .
   \end{aligned}
 \]
 So the test statistic follows a non-central t-distribution with degree of freedom $n_1 + n_2 - 2$ and non-central parameter $\frac{\Delta}{\sqrt{\left(\frac{1}{n_1} + \frac{1}{n_2}\right)\sigma^2}}$. Then the power of the test
 \begin{equation}
   \label{eq:power_equation_two_sample_variance_equal_but_unknown}
-    \begin{aligned}
+  \begin{aligned}
     & P\left(
       \frac{
-      \left|\bar{x} - \bar{y}\right|
+        \left|\bar{x} - \bar{y}\right|
       }{
-      \sqrt{
-      \left(\frac{1}{n_1} + \frac{1}{n_2}\right)
-      S_p^2
-      }
+        \sqrt{
+          \left(\frac{1}{n_1} + \frac{1}{n_2}\right)
+          S_p^2
+        }
       }
       > t_{1 - \alpha / 2}\left(n_1 + n_2 - 2\right)
-      \right)    \\
+    \right)    \\
     =& P\left(
-       \left|
-       T{\left(
-       n_1 + n_2 - 2,
-       \frac{\Delta}{\sqrt{\left(\frac{1}{n_1} + \frac{1}{n_2}\right)\sigma^2}}
-       \right)}
-       \right|
-       > t_{1 - \alpha / 2}\left(n_1 + n_2 - 2\right)
-       \right)    \\
+      \left|
+        T{\left(
+            n_1 + n_2 - 2,
+            \frac{\Delta}{\sqrt{\left(\frac{1}{n_1} + \frac{1}{n_2}\right)\sigma^2}}
+          \right)}
+      \right|
+      > t_{1 - \alpha / 2}\left(n_1 + n_2 - 2\right)
+    \right)    \\
     =& P\left(
-       T{\left(
-       n_1 + n_2 - 2,
-       \frac{\Delta}{\sqrt{\left(\frac{1}{n_1} + \frac{1}{n_2}\right)\sigma^2}}
-       \right)}
-       > t_{1 - \alpha / 2}\left(n_1 + n_2 - 2\right)
-       \right)    \\
+      T{\left(
+          n_1 + n_2 - 2,
+          \frac{\Delta}{\sqrt{\left(\frac{1}{n_1} + \frac{1}{n_2}\right)\sigma^2}}
+        \right)}
+      > t_{1 - \alpha / 2}\left(n_1 + n_2 - 2\right)
+    \right)    \\
     &+ P\left(
-       T{\left(
-       n_1 + n_2 - 2,
-       \frac{\Delta}{\sqrt{\left(\frac{1}{n_1} + \frac{1}{n_2}\right)\sigma^2}}
-       \right)}
-       < t_{\alpha / 2}\left(n_1 + n_2 - 2\right)
-       \right)    \\
+      T{\left(
+          n_1 + n_2 - 2,
+          \frac{\Delta}{\sqrt{\left(\frac{1}{n_1} + \frac{1}{n_2}\right)\sigma^2}}
+        \right)}
+      < t_{\alpha / 2}\left(n_1 + n_2 - 2\right)
+    \right)    \\
   \end{aligned}
 \end{equation}
 
@@ -1272,7 +1272,7 @@ will be close to zero and
 \]
 will offer most of the power. So to guarantee a $1 - \beta$ power we can simply set
 \[
-    P\left(
+  P\left(
     T{\left(
         n_1 + n_2 - 2,
         \frac{\Delta}{\sqrt{\left(\frac{1}{n_1} + \frac{1}{n_2}\right)\sigma^2}}
@@ -1294,7 +1294,7 @@ Therefore
 \]
 If in another way around $\Delta < 0$, then we set the power inequality
 \[
-    P\left(
+  P\left(
     T{\left(
         n_1 + n_2 - 2,
         \frac{\Delta}{\sqrt{\left(\frac{1}{n_1} + \frac{1}{n_2}\right)\sigma^2}}
