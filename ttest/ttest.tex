@@ -44,7 +44,7 @@
 
 % cross-reference to other files
 % the externaldocument should be compiled 
-%   (and at least twice if you're using xr-hyper)
+% (and at least twice if you're using xr-hyper)
 % \usepackage{xr-hyper}
 % \usepackage{xr}
 
@@ -56,21 +56,21 @@
 % externaldocument settings for Overleaf
 % \makeatletter
 % \newcommand*{\addFileDependency}[1]{% argument=file name and extension
-%   \typeout{(#1)}
-%   \@addtofilelist{#1}
-%   \IfFileExists{#1}{}{\typeout{No file #1.}}
+% \typeout{(#1)}
+% \@addtofilelist{#1}
+% \IfFileExists{#1}{}{\typeout{No file #1.}}
 % }
-% \makeatother
-% \newcommand*{\myexternaldocument}[1]{%
-%     \externaldocument{#1}%
-%     \addFileDependency{#1.tex}%
-%     \addFileDependency{#1.aux}%
+%   \makeatother
+%   \newcommand*{\myexternaldocument}[1]{%
+%   \externaldocument{#1}%
+%   \addFileDependency{#1.tex}%
+%   \addFileDependency{#1.aux}%
 % }
-% \myexternaldocument{external_tex_file}
-% --- end of overleaf setting ---
+%   \myexternaldocument{external_tex_file}
+%   --- end of overleaf setting ---
 
-% mathtools can be used to define labeling format for equations
-% one can use \eqref for a reference to a labeled equation.
+%   mathtools can be used to define labeling format for equations
+%   one can use \eqref for a reference to a labeled equation.
 \usepackage{mathtools}
 \newtagform{supp}{(S-}{)}    % define a equation labeling format for suppliment
 \usetagform{supp}            % use the supp format
@@ -93,9 +93,9 @@
 
 % package for input codec and output rendering font
 \usepackage[utf8]{inputenc}    % it is always good practice to use utf8
-                               % you can also try latin1, latin2, cp1252 and cp1250
+% you can also try latin1, latin2, cp1252 and cp1250
 \usepackage[T1]{fontenc}    % the default is T0, which only contains 128 characters
-                            % you can try T1, T2A, T2B
+% you can try T1, T2A, T2B
 % you can refer to https://www.overleaf.com/learn/latex/international_language_support#Font_encoding
 % for more details.
 
@@ -148,17 +148,17 @@ Consider a random sample $x_1, \cdots, x_n$ from $N\left(\mu, \sigma^2\right)$. 
   \begin{aligned}
     f\left(x_1, \cdots, x_n\right)
     =& \prod\limits_{i = 1}^n
-       \left(2\pi\sigma^2\right)^{-1/2}
-       \mathrm{exp}\left(
-       -\frac{
-       \left(x_i - \mu\right)^2
-       }{2\sigma^2}
-       \right)    \\
+    \left(2\pi\sigma^2\right)^{-1/2}
+    \mathrm{exp}\left(
+      -\frac{
+        \left(x_i - \mu\right)^2
+      }{2\sigma^2}
+    \right)    \\
     =& \left(2\pi\sigma^2\right)^{-n / 2}
-       \mathrm{exp}\left(
-       -\frac{\sum\limits_{i = 1}^n\left(x_i - \mu\right)^2}{2\sigma^2}
-       \right)
-       .
+    \mathrm{exp}\left(
+      -\frac{\sum\limits_{i = 1}^n\left(x_i - \mu\right)^2}{2\sigma^2}
+    \right)
+    .
   \end{aligned}
 \]
 We propose the test
@@ -244,38 +244,38 @@ The power (the probability to reject $H_0$, when $H_1$ is true) of the proposed 
   \begin{aligned}
     & P\left(
       \left|
-      \frac{\bar{x} - \mu_0}{\sqrt{\sigma^2 / n}}
+        \frac{\bar{x} - \mu_0}{\sqrt{\sigma^2 / n}}
       \right|
       \geq z_{1 - \alpha / 2}
-      \right)    \\
+    \right)    \\
     = & P\left(
-        \frac{\bar{x} - \mu_0}{\sqrt{\sigma^2 / n}}
-        \leq z_{\alpha / 2}
-        \right)
-        + P\left(
-        \frac{\bar{x} - \mu_0}{\sqrt{\sigma^2 / n}}
-        \geq z_{1 - \alpha / 2}
-        \right)    \\
+      \frac{\bar{x} - \mu_0}{\sqrt{\sigma^2 / n}}
+      \leq z_{\alpha / 2}
+    \right)
+    + P\left(
+      \frac{\bar{x} - \mu_0}{\sqrt{\sigma^2 / n}}
+      \geq z_{1 - \alpha / 2}
+    \right)    \\
     = & P\left(
-        \frac{\bar{x} - \mu}{\sqrt{\sigma^2 / n}}
-        \leq z_{\alpha / 2}
-        + \frac{\mu_0 - \mu}{\sqrt{\sigma^2 / n}}
-        \right)
-        + P\left(
-        \frac{\bar{x} - \mu}{\sqrt{\sigma^2 / n}}
-        \geq z_{1 - \alpha / 2}
-        + \frac{\mu_0 - \mu}{\sqrt{\sigma^2 / n}}
-        \right)    \\
+      \frac{\bar{x} - \mu}{\sqrt{\sigma^2 / n}}
+      \leq z_{\alpha / 2}
+      + \frac{\mu_0 - \mu}{\sqrt{\sigma^2 / n}}
+    \right)
+    + P\left(
+      \frac{\bar{x} - \mu}{\sqrt{\sigma^2 / n}}
+      \geq z_{1 - \alpha / 2}
+      + \frac{\mu_0 - \mu}{\sqrt{\sigma^2 / n}}
+    \right)    \\
     = & P\left(
-        Z
-        \leq z_{\alpha / 2}
-        + \frac{\mu_0 - \mu}{\sqrt{\sigma^2 / n}}
-        \right)
-        + P\left(
-        Z
-        \geq z_{1 - \alpha / 2}
-        + \frac{\mu_0 - \mu}{\sqrt{\sigma^2 / n}}
-        \right)    \\
+      Z
+      \leq z_{\alpha / 2}
+      + \frac{\mu_0 - \mu}{\sqrt{\sigma^2 / n}}
+    \right)
+    + P\left(
+      Z
+      \geq z_{1 - \alpha / 2}
+      + \frac{\mu_0 - \mu}{\sqrt{\sigma^2 / n}}
+    \right)    \\
   \end{aligned}  
 \end{equation}
 
@@ -302,7 +302,7 @@ would be really close to zero and
 \]
 will offer most of the power. In order to guarantee a power of at least $1 - \beta$, we could simply set
 \[
-    P\left(
+  P\left(
     Z
     \geq z_{1 - \alpha / 2}
     + \frac{\mu_0 - \mu}{\sqrt{\sigma^2 / n}}
@@ -475,25 +475,25 @@ which means $\frac{\bar{x} - \mu_0}{\sqrt{S^2 / n}}$ follows a non-central t-dis
   \begin{aligned}
     & P\left(
       \left|
-      \frac{\bar{x} - \mu_0}{\sqrt{S^2 / n}}
+        \frac{\bar{x} - \mu_0}{\sqrt{S^2 / n}}
       \right|
       \geq t_{1 - \alpha / 2}\left(n - 1\right)
-      \right)    \\
+    \right)    \\
     =& P\left(
-       \left|
-       T\left(n - 1,  \frac{\mu - \mu_0}{\sqrt{\sigma^2 / n}}\right)
-       \right|
-       \geq t_{1 - \alpha / 2}\left(n - 1\right)
-       \right)    \\
+      \left|
+        T\left(n - 1,  \frac{\mu - \mu_0}{\sqrt{\sigma^2 / n}}\right)
+      \right|
+      \geq t_{1 - \alpha / 2}\left(n - 1\right)
+    \right)    \\
     =& P\left(
-       T\left(n - 1,  \frac{\mu - \mu_0}{\sqrt{\sigma^2 / n}}\right)
-       \leq t_{\alpha / 2}\left(n - 1\right)
-       \right)
-       + P\left(
-       T\left(n - 1,  \frac{\mu - \mu_0}{\sqrt{\sigma^2 / n}}\right)
-       \geq t_{1 - \alpha / 2}\left(n - 1\right)
-       \right)
-       .
+      T\left(n - 1,  \frac{\mu - \mu_0}{\sqrt{\sigma^2 / n}}\right)
+      \leq t_{\alpha / 2}\left(n - 1\right)
+    \right)
+    + P\left(
+      T\left(n - 1,  \frac{\mu - \mu_0}{\sqrt{\sigma^2 / n}}\right)
+      \geq t_{1 - \alpha / 2}\left(n - 1\right)
+    \right)
+    .
   \end{aligned}  
 \end{equation}
 
@@ -560,11 +560,11 @@ Consider two random samples $x_1, \cdots, x_{n_1} \sim N\left(\mu_1, \sigma_1^2\
     & f\left(x_1, \cdots, x_{n_1}, y_1, \cdots, y_{n_2}
       \middle|\mu_1, \mu_2, \sigma_1^2, \sigma_2^2\right)    \\
     =& \left( 2\pi\sigma_1^2\right)^{-n_1 / 2}
-       \left(2\pi\sigma_2^2\right)^{-n_2 / 2}
-       \mathrm{exp}\left(
-       - \frac{\sum\limits_{i = 1}^{n_1}\left(x_i - \mu_1\right)^2}{2\sigma_1^2}
-       - \frac{\sum\limits_{i = 1}^{n_2}\left(y_i - \mu_2\right)^2}{2\sigma_2^2}
-       \right)    \\
+    \left(2\pi\sigma_2^2\right)^{-n_2 / 2}
+    \mathrm{exp}\left(
+      - \frac{\sum\limits_{i = 1}^{n_1}\left(x_i - \mu_1\right)^2}{2\sigma_1^2}
+      - \frac{\sum\limits_{i = 1}^{n_2}\left(y_i - \mu_2\right)^2}{2\sigma_2^2}
+    \right)    \\
     =& 
   \end{aligned}
 \]
@@ -580,14 +580,14 @@ We propose the test
 \label{sec:two-sample-variance}
 When $\sigma_1^2$ and $\sigma_2^2$ are known, the likelihood satisfies
 \[
- f\left(x_1, \cdots, x_{n_1}, y_1, \cdots, y_{n_2}
-   \middle|\mu_1, \mu_2\right)
- \propto
- \mathrm{exp}\left(
-   -\frac{n_1\left(\bar{x} - \mu_1\right)^2}{2\sigma_1^2}
-   -\frac{n_2\left(\bar{y} - \mu_2\right)^2}{2\sigma_2^2}
- \right)
- .
+  f\left(x_1, \cdots, x_{n_1}, y_1, \cdots, y_{n_2}
+    \middle|\mu_1, \mu_2\right)
+  \propto
+  \mathrm{exp}\left(
+    -\frac{n_1\left(\bar{x} - \mu_1\right)^2}{2\sigma_1^2}
+    -\frac{n_2\left(\bar{y} - \mu_2\right)^2}{2\sigma_2^2}
+  \right)
+  .
 \]
 
 Therefore under $H_0$, the MLE for $\mu_1$ and $\mu_2$ is
@@ -611,30 +611,30 @@ Then the likelihood ratio is
 \[
   \begin{aligned}
     LR =& \frac{
-            \underset{H_0}{\mathrm{max}}\;
-            f\left(\bm{x}, \bm{y}\middle|\mu_1, \mu_2\right)
-          }{
-            \underset{H_0\cup H_1}{\mathrm{max}}\;
-            f\left(\bm{x}, \bm{y}\middle|\mu_1, \mu_2\right)
-          }    \\
+      \underset{H_0}{\mathrm{max}}\;
+      f\left(\bm{x}, \bm{y}\middle|\mu_1, \mu_2\right)
+    }{
+      \underset{H_0\cup H_1}{\mathrm{max}}\;
+      f\left(\bm{x}, \bm{y}\middle|\mu_1, \mu_2\right)
+    }    \\
     =& \frac{
-       f\left(\bm{x}, \bm{y}\middle|\mu_1 = \mu_2 = \mu_{\left(0\right)}\right)
-       }{
-       f\left(\bm{x}, \bm{y}\middle|\mu_1 = \mu_{1\left(0\cup1\right)}, \mu_2 = \mu_{2\left(0\cup1\right)}\right)
-       }    \\
+      f\left(\bm{x}, \bm{y}\middle|\mu_1 = \mu_2 = \mu_{\left(0\right)}\right)
+    }{
+      f\left(\bm{x}, \bm{y}\middle|\mu_1 = \mu_{1\left(0\cup1\right)}, \mu_2 = \mu_{2\left(0\cup1\right)}\right)
+    }    \\
     \propto&
-             \mathrm{exp}\left(
-               -\frac{1}{2}\left(
-               \frac{n_1\left(\bar{x} - \mu_{\left(0\right)}\right)^2}{\sigma_1^2}
-               +\frac{n_2\left(\bar{y} - \mu_{\left(0\right)}\right)^2}{\sigma_2^2}
-               \right)
-             \right)    \\
+    \mathrm{exp}\left(
+      -\frac{1}{2}\left(
+        \frac{n_1\left(\bar{x} - \mu_{\left(0\right)}\right)^2}{\sigma_1^2}
+        +\frac{n_2\left(\bar{y} - \mu_{\left(0\right)}\right)^2}{\sigma_2^2}
+      \right)
+    \right)    \\
     =& \mathrm{exp}\left(
-       -\frac{1}{2}
-       \frac{n_1n_2}{\sigma_2^2n_1 + \sigma_1^2 n_2}
-       \left(\bar{x} - \bar{y}\right)^2
-       \right)
-       .
+      -\frac{1}{2}
+      \frac{n_1n_2}{\sigma_2^2n_1 + \sigma_1^2 n_2}
+      \left(\bar{x} - \bar{y}\right)^2
+    \right)
+    .
   \end{aligned}
 \]
 
@@ -724,66 +724,66 @@ The power at a given $\Delta = \mu_1 - \mu_2$ is
   \begin{aligned}
     & P\left(
       \frac{\left|\bar{x} - \bar{y}\right|}{
-      \sqrt{
-      \frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}
-      }
+        \sqrt{
+          \frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}
+        }
       }
       > z_{1 - \alpha /2}
       \middle| \Delta = \mu_1 - \mu_2
-      \right)    \\
+    \right)    \\
     =& P\left(
-       \frac{
-       \bar{x} - \bar{y}
-       }{
-       \sqrt{
-       \frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}
-       }
-       }
-       > z_{1 - \alpha / 2}
-       \right)
-       + P\left(
-       \frac{
-       \bar{x} - \bar{y}
-       }{
-       \sqrt{
-       \frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}
-       }
-       }
-       < z_{\alpha / 2}
-       \right)    \\
+      \frac{
+        \bar{x} - \bar{y}
+      }{
+        \sqrt{
+          \frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}
+        }
+      }
+      > z_{1 - \alpha / 2}
+    \right)
+    + P\left(
+      \frac{
+        \bar{x} - \bar{y}
+      }{
+        \sqrt{
+          \frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}
+        }
+      }
+      < z_{\alpha / 2}
+    \right)    \\
     =& P\left(
-       \frac{
-       \bar{x} - \bar{y}
-       - \Delta
-       }{
-       \sqrt{
-       \frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}
-       }
-       }
-       > z_{1 - \alpha / 2}
-       - \frac{\Delta}{\sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}}}
-       \right)
-       + P\left(
-       \frac{
-       \bar{x} - \bar{y} - \Delta
-       }{
-       \sqrt{
-       \frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}
-       }
-       }
-       < z_{\alpha / 2}
-       - \frac{\Delta}{\sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}}}
-       \right)    \\
+      \frac{
+        \bar{x} - \bar{y}
+        - \Delta
+      }{
+        \sqrt{
+          \frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}
+        }
+      }
+      > z_{1 - \alpha / 2}
+      - \frac{\Delta}{\sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}}}
+    \right)
+    + P\left(
+      \frac{
+        \bar{x} - \bar{y} - \Delta
+      }{
+        \sqrt{
+          \frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}
+        }
+      }
+      < z_{\alpha / 2}
+      - \frac{\Delta}{\sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}}}
+    \right)    \\
     =& P\left(
-       Z
-       > z_{1 - \alpha / 2}
-       - \frac{\Delta}{\sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}}}
-       \right)
-       + P\left(
-       Z
-       < z_{\alpha / 2}
-       - \frac{\Delta}{\sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}}}
-       \right)
+      Z
+      > z_{1 - \alpha / 2}
+      - \frac{\Delta}{\sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}}}
+    \right)
+    + P\left(
+      Z
+      < z_{\alpha / 2}
+      - \frac{\Delta}{\sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}}}
+    \right)
   \end{aligned}
 \]
 
@@ -870,7 +870,7 @@ Rearrange this inequality we have
   \]
   Also this fixed and given $n_2$ must satisfy
   \[
-        \frac{\Delta^2}{
+    \frac{\Delta^2}{
       \left(
         z_{\alpha / 2} + z_{\beta}
       \right)^2
@@ -904,19 +904,19 @@ When $\sigma_1$ and $\sigma_2$ are both unknown but equal, denoted by $\sigma$. 
       x_1, \cdots, x_{n_1}, y_1, \cdots, y_{n_2}
       \middle|
       \mu_1, \mu_2, \sigma^2
-      \right)    \\
+    \right)    \\
     = & \left(
-        2\pi\sigma^2
-        \right)^{-n_1 / 2 - n_2 / 2}
-        \mathrm{exp}\left(
-        -\frac{
+      2\pi\sigma^2
+    \right)^{-n_1 / 2 - n_2 / 2}
+    \mathrm{exp}\left(
+      -\frac{
         \sum\limits_{i = 1}^{n_1}\left(x_i - \mu_1\right)^2
         + \sum\limits_{i = 1}^{n_2}\left(y_i - \mu_2\right)^2
-        }{
+      }{
         2\sigma^2
-        }
-        \right)
-        .
+      }
+    \right)
+    .
   \end{aligned}
 \]
 So the MLE under $H_0$ is
@@ -947,43 +947,43 @@ Then the likelihood ratio is
 \[
   \begin{aligned}
     LR =& \frac{
-          f\left(\bm{x}, \bm{y}\middle|\mu_1 = \mu_2 = \mu_{\left(0\right)}, \sigma^2 = \sigma_{\left(0\right)}^2\right)
-          }{
-          f\left(\bm{x}, \bm{y}\middle|
-          \mu_1 = \mu_{1\left(0\cup1\right)},
-          \mu_2 = \mu_{2\left(0\cup1\right)},
-          \sigma^2 = \sigma_{\left(0\cup1\right)}^2\right)
-          }    \\
+      f\left(\bm{x}, \bm{y}\middle|\mu_1 = \mu_2 = \mu_{\left(0\right)}, \sigma^2 = \sigma_{\left(0\right)}^2\right)
+    }{
+      f\left(\bm{x}, \bm{y}\middle|
+        \mu_1 = \mu_{1\left(0\cup1\right)},
+        \mu_2 = \mu_{2\left(0\cup1\right)},
+        \sigma^2 = \sigma_{\left(0\cup1\right)}^2\right)
+    }    \\
     =& \left(
-       \frac{\sigma_{\left(0\right)}^2}{\sigma_{\left(0\cup1\right)}^2}
-       \right)^{-n_1 / 2 - n_2 / 2}    \\
+      \frac{\sigma_{\left(0\right)}^2}{\sigma_{\left(0\cup1\right)}^2}
+    \right)^{-n_1 / 2 - n_2 / 2}    \\
     =& \left(
-       \frac{
-       \sum\limits_{i = 1}^{n_1}\left(x_i - \bar{x} + \bar{x} - \mu_{\left(0\right)}\right)
-       + \sum\limits_{i = 1}^{n_2}\left(y_i - \bar{y} + \bar{y} - \mu_{\left(0\right)}\right)
-       }{
-       \sum\limits_{i = 1}^{n_1}\left(x_i - \bar{x}\right)^2
-       + \sum\limits_{i = 1}^{n_2}\left(y_i - \bar{y}\right)^2
-       }
-       \right)^{-n_1 / 2 - n_2 / 2}    \\
+      \frac{
+        \sum\limits_{i = 1}^{n_1}\left(x_i - \bar{x} + \bar{x} - \mu_{\left(0\right)}\right)
+        + \sum\limits_{i = 1}^{n_2}\left(y_i - \bar{y} + \bar{y} - \mu_{\left(0\right)}\right)
+      }{
+        \sum\limits_{i = 1}^{n_1}\left(x_i - \bar{x}\right)^2
+        + \sum\limits_{i = 1}^{n_2}\left(y_i - \bar{y}\right)^2
+      }
+    \right)^{-n_1 / 2 - n_2 / 2}    \\
     =& \left(
-       1 + \frac{
-       n_1\left(\bar{x} - \mu_{\left(0\right)}\right)^2
-       + n_2\left(\bar{y} - \mu_{\left(0\right)}\right)^2
-       }{
-       \sum\limits_{i = 1}^{n_1}\left(x_i - \bar{x}\right)^2
-       + \sum\limits_{i = 1}^{n_2}\left(y_i - \bar{y}\right)^2
-       }
-       \right)^{-n_1 / 2 - n_2 / 2}    \\
+      1 + \frac{
+        n_1\left(\bar{x} - \mu_{\left(0\right)}\right)^2
+        + n_2\left(\bar{y} - \mu_{\left(0\right)}\right)^2
+      }{
+        \sum\limits_{i = 1}^{n_1}\left(x_i - \bar{x}\right)^2
+        + \sum\limits_{i = 1}^{n_2}\left(y_i - \bar{y}\right)^2
+      }
+    \right)^{-n_1 / 2 - n_2 / 2}    \\
     =& \left(
-       1 + \frac{n_1n_2}{n_1 + n_2}
-       \cdot
-       \frac{\left(\bar{x} - \bar{y}\right)^2}{
-       \sum\limits_{i = 1}^{n_1}\left(x_i - \bar{x}\right)^2
-       + \sum\limits_{i = 1}^{n_2}\left(y_i - \bar{y}\right)^2       
-       }
-       \right)^{-n_1 / 2 - n_2 / 2}
-       .
+      1 + \frac{n_1n_2}{n_1 + n_2}
+      \cdot
+      \frac{\left(\bar{x} - \bar{y}\right)^2}{
+        \sum\limits_{i = 1}^{n_1}\left(x_i - \bar{x}\right)^2
+        + \sum\limits_{i = 1}^{n_2}\left(y_i - \bar{y}\right)^2       
+      }
+    \right)^{-n_1 / 2 - n_2 / 2}
+    .
   \end{aligned}
 \]
 So to rejact $H_0$ when the likelihood ratio is small enough implies that the reject region is
@@ -994,8 +994,8 @@ So to rejact $H_0$ when the likelihood ratio is small enough implies that the re
     \middle|
     \frac{\left|\bar{x} - \bar{y}\right|}{
       \sqrt{
-               \sum\limits_{i = 1}^{n_1}\left(x_i - \bar{x}\right)^2
-       + \sum\limits_{i = 1}^{n_2}\left(y_i - \bar{y}\right)^2 
+        \sum\limits_{i = 1}^{n_1}\left(x_i - \bar{x}\right)^2
+        + \sum\limits_{i = 1}^{n_2}\left(y_i - \bar{y}\right)^2 
       }
     }
     > C
@@ -1052,13 +1052,13 @@ And more importantly ({\color{red} the summation of independent $\chi^2$ variabl
 \]
 and
 \[
-    \frac{\bar{x} - \bar{y} - \left(\mu_1 - \mu_2\right)}{
+  \frac{\bar{x} - \bar{y} - \left(\mu_1 - \mu_2\right)}{
     \sqrt{
       \frac{n_1 + n_2}{n_1n_2}\sigma^2
     }
   }
   \;\bm{\perp}\;
-    \frac{
+  \frac{
     \left(n_1 - 1\right)S_x^2 + \left(n_2 - 1\right)S_y^2
   }{\sigma_2}
   .
@@ -1110,10 +1110,10 @@ Here we use $S_p$ to represent the pooled standard deviation of the data, i.e.
 Under $H_0$, the type-I error is controlled as
 \[
   P\left(
-        \frac{\left|\bar{x} - \bar{y}\right|}{
+    \frac{\left|\bar{x} - \bar{y}\right|}{
       \sqrt{
-               \sum\limits_{i = 1}^{n_1}\left(x_i - \bar{x}\right)^2
-       + \sum\limits_{i = 1}^{n_2}\left(y_i - \bar{y}\right)^2 
+        \sum\limits_{i = 1}^{n_1}\left(x_i - \bar{x}\right)^2
+        + \sum\limits_{i = 1}^{n_2}\left(y_i - \bar{y}\right)^2 
       }
     }
     > C
@@ -1329,14 +1329,38 @@ So in summary (using $t_{\alpha}\left(v, \delta\right) + t_{1 - \alpha}\left(v, 
 \subsection{Two-sample, variance unknown and unequal}
 \label{sec:two-sample-variance-2}
 
+For this we refer to the "Welch's unequal variance t-test"\citep{WELCH1947p28-35}. The test statistic is
+\[
+  t = \frac{\bar{x} - \bar{y}}{s_{\bar{\Delta}}}
+  ,
+\]
+where
+\[
+  s_{\bar{\Delta}} = \sqrt{
+    \frac{s_x^2}{n_1} + \frac{s_y^2}{n_2}
+  }
+  .
+\]
+Here $s_x^2 = \frac{1}{n_1 - 1}\sum\limits_{i = 1}^{n_1}\left(x_i - \bar{x}\right)^2$ and $s_y^2 = \frac{1}{n_2- 1}\sum\limits_{i = 1}^{n_2}\left(y_i - \bar{y}\right)^2$ are the unbiased estimator for $\sigma_1^2$ and $\sigma_2^2$. The test statistic approximately follows a t-distribution with degree of freedom being
+\[
+  \mathbf{d.f.} = \frac{
+    \left(\frac{s_x^2}{n_1} + \frac{s_y^2}{n_2}\right)^2
+  }{
+    \frac{\left(s_x^2 / n_1\right)^2}{n_1 - 1}
+    + \frac{\left(s_y^2 / n_2\right)^2}{n_2 - 1}
+  }
+  .
+\]
 
+
+\bibliographystyle{plainnat}
+\bibliography{../ref}
 
 
 
 
 
 \end{document}
-
 
 
 %%% Local Variables:
