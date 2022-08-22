@@ -1,0 +1,62 @@
+---
+title: "ADaM_SDTM"
+author: "Chao Cheng"
+date: "`r format(Sys.Date(), '%b %Y')`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::knit_hooks$set(purl = knitr::hook_purl)
+```
+
+```{r, echo = FALSE, results='hide'}
+library(tidyverse)
+```
+
+# SDTM
+
+SDTM stands for “Study Data Tabulation Model". SDTM is arguably the most well recognized and widely implemented CDISC standard. SDTM outlines a universal standard for how to structure and build content for data sets for individual clinical study data.
+
+The SDTM Implementation Guide (SDTM-IG) gives a standardized, predefined collection of domains for clinical data submission, each of which is based on the structure and metadata defined by the SDTM. SDTM data are raw data, and often need further modification before the data are analysis ready.
+
+
+# ADaM
+
+ADaM stands for "Analysis Data Model". ADaM can also be thought of as data that is “analysis ready.” The main difference between ADaM and SDTM standards is the way in which the data is displayed. SDTM provides a standard for the creation and mapping of collected data from raw sources, whereas ADaM provides a standard for the creation of analysis-ready data, often using SDTM data as the source. ADaM datasets can be used by the FDA to easily recreate analyses.
+
+
+# 一些缩写对照
+
+```{r, echo = FALSE}
+mydat <- tribble(
+~缩写, ~全称, ~中文, 
+"sl"          , "Subject Level"                       , "受试者层面", 
+"ae"          , "Adverse Event"                       , "不良事件", 
+"dm"          , "Demographics"                        , "人口学", 
+"eg"          , "Electrocardiogram"                   , "心电图", 
+"lb"          , "Laboratory findings/ test results"   , "实验室检测结果", 
+"mh"          , "Medical History"                     , "既往病史", 
+"pe"          , "Physical examination"                , "体格检查", 
+"vs"          , "Vital Signs"                         , "生命体征", 
+"cm"          , "Concomitant Medications"             , "合并用药/伴随用药", 
+"su"          , "Substance Use"                       , "物质使用", 
+"ie"          , "Inclusion/Exclusion Criteria Not Met", "纳入/排除标准不符合", 
+"ex"          , "Exposure"                            , "暴露", 
+"ds(EOS/EOT)" , "Disposition (End of Study/Treat)"    , "处置（终止实验/治疗)", 
+"dv"          , "Protocol Deviations"                 , "方案偏离", 
+"co"          , "Comments"                            , "", 
+"pr"          , "Procedures"                          , "非药物治疗", 
+"dd"          , "Death Details"                       , "死亡信息", 
+"qs"          , "Questionnaire/Patient Report Outcome", "问卷/患者报告结局", 
+"pc"          , "Pharmacokinetics Concentration"      , "药代浓度", 
+"pp"          , "Pharmacokinetics Parameters"         , "药代参数", 
+)
+
+```
+
+```{r, echo = FALSE}
+knitr::kable(
+    mydat[order(mydat %>% pull("缩写")), ]
+)
+```
