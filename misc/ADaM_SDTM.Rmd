@@ -51,6 +51,7 @@ mydat <- tribble(
 "qs"          , "Questionnaire/Patient Report Outcome", "问卷/患者报告结局", 
 "pc"          , "Pharmacokinetics Concentration"      , "药代浓度", 
 "pp"          , "Pharmacokinetics Parameters"         , "药代参数", 
+"da"          , "Drug Accountability"                 , "药物依从性"
 )
 
 ```
