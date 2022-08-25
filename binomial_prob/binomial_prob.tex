@@ -109,10 +109,38 @@
 \begin{document}
 \maketitle
 
+For an i.i.d sample from a bernoulli distribution
+\[
+  x_1, \cdots, x_n \overset{\mathrm{i.i.d.}}{\sim} Bernoulli(p)
+  ,
+\]
+The likelihood of the data is
+\[
+  f\left(x_1, \cdots, x_n\right)
+  = \prod\limits_{i = 1}^np^{x_i}\left(1 - p\right)^{1 - x_i}
+  = p^{\sum x_i}\left(1 - p\right)^{n - \sum x_i}
+  .
+\]
+MLE for $p$ is $\bar{x} = \frac{1}{n}\sum x_i$ and
+\[
+  \sum\limits_{i = 1}^nx_i \sim Binom(n, p)
+  .
+\]
 
+So here are mainly two situations: One is to test the probability $p$ against some given value $p_0$. The other is to compare the probability between two independent random samples $x_1, \cdots, x_n$ and $y_1, \cdots, y_m$.
 
+\section{Normal approximation}
+\label{sec:normal-approximation}
 
-
+Note that
+\[
+  \mathrm{E}X = p,\quad\mathrm{Var}X = p\left(1 - p\right).
+\]
+Then by CLT we have
+\[
+  \bar{x} \overset{\mathrm{asymp}}{\sim} N\left(p,\;\frac{p\left(1 - p\right)}{n}\right)
+  .
+\]
 
 
 \end{document}
