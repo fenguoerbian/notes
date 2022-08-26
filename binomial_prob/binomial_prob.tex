@@ -128,9 +128,16 @@ MLE for $p$ is $\bar{x} = \frac{1}{n}\sum x_i$ and
 \]
 
 So here are mainly two situations: One is to test the probability $p$ against some given value $p_0$. The other is to compare the probability between two independent random samples $x_1, \cdots, x_n$ and $y_1, \cdots, y_m$.
+\begin{enumerate}[label = Case\arabic*:]
+\item One sample $x_1, \cdots, x_n$ from $Bernoulli(p)$, and test $p$ against a given $p_0$.
+\item Two samples: $x_1, \cdots, x_2$ from $Bernoulli(p_1)$ and $y_1, \cdots, y_m$ from $Bernoulli(p_2)$. And test whether $p_1 = p_2$.
+\end{enumerate}
 
 \section{Normal approximation}
 \label{sec:normal-approximation}
+
+\subsection{Case 1}
+\label{sec:case-1}
 
 Note that
 \[
@@ -141,6 +148,89 @@ Then by CLT we have
   \bar{x} \overset{\mathrm{asymp}}{\sim} N\left(p,\;\frac{p\left(1 - p\right)}{n}\right)
   .
 \]
+For $H_0:\;p = p_0$, we propose a test statistic
+\[
+  Z = \frac{\bar{x} - p_0}{\sqrt{\frac{p_0\left(1 - p_0\right)}{n}}}
+  .
+\]
+Then $Z$ is asymptotically standard normal under $H_0$.
+\par
+Also we know that under $H_1$:
+\[
+  \begin{aligned}
+    Z =& \frac{\bar{x} - p_0}{\sqrt{\frac{p_0\left(1 - p_0\right)}{n}}}    \\
+    =& \frac{\bar{x} - p}{\sqrt{\frac{p\left(1 - p\right)}{n}}}
+    \cdot \sqrt{\frac{p\left(1 - p\right)}{p_0\left(1 - p_0\right)}}
+    + \frac{p - p_0}{\sqrt{\frac{p_0\left(1 - p_0\right)}{n}}}    \\
+    \sim& N\left(
+      \frac{p - p_0}{\sqrt{\frac{p_0\left(1 - p_0\right)}{n}}}
+      ,\quad
+      \frac{p\left(1 - p\right)}{p_0\left(1 - p_0\right)}
+    \right)
+    .
+  \end{aligned}
+\]
+So the power of the test can be easily computed.
+
+\subsection{Case 2}
+\label{sec:case-2}
+
+So we have
+\[
+  \bar{x} \overset{\mathrm{asymp}}{\sim} N\left(p_1,\;\frac{p_1\left(1 - p_1\right)}{n}\right)
+  ,\quad\text{and}\quad
+  \bar{y} \overset{\mathrm{asymp}}{\sim} N\left(p_2,\;\frac{p_2\left(1 - p_2\right)}{m}\right)
+  .
+\]
+A test statistic can be
+\[
+  Z = \frac{\bar{x} - \bar{y}}{
+    \sqrt{
+      \hat{p}\left(1 - \hat{p}\right)
+      \left(\frac{1}{n} + \frac{1}{m}\right)
+    }
+  }
+  ,
+\]
+where $\hat{p} = \frac{n\bar{x} + m\bar{y}}{n + m}$. This test statistic can be found at
+\begin{verbatim}
+https://stats.stackexchange.com/questions/361015/
+  proof-of-the-standard-error-of-the-distribution-between-two-normal-distributions/
+  361048#361048
+
+https://stats.stackexchange.com/questions/113602/
+  test-if-two-binomial-distributions-are-statistically-different-from-each-other
+\end{verbatim}
+Here this $\hat{p}\left(1 - \hat{p}\right)$ can be seen as an estimate for the variance $p\left(1 - p\right)$ when $H_0$ is true by directly plugging in $\hat{p}$. This is \textbf{NOT} a pooled variance for these two samples, which should always be no greater than $\hat{p}\left(1 - \hat{p}\right)$.
+\par
+The power of this test statistic is hard to compute under $H_1$.
+\par
+\textbf{Note: } One can also use the same idea in the ``t-test.pdf'' notes and propose the test statistic
+\[
+  T = \frac{\bar{x} - p_0}{\sqrt{S_x / n}}
+  ,
+\]
+where $S_x = \frac{1}{n - 1}\sum\limits_{i = 1}^n\left(x_i - \bar{x}\right)$ for Case 1.
+\par
+And for Case 2
+\[
+  T = \frac{\bar{x} - \bar{y} - \Delta}{\sqrt{
+      \left(\frac{1}{n} + \frac{1}{m}\right)S_p
+    }}
+  ,
+\]
+where $S_p^2 = \frac{\left(n - 1\right)S_x^2 + \left(m - 1\right)S_y^2}{n + m - 2}$ and $\Delta = p_1 - p_2$. But again it is hard to evaluate the testing power of these statistics.
+
+
+\section{Chi-square approximation}
+\label{sec:chi-square-appr}
+
+See the notes of ``chisq\_test.pdf'' for details.
+
+
+\section{Clopper-Pearson exact test}
+\label{sec:clopp-pears-exact}
+
 
 
 \end{document}
