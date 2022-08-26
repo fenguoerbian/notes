@@ -110,8 +110,170 @@
 \maketitle
 
 
-There are mainly two types of situations that's suitable for a Pearson's Chi-square test. The first is to test one sample against a given vector, the so-called contigency test. And the second is to test the existence of correlation between two samples.
+There are mainly two types of situations that's suitable for a Pearson's Chi-square test. The first is to test one sample against a given vector, the so-called goodness-of-fit test. And the second is to test the existence of correlation between two samples, the so-called contingency/independence/association test.
 
+\section{Effect size index $w$}
+\label{sec:effect-size-index}
+
+The Effect size index $w$ from Chapter 7 in \citet{Cohen2013p-} is
+\begin{equation}
+  \label{eq:effect_size_index}
+  w = \sqrt{\sum\limits_{i = 1}^m
+    \frac{
+      \left(P_{1i} - P_{0i}\right)^2
+    }{P_{0i}}}
+  ,
+\end{equation}
+where
+\begin{itemize}
+\item $m$ is the number of cell.
+\item $P_{0i}$ is the \textbf{propotion} in cell $i$ proposed by the null hypothesis.
+\item $P_{1i}$ is the \textbf{propotion} in cell $i$ proposed by the alternative hypothesis and refects the effect for that cell.
+\end{itemize}
+
+\section{Test statistics $\chi^2$}
+\label{sec:test-statistics-chi2}
+
+The test statistic is just
+\begin{equation}
+  \label{eq:test_statistics}
+  \chi^2_T = nw^2 = \sum\limits_{i = 1}^m
+  \frac{\left(nP_{1i} - nP_{0i}\right)^2}{nP_{0i}}
+  .
+\end{equation}
+
+\section{Goodness of fit test}
+\label{sec:goodness-fit-test}
+
+Let $\bm{x}\in\mathcal{R}^m$ be a sample from $multinomial(n, \bm{p})$ where $n$ is the number of trials and $\bm{p} = \left(p_1, \cdots, p_m\right)^T$ and $\sum\limits_{i = 1}^mp_i = 1$. Here we assume $p_i>0$ for all $i$ to eliminate some edge cases where some nomial is utterly impossible to happen. Then the probability of any given $\bm{x} = \left(x_1, \cdots, x_m\right)^T$ is
+\[
+  P\left(\bm{x} = \left(x_1, \cdots, x_m\right)^T\right) = \prod\limits_{i = 1}^mp_i^{x_i}
+  ,
+\]
+where $\sum\limits_{i = 1}^mx_i = n$. This $\bm{x}$ can also be seen as the summation of $n$ samples $\bm{x}_1, \cdots, \bm{x}_n$ where each $\bm{x}_i\in\mathcal{R}^m$ follows $multinomial(1, \bm{p})$. And one and only one entry in each $\bm{x}_i$ is a single one while others $m-1$ entries all remain zero.
+\par
+Based on this observed $\bm{x}$, we want to test its underlying distribution $\bm{p}$ against a given vector $\bm{p}_0 = \left(p_{01}, \cdots, p_{0m}\right)^T$. And from \eqref{eq:test_statistics} we know that the test statistic is
+\begin{equation}
+  \label{eq:case1_test_statistic}
+  \chi^2_T = \sum\limits_{i = 1}^m
+  \frac{\left(x_i - np_{0i}\right)^2}{np_{0i}}
+  .
+\end{equation}
+
+\subsection{Reject rule}
+\label{sec:reject-rule}
+
+Under null hypothesis, this test statistics follows a $\chi^2$ distribution with degree of freedom being $m - 1$. Proof for this statement can be found in Chapter 9 Pearson's chi-square test in David R. Hunter's \textbf{Notes for a graduate-level course in asymptotics for statisticians} \citep{Hunter2014p-}. And we reject $H_0$ when this test statistic $\chi^2_T$ is large enough.
+
+\subsection{Power analysis}
+\label{sec:power-analysis}
+
+Under alternative hypothesis, i.e. $\bm{p}=\left(p_1, \cdots, p_m\right)^T\neq\bm{p}_0$. Denote $\bm{\delta} = \sqrt{n}\left(\bm{p} - \bm{p}_0\right)$ and $\bm{\Gamma} = \mathrm{diag}\left(\bm{p}_0\right)$. Then the test statistic now follows a \textbf{non-central chi-square distribution} with non-central parameter
+\[
+  \lambda = \bm{\delta}^T\bm{\Gamma}^{-1}\bm{\delta}
+  .
+\]
+\par
+\textbf{Non-central chi-square distribution}: Let $x_1, \cdots, x_n$ be independent normal distribution with means $\mu_1, \cdots, \mu_n$ and unit variance. Then $\sum\limits_{i = 1}^nx_i^2$ follows a non-central chi-square distribution with non-central parameter being
+\[
+  \lambda = \sum\limits_{i = 1}^n\mu_i^2
+\]
+and degree of freedom being $n$. And the pdf of $X = \sum x_i$ is given by
+\[
+  f\left(x;n,\lambda\right)
+  = \mathrm{exp}\left(-\lambda / 2\right)
+  \sum\limits_{i = 0}^\infty\frac{\left(\lambda / 2\right)^i}{i!}
+  f_{n + 2i}\left(x\right)
+  ,
+\]
+where $f_{n}\left(x\right)$ stands for the pdf of a ordinary chi-square distribution with $n$ degree of freedom. This result can also be found in Hunter's \textbf{Notes for a graduate-level course in asymptotics for statisticians} \citep{Hunter2014p-}. Also \citet{Guenther1977p83-83} and \citet{Meng1966p965-975} offers the same results.
+
+\section{Contingency test}
+\label{sec:contingency-test}
+
+The same idea as that in Section~\ref{sec:goodness-fit-test} for the goodness of fit test except for that $\bm{p}_0$ is not now given, but rather computed based on \textbf{marginal proportion} of the data. So consider a $r\times c$ contingency table in Table~\ref{tab:contingency_table_count} and Table~\ref{tab:contingency_table_proportion}.
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{|c|c|c|c|c|}
+    \hline
+    & col$_1$ & $\cdots $ & col$_c$ & Total \\
+    \hline
+    row$_1$ & $x_{11}$ & $\cdots$ & $x_{1c}$ & $x_{1\cdot} = \sum\limits_{j = 1}^cx_{1j}$    \\
+    \hline
+    $\vdots$ & $\vdots$ & $\ddots$ & $\vdots$ & $\vdots$    \\
+    \hline
+    row$_r$ & $x_{r1}$ & $\cdots$ & $x_{rc}$ & $x_{r\cdot} = \sum\limits_{j = 1}^cx_{rj}$    \\
+    \hline
+    Total & $x_{\cdot 1} = \sum\limits_{i = 1}^rx_{i1}$
+              & $\cdots$
+                          & $x_{\cdot c} = \sum\limits_{i = 1}^rx_{ic}$
+                                    & $n = \sum\limits_{i = 1}^r\sum\limits_{j = 1}^cx_{ij}$    \\
+    \hline
+  \end{tabular}
+  \caption{A contingency table, counts in cell}
+  \label{tab:contingency_table_count}
+\end{table}
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{|c|c|c|c|c|}
+    \hline
+             & col$_1$ & $\cdots $ & col$_c$ & Total \\
+    \hline
+    row$_1$  & $p_{11} = x_{11}/n$ & $\cdots$ & $p_{1c} = x_{1c} / n$ & $p_{1\cdot} = x_{1\cdot} / n$    \\
+    \hline
+    $\vdots$ & $\vdots$ & $\ddots$ & $\vdots$ & $\vdots$    \\
+    \hline
+    row$_r$  & $p_{r1} = x_{r1} / n$ & $\cdots$ & $p_{rc} = x_{rc} / n$ & $p_{r\cdot} = x_{r\cdot} / n$    \\
+    \hline
+    Total    & $p_{\cdot 1} = x_{\cdot 1} / n$ & $\cdots$ & $p_{\cdot c} = x_{\cdot c} / n$ & $1$    \\
+    \hline
+  \end{tabular}
+  \caption{A contingency table, proportion in cell}
+  \label{tab:contingency_table_proportion}
+\end{table}
+
+The null hypothesis is that these two types of categories (arranged in row and column, respectively) is independent. Therefore the underlying distribution satisfies
+\begin{equation}
+  \label{eq:contingency_h0}
+  p_{ij} = p_{i\cdot}p_{\cdot j},\quad 1\leq i \leq r,\quad 1\leq j \leq c.
+\end{equation}
+Then the alternative hypothesis is that there exists at least one $\left(i, j\right)$ such that \eqref{eq:contingency_h0} does not hold.
+
+\subsection{Reject rule}
+\label{sec:reject-rule-1}
+
+Here the test statistic is
+\[
+  \chi^2_T =
+  n\sum\limits_{i = 1}^r\sum\limits_{j = 1}^c
+  \frac{\left(P_{1,ij} - P_{0,ij}\right)^2}{P_{0,ij}}
+  = \sum\limits_{i = 1}^r\sum\limits_{j = 1}^c
+  \frac{\left(
+      x_{ij} - np_{i\cdot}p_{\cdot j}
+    \right)^2}{np_{i\cdot}p_{\cdot j}}
+  ,
+\]
+where $P_{1,ij}$ is just the observed proportion in cell $\left(i, j\right)$ and $P_{0,ij} = p_{i\cdot}p_{\cdot j}$ is the expected proportion computed based on marginal data.
+\par
+Under null hypothesis, $\chi^2_T$ follows a $\chi^2$ distribution with degree of freedom being $\left(r - 1\right)\left(c - 1\right)$. And $H_0$ is rejected for large value of $\chi^2_T$.
+
+\subsection{Power analysis}
+\label{sec:power-analysis-1}
+
+The same as that in Section~\ref{sec:power-analysis}. Just now the $\bm{p}$ is length $r\times c$ instead of $m$, and the degree of freedom of the chi-square distribution is $\left(r - 1\right)\left(c - 1\right)$.
+
+\section{Other related tests}
+\label{sec:other-related-tests}
+
+\begin{itemize}
+\item For $2\times2$ table with small sample size, a Fisher's exact test can be considered.
+\item For $2\times1$ table, a binomial test can be considered: Clopper-Pearson's test is an exact one, while the chi-square test or a normal test is a continuous approximation here.
+\end{itemize}
+
+
+\bibliographystyle{plainnat}
+\bibliography{../ref}
 
 
 
