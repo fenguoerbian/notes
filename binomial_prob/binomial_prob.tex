@@ -234,7 +234,40 @@ See the notes of ``chisq\_test.pdf'' for details.
 \subsection{Case 1: Clopper-Pearson test}
 \label{sec:case-1:-clopper}
 
-The Clopper-Pearson method is an early method. It's called exact method because it's directly based on p.m.f of binomial distribution.
+The Clopper-Pearson method is an early method. It's called exact method because it's directly based on p.m.f of binomial distribution. Let $X = \sum\limits_{i = 1}^nx_i$. Then $X\sim Binom(n, p)$ and the p.m.f is
+\[
+  P\left(X = x\middle|p\right) = C_n^xp^x\left(1 - p\right)^{n - x}
+\]
+for $x = 0, 1, \cdots, n$. So let's recall that p-value is the probability under $H_0$ that something as or more extreme than what we have observed happens. Then after observing $X = x_0$, for one-sided test:
+\begin{itemize}
+\item $H_0: p \leq p_0$ against $H_1: p > p_0$ for some given $p_0$. The p-value is
+  \[
+    p_{val} = \sum\limits_{x = x_0}^nP\left(X = x\middle|p_0\right)
+    .
+  \]
+  
+\item $H_0: p \geq p_0$ against $H_1: p < p_0$ for some given $p_0$. The p-value is
+  \[
+    p_{val} = \sum\limits_{x = 0}^{x_0}P\left(X = x\middle|p_0\right)
+    .
+  \]
+\end{itemize}
+For the two-sided test. This is a little complicated. Let index set
+\[
+  \mathcal{I} = \left\{
+    x\middle|
+    P\left(X = x\middle|p_0\right) \leq P\left(X = x_0\middle|p_0\right)
+    ,\quad
+    0\leq x \leq n
+  \right\}
+  .
+\]
+Then $\mathcal{I}$ contains all possible realizations of $X$ with its probability no greater than the probability of our observation. Then the p-value of $H_0: p = p_0$ is given by
+\[
+  p_{val} = \sum\limits_{x\in\mathcal{I}}P\left(X = x\middle|p_0\right)
+  .
+\]
+
 
 \subsection{Case 2: Fisher's exact test}
 \label{sec:case-2:-fishers}
