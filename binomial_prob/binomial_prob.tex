@@ -463,8 +463,71 @@ where $qF\left(\alpha; d_1, d_2\right)$ is the quantile function of F-distributi
 \subsection{Case 2: Fisher's exact test}
 \label{sec:case-2:-fishers}
 
+Fisher's exact test is a method for testing proportion difference. A toy example of a $2\times 2$ contingency table is shown in Table~\ref{tab:data_sample}. When the margin of this table is fixed($n_x$, $n_y$, $n_1$ and $n_2$), the probability for observing this table follows the hyper-genometric distribution
+\[
+  P\left(
+    \#\{\text{Sample 1, Success}\} = a
+  \right)
+  \frac{
+    C_{n_x}^aC_{n_y}^{n_1 - a}
+  }{
+    C_n^{n_1}
+  }
+  .
+\]
 
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{c|c|c|c}
+    \hline
+    & Success & Failure & Total    \\
+    \hline
+    Sample 1 & a & b & $n_x = a + b$    \\
+    \hline
+    Sample 2 & c & d & $n_y = c + d$     \\
+    \hline
+    Total & $n_1 = a + c$ & $n_0 = b + d$ & $n = a + b + c + d$    \\
+    \hline                          
+  \end{tabular}
+  \caption{Data sample}
+  \label{tab:data_sample}
+\end{table}
 
+We can compute the p-value based on the same idea from Section~\ref{sec:case-1:-clopper}. Note that here the p-value is a \textbf{conditional} one since it is conditional on the fixed marginal values. To simplify the notation, denote $X$ the number in cell (Sample 1, Success) and
+\[
+  f\left(x; n_x, n_y, n_1\right)
+  = P\left(
+    X = x\middle| n_x, n_y, n_1
+  \right)
+  = \frac{C_{n_x}^xC_{n_y}^{n_1 - x}}{C_{n_x + n_y}^{n_1}}
+\]
+Then for a observation with $X = x_0$ and fixed $n_x, n_y, n_1$:
+\begin{itemize}
+\item $H_0: p_x \geq p_y$ against $H_1: p_x < p_y$. The p-value can be computed as
+  \begin{equation}
+    \label{eq:fisher_one_sided_geq}
+    p_{val} = \sum\limits_{i = 0}^{x_0}f\left(i;n_x, n_y, n_1\right)
+    .
+  \end{equation}
+\item $H_0: p_x \leq p_y$ against $H_1: p_x > p_y$. The p-value can be computed as
+  \begin{equation}
+    \label{eq:fisher_one_sided_leq}
+    p_{val} = \sum\limits_{i = x_0}^{n_1}f\left(i; n_x, n_y, n_1\right)
+    .
+  \end{equation}
+\item $H_0: p_x = p_y$ against $H_1: p_x\neq p_y$. The p-value can be computed as
+  \begin{equation}
+    \label{eq:fisher_two_sided}
+    p_{val} = \sum\limits_{i = a_L}^{a_U}
+    f\left(i;n_x, n_y, n_1\right)
+    I_{\left\{
+        f\left(i;n_x, n_y, n_1\right)
+        \leq f\left(x_0;n_x, n_y, n_1\right){\color{red}\delta}
+      \right\}}
+    ,
+  \end{equation}
+  where the summation limits $a_L = \mathrm{max}\left(0, n_1 - n_y\right)$ and $a_U = \mathrm{min}\left(n_x, n_1\right)$. Note that in an ideal world the {\color{red} red $\delta$} is just 1 in \eqref{eq:fisher_two_sided}. But in actuality, since the computation involves large factorials, especially when sample size is large, the numerical results might be inaccurate. To ensure a convervative test, $\delta$ is set to $1.0000001$ in R.
+\end{itemize}
 
 
 \end{document}
