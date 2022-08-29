@@ -44,7 +44,7 @@
 
 % cross-reference to other files
 % the externaldocument should be compiled 
-%   (and at least twice if you're using xr-hyper)
+% (and at least twice if you're using xr-hyper)
 % \usepackage{xr-hyper}
 % \usepackage{xr}
 
@@ -56,21 +56,21 @@
 % externaldocument settings for Overleaf
 % \makeatletter
 % \newcommand*{\addFileDependency}[1]{% argument=file name and extension
-%   \typeout{(#1)}
-%   \@addtofilelist{#1}
-%   \IfFileExists{#1}{}{\typeout{No file #1.}}
+% \typeout{(#1)}
+% \@addtofilelist{#1}
+% \IfFileExists{#1}{}{\typeout{No file #1.}}
 % }
-% \makeatother
-% \newcommand*{\myexternaldocument}[1]{%
-%     \externaldocument{#1}%
-%     \addFileDependency{#1.tex}%
-%     \addFileDependency{#1.aux}%
+%   \makeatother
+%   \newcommand*{\myexternaldocument}[1]{%
+%   \externaldocument{#1}%
+%   \addFileDependency{#1.tex}%
+%   \addFileDependency{#1.aux}%
 % }
-% \myexternaldocument{external_tex_file}
-% --- end of overleaf setting ---
+%   \myexternaldocument{external_tex_file}
+%   --- end of overleaf setting ---
 
-% mathtools can be used to define labeling format for equations
-% one can use \eqref for a reference to a labeled equation.
+%   mathtools can be used to define labeling format for equations
+%   one can use \eqref for a reference to a labeled equation.
 \usepackage{mathtools}
 \newtagform{supp}{(S-}{)}    % define a equation labeling format for suppliment
 \usetagform{supp}            % use the supp format
@@ -93,9 +93,9 @@
 
 % package for input codec and output rendering font
 \usepackage[utf8]{inputenc}    % it is always good practice to use utf8
-                               % you can also try latin1, latin2, cp1252 and cp1250
+% you can also try latin1, latin2, cp1252 and cp1250
 \usepackage[T1]{fontenc}    % the default is T0, which only contains 128 characters
-                            % you can try T1, T2A, T2B
+% you can try T1, T2A, T2B
 % you can refer to https://www.overleaf.com/learn/latex/international_language_support#Font_encoding
 % for more details.
 
@@ -290,7 +290,174 @@ where $\alpha$ is the significant level of the test and $p_{val}\left(x\right)$ 
 \subsubsection{Confidence interval}
 \label{sec:confidence-interval}
 
+First for the one-sided intervals:
 
+\begin{itemize}
+\item $\left(P_L, 1\right]$: From \eqref{eq:clopper_pval_h0_leq}, $H_0: p \leq p_0$ is rejected when probability of observing $x_0$ or more number of success at $p_0$ is small enough. Therefore the reject area
+  \[
+    \text{Rejct Area: }
+    \left\{
+      x_0:\;\sum\limits_{x = x_0}^nf\left(x;p_0\right)\leq\alpha
+    \right\}
+    .
+  \]
+  Hence the accept area
+  \[
+    \text{Accept Area: }
+    \left\{
+      x_0:\;\sum\limits_{x = x_0}^nf\left(x;p_0\right) > \alpha
+    \right\}
+  \]
+  Then we can construct the one-sided CI by increasing $p_0$ from 0 such that the first $p_0$ that satisfies this Accept area rule. Then that is the $P_L$. Therefore
+  \begin{equation}
+    \label{eq:one_sided_pl}
+    \sum\limits_{x = x_0}^nf\left(x;P_L\right) = \alpha
+    .    
+  \end{equation}
+
+\item $\left[0, P_U\right)$: Similar idea, from \eqref{eq:clopper_pval_h0_geq} we can construct the accept area
+  \[
+    \text{Accept Area: }
+    \left\{
+      x_0;\sum\limits_{x=0}^{x_0}f\left(x;p_0\right)>\alpha
+    \right\}
+    .
+  \]
+  Therefore we decrease $p_0$ from 1 to find the first $P_U$ that satisfies this Accept area rule. Therefore
+  \begin{equation}
+    \label{eq:one_sided_pu}
+    \sum\limits_{x = 0}^{x_0}f\left(x;P_U\right) = \alpha
+    .    
+  \end{equation}
+\end{itemize}
+
+Now for the two-sided intervals $\left(P_L, P_U\right)$: we apply the \textbf{equal-tail rule} and find $P_L$ and $P_U$ such that
+\begin{equation}
+  \label{eq:two_sided_p}
+  \begin{aligned}
+    & \sum\limits_{x = x_0}^nf\left(x;P_L\right) = \alpha / 2    \\
+    & \sum\limits_{x = 0}^{x_0}f\left(x;P_U\right) = \alpha / 2
+    .
+  \end{aligned}
+\end{equation}
+
+This interval can also be expressed as
+\[
+  S_{\leq} \cap S_{\geq},
+\]
+or equivalently
+\[
+  \left(
+    \mathrm{inf}S_{\geq}, \mathrm{sup}S_{\leq}
+  \right)
+  ,
+\]
+where
+\[
+  \begin{aligned}
+    S_{\leq}\overset{\Delta}{=}\left\{
+      \theta\middle|
+      P\left(
+        Binomial\left(n, \theta\right) \leq x
+      \right)
+      > \frac{\alpha}{2}
+    \right\}    \\
+    S_{\geq} \overset{\Delta}{=}\left\{
+      \theta \middle|
+      P\left(
+        Binomial\left(n, \theta\right) \geq x
+      \right)
+      > \frac{\alpha}{2}
+    \right\}
+    .
+  \end{aligned}
+\]
+One can utilize the relationship between the Binomial cummulative distribution function and \textbf{regularized incomplete beta function}, i.e. for $k = 0, \cdots, n$
+\[
+  \begin{aligned}
+    &P\left(X\leq k\right) = \sum\limits_{i = 0}^{k}
+    C_n^ip^i\left(1 - p\right)^{n - i}    \\
+    =& \frac{\Gamma\left(n + 1\right)}{\Gamma\left(n - k\right)\Gamma\left(k + 1\right)}
+    \int_0^{1 - p}t^{n - k - 1}\left(1 - t\right)^k\mathrm{d}t
+    = pBeta\left(1 - p; n - k, k + 1\right)    \\
+    =& \frac{\Gamma\left(n + 1\right)}{\Gamma\left(n - k\right)\Gamma\left(k + 1\right)}
+    \int_{p}^1t^k\left(1 - t\right)^{n - k - 1}\mathrm{d}t
+    = 1 - pBeta\left(p; k + 1, n - k\right)
+    ,
+  \end{aligned}
+\]
+where $pBeta\left(x;\alpha, \beta\right)$ represents the cummulative probability of $Beta\left(\alpha, \beta\right)$ distribution, cummulated from 0 to $x$. And it satisfies
+\[
+  pBeta\left(x; \alpha, \beta\right) = 1 - pBeta\left(1 - x; \beta, \alpha\right)
+  ,\quad
+  \forall x\in\left[0, 1\right].
+\]
+Similarly, for the quantile function $qBeta\left(p;\alpha, \beta\right)$, we can show that
+\[
+  1 - qBeta\left(p;\alpha, \beta\right) = qBeta\left(1 - p; \beta, \alpha\right)
+  ,\quad \forall p\in\left[0, 1\right]
+  .
+\]
+So we can see that $P_L$ and $P_U$ are actually satisfing
+\[
+  \begin{aligned}
+    & 1 - \alpha / 2
+    ={\color{red}(\geq)}
+    P\left(X \leq x_0 - 1\middle| P_L\right)
+    = pBeta\left(1 - P_L; n - x_0 + 1, x_0\right)\\
+    \implies & 1 - P_L = {\color{red}(\leq)} qBeta\left(1 - \alpha / 2; n - x_0 + 1 ,x_0\right)    \\
+    \implies & P_L ={\color{red}(\geq)} qBeta\left(\alpha / 2; x_0, n - x_0 + 1\right) 
+  \end{aligned}
+\]
+For $P_L$, it's taking $\mathrm{inf}$, therefore
+\begin{equation}
+  \label{eq:qbeta_pl}
+  P_L = qBeta\left(\alpha / 2; x_0, n - x_0 + 1\right)
+  .
+\end{equation}
+
+Similarly, we have for $P_U$:
+\[
+  \begin{aligned}
+    &\alpha / 2 = P\left(X \leq x_0\middle| P_U\right)
+    = pBeta\left(1 - P_U;, n - x_0, x_0 + 1\right)    \\
+    \implies & 1 - P_U = qBeta\left(\alpha / 2; n - x_0, x_0 + 1\right)    \\
+    \implies & P_U = qBeta\left(1 - \alpha / 2; x_0 + 1, n - x_0\right)
+  \end{aligned}
+\]
+Therefore
+\begin{equation}
+  \label{eq:qbeta_pu}
+  P_U = qBeta\left(1 - \alpha / 2; x_0 + 1, n - x_0\right)
+  .
+\end{equation}
+
+Also, note that this cumulative probability is also related to F-distribution via
+\[
+  P\left(X\leq x_0\right) = F\left(
+    x = \frac{1 - p}{p}\frac{x_0 + 1}{n - x_0};
+    d_1 = 2\left(n - x_0\right),
+    d_2 = 2\left(x_0 + 1\right)
+  \right)
+\]
+where $F\left(x;d_1, d_2\right)$ is the cummulative probability function of a F-distribution with degree of freedom $d_1$ and $d_2$, cummulated from 0 to $x$. The we have
+\begin{equation}
+  \label{eq:qf_p}
+  \begin{aligned}
+    & P_L = \left(
+      1 + \frac{n - x_0 + 1}{
+        x_0 \times qF\left(\frac{\alpha}{2}; 2x_0, 2\left(n - x_0 + 1\right)\right)
+      }
+    \right)^{-1}    \\
+    & P_U = \left(
+      1 + \frac{n - x_0}{
+        \left(x_0 + 1\right) \times
+        qF\left(1 - \frac{\alpha}{2}; 2\left(x_0 + 1\right), 2\left(n - x_0\right)\right)
+      }
+    \right)^{-1}
+  \end{aligned}
+\end{equation}
+where $qF\left(\alpha; d_1, d_2\right)$ is the quantile function of F-distribution.
 
 
 \subsection{Case 2: Fisher's exact test}
