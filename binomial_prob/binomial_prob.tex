@@ -526,8 +526,12 @@ Then for a observation with $X = x_0$ and fixed $n_x, n_y, n_1$:
       \right\}}
     ,
   \end{equation}
-  where the summation limits $a_L = \mathrm{max}\left(0, n_1 - n_y\right)$ and $a_U = \mathrm{min}\left(n_x, n_1\right)$. Note that in an ideal world the {\color{red} red $\delta$} is just 1 in \eqref{eq:fisher_two_sided}. But in actuality, since the computation involves large factorials, especially when sample size is large, the numerical results might be inaccurate. To ensure a convervative test, $\delta$ is set to $1.0000001$ in R.
+  where the summation limits $a_L = \mathrm{max}\left(0, n_1 - n_y\right)$ and $a_U = \mathrm{min}\left(n_x, n_1\right)$. Note that in an ideal world the {\color{red} red $\delta$} is just 1 in \eqref{eq:fisher_two_sided}. But in actuality, since the computation involves large factorials, especially when sample size is large, the numerical results might be inaccurate. To ensure a convervative test, $\delta$ is set to $1.0000001$ in R\citep{Helwig2020p-}.
 \end{itemize}
+
+
+\bibliographystyle{plainnat}
+\bibliography{../ref}
 
 
 \end{document}
