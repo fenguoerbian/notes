@@ -235,22 +235,27 @@ See the notes of ``chisq\_test.pdf'' for details.
 \label{sec:case-1:-clopper}
 
 The Clopper-Pearson method is an early method. It's called exact method because it's directly based on p.m.f of binomial distribution. Let $X = \sum\limits_{i = 1}^nx_i$. Then $X\sim Binom(n, p)$ and the p.m.f is
-\[
-  P\left(X = x\middle|p\right) = C_n^xp^x\left(1 - p\right)^{n - x}
-\]
-for $x = 0, 1, \cdots, n$. So let's recall that p-value is the probability under $H_0$ that something as or more extreme than what we have observed happens. Then after observing $X = x_0$, for one-sided test:
+\begin{equation}
+  \label{eq:binomial_pmf}
+  f\left(x;p\right) = P\left(X = x\middle|p\right) = C_n^xp^x\left(1 - p\right)^{n - x}
+  ,
+\end{equation}
+for $x = 0, 1, \cdots, n$. One thing to point out is that though the $|p$ notation, \eqref{eq:binomial_pmf} is frequenist's point of view, not bayesian's. Now let's recall that p-value is the probability under $H_0$ that something \textbf{as or more extreme than} what we have observed happens. Then after observing $X = x_0$, for one-sided test:
 \begin{itemize}
-\item $H_0: p \leq p_0$ against $H_1: p > p_0$ for some given $p_0$. The p-value is
-  \[
-    p_{val} = \sum\limits_{x = x_0}^nP\left(X = x\middle|p_0\right)
+\item $H_0: p \leq p_0$ against $H_1: p > p_0$ for some given $p_0$. The p-value at this observed $x_0$ is
+  \begin{equation}
+    \label{eq:clopper_pval_h0_leq}
+    p_{val}\left(x_0\right) = \sum\limits_{x = x_0}^nf\left(x;p_0\right)
     .
-  \]
-  
-\item $H_0: p \geq p_0$ against $H_1: p < p_0$ for some given $p_0$. The p-value is
-  \[
-    p_{val} = \sum\limits_{x = 0}^{x_0}P\left(X = x\middle|p_0\right)
-    .
-  \]
+  \end{equation}
+
+\item $H_0: p \geq p_0$ against $H_1: p < p_0$ for some given $p_0$. The p-value at this observed $x_0$  is
+  \begin{equation}
+    \label{eq:clopper_pval_h0_geq}
+    p_{val}\left(x_0\right) = \sum\limits_{x = 0}^{x_0}f\left(x;p_0\right)
+    .    
+  \end{equation}
+
 \end{itemize}
 For the two-sided test. This is a little complicated. Let index set
 \[
@@ -262,11 +267,30 @@ For the two-sided test. This is a little complicated. Let index set
   \right\}
   .
 \]
-Then $\mathcal{I}$ contains all possible realizations of $X$ with its probability no greater than the probability of our observation. Then the p-value of $H_0: p = p_0$ is given by
-\[
-  p_{val} = \sum\limits_{x\in\mathcal{I}}P\left(X = x\middle|p_0\right)
-  .
-\]
+Then $\mathcal{I}$ contains all possible realizations of $X$ with its probability no greater than the probability of our observation. Then the p-value of $H_0: p = p_0$  at this observed $x_0$ is given by
+\begin{equation}
+  \label{eq:clopper_pval_h0_twosided}
+  p_{val}\left(x_0\right) = \sum\limits_{x\in\mathcal{I}}f\left(x;p_0\right)
+  . 
+\end{equation}
+
+\subsubsection{Power analysis}
+\label{sec:power-analysis}
+
+The probability to reject $H_0$ of Clopper-Pearson test at given underlying $p$ can be computed by
+\begin{equation}
+  \label{eq:clopper_power}
+  P\left(\text{Reject } H_0\middle| p\right)
+  = \sum\limits_{x = 0}^nP\left(X = x\middle|p\right)\cdot I_{\{p_{val}\left(x\right)\leq \alpha\}}
+  = \sum\limits_{x = 0}^nf\left(x;p\right)\cdot I_{\{p_{val}\left(x\right)\leq \alpha\}}
+  ,
+\end{equation}
+where $\alpha$ is the significant level of the test and $p_{val}\left(x\right)$ is computed for different types of $H_0$ based on \eqref{eq:clopper_pval_h0_leq}, \eqref{eq:clopper_pval_h0_geq} and \eqref{eq:clopper_pval_h0_twosided}.
+
+\subsubsection{Confidence interval}
+\label{sec:confidence-interval}
+
+
 
 
 \subsection{Case 2: Fisher's exact test}
