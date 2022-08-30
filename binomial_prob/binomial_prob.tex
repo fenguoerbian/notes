@@ -109,6 +109,10 @@
 \begin{document}
 \maketitle
 
+\tableofcontents{}
+
+\par
+
 For an i.i.d sample from a bernoulli distribution
 \[
   x_1, \cdots, x_n \overset{\mathrm{i.i.d.}}{\sim} Bernoulli(p)
@@ -528,6 +532,67 @@ Then for a observation with $X = x_0$ and fixed $n_x, n_y, n_1$:
   \end{equation}
   where the summation limits $a_L = \mathrm{max}\left(0, n_1 - n_y\right)$ and $a_U = \mathrm{min}\left(n_x, n_1\right)$. Note that in an ideal world the {\color{red} red $\delta$} is just 1 in \eqref{eq:fisher_two_sided}. But in actuality, since the computation involves large factorials, especially when sample size is large, the numerical results might be inaccurate. To ensure a convervative test, $\delta$ is set to $1.0000001$ in R\citep{Helwig2020p-}.
 \end{itemize}
+
+\section{Approximated confidence interval for Case 1}
+\label{sec:appr-conf-interv}
+
+
+
+Let $z_\alpha$ be the left $\alpha$ quantile of standard normal distribution. $\sum\limits_{i = 1}^nx_i$ is the number of success trials and $\hat{p} = \frac{1}{n}\sum\limits_{i = 1}^nx_i$ is the MLE for $p$. Then a confidence interval for $p$ can be constructed using various methods.
+\begin{itemize}
+\item Normal/Wald Approximation:
+  \[
+    \hat{p} \pm z_{1 - \alpha / 2}\times \sqrt{\hat{p}\left(1 - \hat{p}\right) / n}
+    .
+  \]
+\item Agresti-Coull method: Define
+  \[
+    \tilde{p} = \tilde{n}^{-1}
+    \left(
+      n\hat{p} + \frac{z_{1 - \alpha / 2}^2}{2}
+    \right)
+    ,\quad
+    \tilde{n} = n + z^2_{1 - \alpha / 2}
+    .
+  \]
+  Then the CI is constructed as
+  \[
+    \tilde{p} \pm z_{1 - \alpha / 2}\sqrt{
+      \frac{\tilde{p}\left(1 - \tilde{p}\right)}{\tilde{n}}
+    }
+    ,
+  \]
+  which is just the form of Normal Approximation with $\tilde{p}$ and $\tilde{n}$ plugged in.
+\item Wilson Score method: Find the roots $p$ of
+  \[
+    \left|p - \hat{p}\right|
+    = z_{1 - \alpha / 2}\sqrt{p\left(1 - p\right) / n}
+    .
+  \]
+  And the solutions form the CI
+  \[
+    \left(1 + \frac{z_{1 - \alpha / 2}^2}{n}\right)^{-1}
+    \left(
+      \hat{p} + \frac{z_{1 - \alpha / 2}^2}{2n}
+      \pm
+      z_{1 - \alpha / 2}\sqrt{
+        \frac{\hat{p}\left(1 - \hat{p}\right)}{n}
+        + \frac{z_{1 - \alpha / 2}^2}{4n^2}
+      }
+    \right)
+    .
+  \]
+\item Arcsin method:
+  \[
+    \mathrm{sin}^2\left(
+      \mathrm{arcsin}\left(\sqrt{\hat{p}}\right) \pm \frac{z_{1 - \alpha / 2}}{2\sqrt{n}}
+    \right)
+    .
+  \]
+\end{itemize}
+
+The normal approximated one is the simplest and most introductory one, but its performance is only valid for large sample, not finite $n$. The Clopper-Pearson interval is an exact one, but it's always conservative, so the coverage probability is at least $1 - \alpha$. These other approximated all try to be more accurate than the normal approximated one and less conservative than Clopper-Pearson method. {\color{blue}\{need reference here\} Though the Arcsin method might be unstable when $\hat{p}$ is close to 0 or 1.}
+
 
 
 \bibliographystyle{plainnat}
