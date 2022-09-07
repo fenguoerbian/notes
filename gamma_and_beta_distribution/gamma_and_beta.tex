@@ -182,6 +182,25 @@ The pdf for a Beta distribution is
 \label{sec:relat-other-distr}
 
 \begin{itemize}
+\item Gamma distribution with $\alpha = 1$ is just exponential distribution.
+  \[
+    gamma\left(1, \beta\right) = \mathrm{exp}\left(\beta\right)
+    .
+  \]
+  
+\item Gamma distribution with $\beta = 2$ is just $\chi^2$ distribution with degree of freedom $p = 2\alpha$.
+  \[
+    gamma\left(\alpha, 2\right) = \chi^2\left(2\alpha\right)
+    .
+  \]
+  
+\item If $X$ follows $gamma\left(\alpha, \beta\right)$ where $\alpha$ is an integer. Then for any $x$
+  \[
+    P\left(X \leq x\right) = P\left(Y \geq \alpha\right)
+    .
+  \]
+  where $Y$ follows $Poisson\left(x / \beta\right)$.
+  
 \item If
   \[
     X \sim gamma\left(\alpha_1, \beta\right)
@@ -205,6 +224,8 @@ The pdf for a Beta distribution is
     beta\left(1, 1\right) = Unif\left(0, 1\right)
     .
   \]
+  
+\item $beta\left(\frac{1}{2}, \frac{1}{2}\right)$ is the \textbf{non-informative} prior for binomial rate test.
 \end{itemize}
 
 \bibliographystyle{plainnat}
