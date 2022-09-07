@@ -2,7 +2,7 @@
 knitr::opts_chunk$set(echo = TRUE)
 knitr::knit_hooks$set(purl = knitr::hook_purl)
 
-## ---- echo = FALSE, results='hide'--------------------------------------------
+## ---- echo = FALSE, results='hide', message=FALSE-----------------------------
 library(tidyverse)
 
 ## ---- echo = FALSE------------------------------------------------------------
@@ -20,7 +20,7 @@ mydat <- tribble(
 "su"          , "Substance Use"                       , "物质使用", 
 "ie"          , "Inclusion/Exclusion Criteria Not Met", "纳入/排除标准不符合", 
 "ex"          , "Exposure"                            , "暴露", 
-"ds(EOS/EOT)" , "Disposition (End of Study/Treat)"    , "处置（终止实验/治疗)", 
+"ds(EOS/EOT)" , "Disposition (End of Study/Treat)"    , "病例去向（终止实验/治疗)", 
 "dv"          , "Protocol Deviations"                 , "方案偏离", 
 "co"          , "Comments"                            , "", 
 "pr"          , "Procedures"                          , "非药物治疗", 
