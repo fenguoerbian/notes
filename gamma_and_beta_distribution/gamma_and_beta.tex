@@ -159,8 +159,22 @@ The pdf for a Gamma distribution is
   0 \leq x < \infty
   ,\quad
   \alpha, \beta > 0
-  .
+  ,
 \end{equation}
+with
+\[
+  \mathrm{E}X = \alpha\beta
+  ,\quad
+  \mathrm{Var}X = \alpha\beta^2
+  ,
+\]
+and  m.g.f.
+\[
+  M_X\left(t\right) = \left(\frac{1}{1 - \beta t}\right)^\alpha
+  ,\quad
+  t < \frac{1}{\beta}
+  .
+\]
 
 \section{Beta distribution}
 \label{sec:beta-distribution}
@@ -175,9 +189,23 @@ The pdf for a Beta distribution is
   0 \leq x \leq 1
   ,\quad
   \alpha, \beta > 0
-  .
+  ,
 \end{equation}
-
+with
+\[
+  \mathrm{E}X = \frac{\alpha}{\alpha + \beta}
+  ,\quad
+  \mathrm{Var} X = \frac{\alpha\beta}{\left(\alpha + \beta\right)^2\left(\alpha + \beta + 1\right)}
+\]
+and m.g.f.
+\[
+  M_X\left(t\right) =
+  1 + \sum\limits_{k = 1}^{\infty}\left(
+    \prod\limits_{r = 0}^{k - 1}\frac{\alpha + r}{\alpha + \beta + r}
+  \right)
+  \frac{t^k}{k!}
+  .
+\]
 \section{Relationship with other distribution}
 \label{sec:relat-other-distr}
 
