@@ -225,7 +225,41 @@ The pdf for a Beta distribution is
     .
   \]
   
-\item $beta\left(\frac{1}{2}, \frac{1}{2}\right)$ is the \textbf{non-informative} prior for binomial rate test.
+\item $beta\left(\frac{1}{2}, \frac{1}{2}\right)$ is the \textbf{non-informative Jeffreys prior} for binomial rate test.
+  
+\item Let $U_1, \cdots, U_n \overset{\mathrm{i.i.d.}}{\sim} Unif(0, 1)$. Then the order statistics
+  \[
+    U_{\left(k\right)} \sim\; beta\left(k, n + 1 - k\right)
+    ,\quad
+    1\leq k \leq n
+    .
+  \]
+  And
+  \[
+    U_{\left(k\right)} - U_{\left(j\right)}
+    \sim\; beta\left(k - j, n - \left(k - j\right) + 1\right)
+    ,\quad
+    1 \leq j < k \leq n
+    .
+  \]
+  
+\item If $X$ follows a $Binomial(n, p)$, then the c.d.f of $X$ satisfies
+  \[
+    \begin{aligned}
+      & P\left(X \leq k\right)    \\
+      =& \sum\limits_{i = 0}^kC_{n}^ip^i\left(1 - p\right)^{n - i}    \\
+      =& \frac{
+        \Gamma\left(n + 1\right)
+      }{
+        \Gamma\left(n - k\right)\Gamma\left(k + 1\right)
+      }
+      \int_0^{1 - p}t^{n - k - 1}\left(1 - t\right)^k\mathrm{dt}
+      = pbeta\left(1 - p; n-k, k + 1\right)    \\
+      =& P\left(Y \leq 1 - p\right)
+      ,
+    \end{aligned}
+  \]
+  where $Y$ follows $beta\left(n - k, k + 1\right)$. This can be verified using integration by parts.
 \end{itemize}
 
 \bibliographystyle{plainnat}
