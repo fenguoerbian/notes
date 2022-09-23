@@ -1,0 +1,190 @@
+---
+title: "pk_sample_size"
+author: "Chao Cheng"
+date: "`r Sys.Date()`"
+documentclass: ctexart
+output: 
+  html_document:
+    toc: yes
+    toc_float: yes
+    number_section: yes
+    keep_md: no
+  rticles::ctex: 
+    toc: yes
+    keep_tex: yes
+    latex_engine: xelatex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::knit_hooks$set(purl = knitr::hook_purl)
+```
+
+```{r}
+library(tidyverse)
+```
+
+
+## 背景介绍
+
+假设个体PK参数独立同分布服从log-normal分布，那么 **对样本取对数** 后，有
+
+$$x_1, \cdots, x_n \overset{i.i.d.}{\sim} N\left(\mu, \sigma^2\right)$$
+
+那么显然有
+
+$$\frac{\bar{x} - \mu}{\sqrt{S^2 / n}}\sim t_{n - 1}$$
+
+其中$\bar{x}$是样本均值，$S^2$是样本标准差，且
+
+$$\frac{(n - 1)S^2}{\sigma^2}\sim\chi^2_{n - 1}$$
+另外，在 **原始数据尺度** 上的CV满足(由log-normal性质得到)
+
+$$CV = \sqrt{\mathrm{exp}(\sigma^2) - 1}$$
+
+### 构造 $(1 - \alpha)$ CI
+
+首先我们可以构造$\bar{x} - \mu$的CI。由于此时的数据进行了对数变换，那么实际上在原尺度上就是pk参数 over geometric mean的区间。
+
+$$P\left(
+-t_{1 - \alpha / 2, n - 1} * \sqrt{S^2 / n} \leq \bar{x} - \mu \leq t_{1 - \alpha / 2, n - 1} * \sqrt{S^2 / n}
+\right) = 1 - \alpha$$
+
+此时的区间（在对数变换后的尺度上） **半** 宽度为
+
+$$t_{1 - \alpha / 2, n - 1} * \sqrt{S^2 / n}$$
+
+_注意：_ 截图中的(0.7, 1.43)的区间，实际上在对数变换后对应着(-0.35, 0.35)，区间半宽度0.35。
+
+### 符合半宽度要求的chance
+
+利用$\frac{(n - 1)S^2}{\sigma^2}\sim\chi^2_{n - 1}$我们可以得到区间半宽度符合（小于等于）某一给定的界值（如0.35）的概率为
+
+$$\begin{aligned}
+&P\left(t_{1 - \alpha / 2, n - 1} * \sqrt{S^2 / n} \leq 0.35\right)    \\
+=& P\left(\frac{(n - 1)S^2}{\sigma^2}\cdot \frac{t_{1 - \alpha / 2, n - 1}^2}{n} \leq 0.35^2 \cdot \frac{n - 1}{\sigma^2}\right)    \\
+=& P\left(\chi^2_{n - 1} \leq \frac{0.35^2\cdot n(n - 1)}{t_{1 - \alpha / 2, n - 1}^2\sigma^2}\right)
+\end{aligned}$$
+
+即一个自由度为$n-1$的卡方分布随机变量，取值小于$\frac{0.35^2\cdot n(n - 1)}{t_{1 - \alpha / 2, n - 1}^2\sigma^2}$的概率。
+
+### 截图结果的验证
+
+```{r fun_get_chance, echo = FALSE}
+Get_Chance <- function(n = 6, a = 0.1, cv = 0.15, width_limit = 0.35){
+    # 注意：这里的`width_limit`是对数变换后的CI区间的**半宽度**要求
+    sigma2 <- log(1 + cv ^ 2)
+    t_cut <- qt(1 - a / 2, df = n - 1)
+    chisq_cut <- width_limit ^ 2 * n * (n - 1) / t_cut ^ 2 / sigma2
+    chance <- pchisq(chisq_cut, df = n - 1)
+    return(chance)
+}
+```
+
+```{r}
+a <- 0.1
+cv <- 0.4
+n <- 6
+width_limit <- 0.35
+
+# Get_Chance() 定义见后文
+chance <- Get_Chance(n = n, a = a, cv = cv, width_limit = width_limit)
+print(paste0("Change is : ", chance))
+
+```
+```{r, echo = FALSE}
+width_vec <- seq(from = 0.1, to = 0.5, by = 0.025)
+chance_vec <- Get_Chance(n = n, a = a, cv = cv, width_limit = width_vec)
+tibble(width = width_vec, chance = chance_vec) %>%
+    ggplot(aes(x = width, y = chance)) + 
+    geom_line() + 
+    geom_point() + 
+    labs(x = "Half width (under log scale)", 
+         y = "Chance")
+```
+
+## Case1: 给定CV，Chance和alpha后的CI
+
+在给定Chance，CV, alpha和 __样本量__ 后，实际上我们就可以得到（对数变换后）的CI半宽度，从而得到原始尺度上的区间
+
+
+```{r}
+Get_Width <- function(n = 6, a = 0.1, cv = 0.15, chance = 0.7){
+    # 注意：本函数计算的是log变换后尺度上的区间半宽度
+    sigma2 <- log(1 + cv ^ 2)
+    t_cut <- qt(1 - a / 2, df = n - 1)
+    chisq_cut <- qchisq(chance, df = n - 1)
+    width <- sqrt(chisq_cut * t_cut ^ 2 * sigma2 / n / (n - 1))
+    return(width)
+}
+```
+
+```{r}
+cv_vec <- seq(from = 0.15, to = 0.4, by = 0.05)
+chance_vec <- c(0.7, 0.8)
+n_vec <- 6
+a <- 0.1
+res <- expand.grid(cv = cv_vec, chance = chance_vec, n = n_vec, a = a)
+for(i in seq(nrow(res))){
+    tmp <- Get_Width(n = res$n[i], a = res$a[i], 
+                     cv = res$cv[i], chance = res$chance[i])
+    res$lower[i] <- exp(-tmp)
+    res$upper[i] <- exp(tmp)
+    res$width_log[i] <- abs(tmp)    # log变换尺度上的区间半宽度
+}
+knitr::kable(res)
+```
+
+```{r, echo = FALSE}
+write_csv(res, file = "case1.csv")
+
+fig <- ggplot(res, aes(y = cv)) + 
+    geom_errorbarh(aes(xmin = lower, xmax = upper), height = 0.01) + 
+    facet_grid(rows = vars(chance), cols = vars(n), labeller = label_both) + 
+    labs(x = "")
+print(fig)
+```
+
+## Case2: 给定CV，alpha和CI后的chance
+
+在给定CV，alpha，CI(实际上是半宽度的要求）和 **样本量** 后，我们可以得到相应的CI符合半宽度要求的chance
+
+```{r, ref.label="fun_get_chance", eval = FALSE}
+```
+
+```{r}
+cv_vec <- seq(from = 0.15, to = 0.4, by = 0.05)
+width_limit <- 0.3576744    # 原始尺度上的(0.7, 1.43)对应对数尺度上的0.35的半宽度
+n_vec <- 6
+a <- 0.1
+
+res <- expand.grid(cv = cv_vec, n = n_vec, width_limit = width_limit, a = a)
+for(i in seq(nrow(res))){
+    tmp <- Get_Chance(n = res$n[i], a = res$a[i], 
+                      cv = res$cv[i], width_limit = res$width_limit[i])
+    res$chance[i] <- tmp
+}
+knitr::kable(res[, c("cv", "n", "chance")])
+```
+
+```{r, echo = FALSE, fig.showtext=TRUE}
+write_csv(res, file = "case2.csv")
+
+fig <- res %>%
+    ggplot(aes(x = cv, y = chance)) + 
+    geom_line(aes(color = factor(n))) + 
+    geom_point(aes(color = factor(n))) + 
+    labs(color = "sample size(n)", 
+         title = paste0("alpha =", a, ", 对数变换后CI半宽度限制：", width_limit))
+
+print(fig)
+```
+
+
+## Appendix
+
+### sessioninfo
+
+```{r}
+sessioninfo::session_info()
+```
