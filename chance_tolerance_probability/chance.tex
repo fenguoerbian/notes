@@ -1,0 +1,239 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{geometry}
+\geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+\renewcommand{\textfraction}{0.15}
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\bottomfraction}{0.65}
+\renewcommand{\floatpagefraction}{0.60}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{mathrsfs}
+\usepackage{amsthm}
+\usepackage{extarrows}
+\usepackage{bm}
+% \newcommand{\bm}{\symbfit}    % `bm` confilicts with `unicode-math`. In that case use \symbfit for bold math symbols
+\usepackage{graphicx}
+\usepackage[section]{placeins}
+\usepackage{flafter}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{color}
+\usepackage{multirow}
+\usepackage{natbib}
+% \usepackage{enumerate}
+\usepackage{enumitem}    % more flexible than `enumerate` package, the reference will carry the whole label appearance, not just the counter, unlike the `enumerate` package.
+\usepackage{upgreek}    % 'upgreek' letters
+
+% \pdfstringdefDisableCommands{\let\bm=\relax}
+
+\newtheorem{thm}{Theorem}
+\newtheorem{cor}{Corollary}
+\newtheorem{assum}{Assumption}
+\newtheorem{rem}{Remark}
+\newtheorem{lem}{Lemma}
+
+\setcounter{topnumber}{5}    % Maximum number of floats that can appear at the top of a text page; default 2. 
+\setcounter{bottomnumber}{5}   % Maximum number of floats that can appear at the bottom of a text page; default 1. 
+\setcounter{totalnumber}{10}    % Maximum number of floats that can appear on a text page; default 3. 
+
+\DeclareMathOperator*{\argmaxdown}{arg\,max}
+\DeclareMathOperator*{\argmindown}{arg\,min}
+\DeclareMathOperator{\argmax}{arg\,max}
+\DeclareMathOperator{\argmin}{arg\,min}
+
+% cross-reference to other files
+% the externaldocument should be compiled 
+%   (and at least twice if you're using xr-hyper)
+% \usepackage{xr-hyper}
+% \usepackage{xr}
+
+% --- external document (ordinary setting) ---
+% \externaldocument{external_tex_file}
+% --- end of ordinary setting ---
+
+% --- external document (overleaf setting) ---
+% externaldocument settings for Overleaf
+% \makeatletter
+% \newcommand*{\addFileDependency}[1]{% argument=file name and extension
+%   \typeout{(#1)}
+%   \@addtofilelist{#1}
+%   \IfFileExists{#1}{}{\typeout{No file #1.}}
+% }
+% \makeatother
+% \newcommand*{\myexternaldocument}[1]{%
+%     \externaldocument{#1}%
+%     \addFileDependency{#1.tex}%
+%     \addFileDependency{#1.aux}%
+% }
+% \myexternaldocument{external_tex_file}
+% --- end of overleaf setting ---
+
+% mathtools can be used to define labeling format for equations
+% one can use \eqref for a reference to a labeled equation.
+\usepackage{mathtools}
+\newtagform{supp}{(S-}{)}    % define a equation labeling format for suppliment
+\usetagform{supp}            % use the supp format
+\usetagform{default}         % use the default format
+
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+% package for hyperlinks
+% It's error-prone because hyper link is quite difficult
+% due to the fact the typesetting environment is complex.
+% So you can disable this package and finish the document.
+% Then sort out the hyperlink thing.
+\usepackage[colorlinks,linkcolor=red,anchorcolor=blue,citecolor=green,CJKbookmarks=True]{hyperref}
+
+% package for displaying highlighted codes
+\usepackage{minted}
+
+% package for input codec and output rendering font
+\usepackage[utf8]{inputenc}    % it is always good practice to use utf8
+                               % you can also try latin1, latin2, cp1252 and cp1250
+\usepackage[T1]{fontenc}    % the default is T0, which only contains 128 characters
+                            % you can try T1, T2A, T2B
+% you can refer to https://www.overleaf.com/learn/latex/international_language_support#Font_encoding
+% for more details.
+
+
+\title{Chance or Tolerance Probability of an Confidence Interval}
+\author{Chao Cheng}
+\date{\today}
+
+
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+\label{sec:introduction}
+
+When a Confidence Interval(CI) is constructed, usually its upper and lower limits (for a two-sided interval) is random variables. And the probability that this interval will cover (or more precisely, the lower limit will be smaller than and at the same time the upper limit will be greater than) the value in interest, e.g population mean, is the confidence level, usually denoted by $1 - \alpha$.
+\par
+Since both upper and lower limits are random variables, the length (or some times, half of the interval length) is also a random variable. And in some projects, we want to make some statement about the property of this length. Usually we want to quantify the probability that this (half) width of CI is smaller than a specified value. In different literature, this is called the \textbf{chance} of CI lies in the width, or the \textbf{tolerance probability} of the CI at given width.
+\par
+In this notes, we will be using CI for normal mean as an example.
+
+\section{Construct $\left(1 - \alpha\right)$ CI}
+\label{sec:construct-1-alpha}
+
+For a random sample
+\[
+  x_1, \cdots, x_n\; \overset{i.i.d}{\sim}\; N\left(\mu, \sigma^2\right)
+  ,
+\]
+where $\mu$ and $\sigma^2$ are both unkonwn, we konw that
+\[
+  \frac{\bar{x} - \mu}{\sqrt{S^2 / n}} \sim t_{n - 1}
+  ,
+\]
+where $S^2 = \frac{1}{n - 1}\sum\limits_{i = 1}^2\left(x_i - \bar{x}\right)^2$ is sample variance. Then the $1 - \alpha$ CI for $\mu$ is just
+\[
+  \left[
+    \bar{x}
+    - t_{1 - \alpha / 2, n - 1}
+    \cdot \sqrt{\frac{S^2}{n}}
+    ,\quad
+    \bar{x}
+    + t_{1 - \alpha / 2, n - 1}
+    \cdot \sqrt{\frac{S^2}{n}} 
+  \right]
+  .
+\]
+And the \textbf{half} length $d$ of this interval is just
+\[
+  d \overset{\Delta}{=} t_{1 - \alpha / 2, n - 1}
+  \cdot \sqrt{\frac{S^2}{n}}
+  .
+\]
+
+\section{Computation of the chance at given $d_0$}
+\label{sec:comp-chance-at}
+
+Note that for a normal sample,
+\[
+  \frac{\left(n - 1\right)S^2}{\sigma^2} \sim \chi^2_{n - 1}
+  .
+\]
+Therefore
+\[
+  \begin{aligned}
+    P\left(
+      d \leq d_0
+    \right)
+    =& P\left(
+      t_{1 - \alpha / 2, n - 1}
+      \cdot \sqrt{\frac{S^2}{n}}
+      \leq d_0
+    \right)    \\
+    =& P\left(
+      \frac{\left(n - 1\right)S^2}{\sigma^2}
+      \leq \frac{
+        n\left(n - 1\right)d_0^2
+      }{
+        t_{1 - \alpha / 2, n - 1}^2
+        \sigma^2
+      }
+    \right)    \\
+    =& P\left(
+      X_{n - 1}^2 \leq
+      \frac{
+        n\left(n - 1\right)d_0^2
+      }{
+        t_{1 - \alpha / 2, n - 1}^2
+        \sigma^2
+      }
+    \right)
+    .
+  \end{aligned}
+\]
+Hence the chance of this CI falls in the half width limit of $d_0$ is the probability of a $\chi^2$ random variable $X^2_{n - 1}$ with $n - 1$ degree of freedom being smaller than
+\[
+  \frac{
+    n\left(n - 1\right)d_0^2
+  }{
+    t_{1 - \alpha / 2, n - 1}^2
+    \sigma^2
+  }
+  .
+\]
+
+\section{Additional notes and resources}
+\label{sec:addit-notes-reso}
+
+
+\begin{itemize}
+\item In Pharmocokinect(PK) analysis, the samples $z_1, \cdots, z_n$ for PK parameters are often assumed to follow log-normal distribution, which means $x_i = \mathrm{log}\left(z_i\right)$ follows normal distribution and the analysis is often down on this log-scale, then transformed back to original scale. Note that for $\mathrm{E}X = \mu$ and $\mathrm{Var}X = \sigma^2$, we have
+  \[
+    \mathrm{E}Z = e^{\mu + \frac{\sigma^2}{2}}
+    ,\quad
+    \mathrm{Var}Z = e^{2\mu + \sigma^2}\left(e^{\sigma^2} - 1\right)
+    .
+  \]
+  And the Coefficient of Variation(CV) at original scale satisfies
+  \[
+    CV = \frac{\sqrt{\mathrm{Var}Z}}{\mathrm{E}Z} =
+    \sqrt{
+      e^{\sigma^2} - 1
+    }
+    .
+  \]
+  Note that in PK, CV is often offerd instead of $\sigma^2$.
+\item This analysis is available in PASS as \emph{Confidence Intervals for One Mean with Tolerance Probability}.
+\item This analysis is available in SAS, for example \emph{The POWER Procedure example: Confidence Interval Precisio}.
+\end{itemize}
+
+
+
+\end{document}
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
