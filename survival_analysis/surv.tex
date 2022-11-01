@@ -32,6 +32,7 @@
 \newtheorem{assum}{Assumption}
 \newtheorem{rem}{Remark}
 \newtheorem{lem}{Lemma}
+\newtheorem{prop}{Proposition}
 
 \setcounter{topnumber}{5}    % Maximum number of floats that can appear at the top of a text page; default 2. 
 \setcounter{bottomnumber}{5}   % Maximum number of floats that can appear at the bottom of a text page; default 1. 
@@ -113,6 +114,9 @@
 \section{Basic knowledge}
 \label{sec:basic-knowledge}
 
+\subsection{Survival and hazard}
+\label{sec:survival-hazard}
+
 Let $T$ denote the time to an event that we are interested in. Then we know the c.d.f.
 \[
   F_T\left(t\right) = P\left(T \leq t\right)
@@ -157,6 +161,86 @@ $h\left(t\right)$ represents the {\color{red} instant hazard? unified probabilit
   = - \mathrm{log}\left(S_T\left(t\right)\right)
   .
 \]
+
+\begin{prop}
+  The random variable $H\left(T\right)$ follows unit exponential distribution $EXP(1)$.
+\end{prop}
+\begin{proof}
+  \[
+    \begin{aligned}
+      P\left(H\left(T\right)\leq t\right)
+      =& P\left(-\mathrm{log} S\left(T\right) \leq t\right)    \\
+      =& P\left(1 - F\left(T\right) \geq e^{-t}\right)    \\
+      =& P\left(T \leq F^{-1}\left(1 - e^{-t}\right)\right)    \\
+      =& F\left(F^{-1}\left(1 - e^{-t}\right)\right)    \\
+      =& 1 - e^{-t}
+      , 
+    \end{aligned}    
+  \]
+  which is the c.d.f of $EXP\left(1\right)$. Here to simplify the deduction we make some assumptions that
+  \begin{itemize}
+  \item $F\left(t\right)$ is continuous.
+  \item $F^{-1}\left(t\right)$ is well defined.
+  \end{itemize}
+  Also to simplify the notation and avoid confusion, we use $S\left(\cdot\right)$ and $F\left(\cdot\right)$ instead of $S_T\left(\cdot\right)$ and $F_T\left(\cdot\right)$ like before.
+\end{proof}
+
+\subsection{Censor}
+\label{sec:censor}
+
+
+
+\subsubsection{Right censor}
+\label{sec:right-censor}
+
+\begin{itemize}
+\item Type I: an i.i.d sample $T_1, \cdots, T_n \sim F$ and a {\color{red} fixed} constant $c$. And the observed data is $\left(U_i, \delta_i\right)$ for $i = 1, \cdots, n$ where
+  \[
+    \begin{aligned}
+      & U_i = \mathrm{min}\left(T_i, c\right)    \\
+      & \delta_i = 1_{T_i \leq c}
+      .
+    \end{aligned}
+  \]
+  So the observed data consists of a {\color{red} random} number, $r$, of uncensored observations, all of which are less than $c$. And $n - r$ censored observations, all are $c$.
+  
+\item Type II: an i.i.d sample $T_1, \cdots, T_n \sim F$ and a {\color{red} pre-defined} number of failure $r$. The observation is stopped when $r$ failure occures and the stopping time is $c$. The observed data is still the form $\left(U_i, \delta_i\right)$ for $i = 1, \cdots, n$, the same as that in Type I censor. But in actuality, we observe the first $r$ {\color{red} order statistics}
+  \[
+    T_{\left(1, n\right)}, \cdots, T_{\left(r, n\right)}
+    .
+  \]
+  Note that here $\left(U_1, \delta_1\right), \cdots, \left(U_n, \delta_n\right)$ are {\color{red} dependent} whereas they are independent for Type I.
+  
+\item Type III (Random censor): The underlying data is
+  \[
+    \begin{aligned}
+      & c_1, \cdots, c_n \quad \text{constant}    \\
+      & T_1, \cdots, T_n \sim F
+      .
+    \end{aligned}
+  \]
+  And the observed data is $\left(U_i, \delta_i\right)$ for $i = 1, \cdots, n$, where
+  \[
+    \begin{aligned}
+      & U_i = \mathrm{min}\left(T_i, c_i\right)    \\
+      & \delta_i = 1_{T_i \leq c_i}
+      .
+    \end{aligned}
+  \]
+  \textbf{Note: } for inference, $c_i$ is often treated as constant. For study design or studying the asymptotic property, they are often treated as i.i.d random variables $C_1, \cdots, C_n$.
+\end{itemize}
+
+\subsubsection{Left censor}
+\label{sec:left-censor}
+
+$T_i$ is censored when $T_i \leq l_i$.
+
+\subsubsection{Interval censor}
+\label{sec:interval-censor}
+
+$l_i \leq T_i \leq u_i$, but only $l_i$ and $u_i$ are observed.
+
+
 
 \bibliographystyle{plainnat}
 \bibliography{../ref}
