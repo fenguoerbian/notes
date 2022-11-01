@@ -312,6 +312,45 @@ Therefore
   \right)
 \end{equation}
 
+\textbf{When $C_i$s are i.i.d. $\sim G$}, where $G$ is continuous with p.d.f $g$. Then we have
+\[
+  \begin{aligned}
+    P\left(U_i \leq u, \delta_i = 1\right) = P\left(T_i \leq u, T_i \leq C_i\right)
+    = \int_0^u\int_t^\infty f\left(t\right)g\left(c\right)\mathrm{d}c\mathrm{d}t
+    = \int_0^uf\left(t\right)\left(1 - G\left(t\right)\right)\mathrm{d}t
+  \end{aligned}
+\]
+Therefore the likelihood for $\delta_i = 1$ is
+\[
+  L_i\left(F, G\right) = f\left(u_i\right)\left(1 - G\left(u_i\right)\right)
+  \quad\quad \text{ when } \delta_i = 1
+  .
+\]
+And similarly, for $\delta_i = 0$, the likelihood is
+\[
+  L_i\left(F, G\right) = g\left(u_i\right)\left(1 - F\left(u_i\right)\right)
+  \quad\quad \text{ when } \delta_i = 0
+  .
+\]
+Hence the full likelihood is
+\begin{equation}
+  \label{eq:likelihood_full}
+  \begin{aligned}
+    L\left(F, G\right)
+    =& \prod\limits_{i = 1}^n\left\{
+      \left(f\left(u_i\right)\left(1 - G\left(u_i\right)\right)\right)^{\delta_i}
+      \left(\left(1 - F\left(u_i\right)\right)g\left(u_i\right)\right)^{1 - \delta_i}
+    \right\}    \\
+    =& \prod\limits_{i = 1}^n\left\{
+      f\left(u_i\right)^{\delta_i}\left(1 - F\left(u_i\right)\right)^{1 - \delta_i}
+    \right\}
+    \cdot \prod\limits_{i = 1}^n\left\{
+      g\left(u_i\right)^{1 - \delta_i}\left(1 - G\left(u_i\right)\right)^{\delta_i}
+    \right\}
+  \end{aligned}
+\end{equation}
+So the core to maximize $L\left(F, G\right)$ with respect to $F$ in \eqref{eq:likelihood_full} is the same as that in \eqref{eq:likelihood_core}.
+
 \subsection{Parametric MLE}
 \label{sec:parametric-mle}
 
