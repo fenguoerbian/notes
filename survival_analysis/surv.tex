@@ -271,6 +271,54 @@ $T_i$ is censored when $T_i \leq l_i$.
 
 $l_i \leq T_i \leq u_i$, but only $l_i$ and $u_i$ are observed.
 
+\section{MLE}
+\label{sec:mle}
+
+There is an i.i.d survival time sample $T_1, \cdots, T_n$ with common and unknown c.d.f. $F\left(\cdot\right)$ and the observated data is $\left(U_i, \delta_i\right)$ for $i = 1, \cdots, n$, where
+\[
+  \begin{aligned}
+    & U_i = \mathrm{min}\left(T_i, C_i\right)    \\
+    & \delta_i = 1\left(T_i \leq C_i\right)
+  \end{aligned}
+\]
+and $C_i$ is the ({\color{red} fixed} or {\color{red} random}) censoring time. Let $\bot$ denote ``is independent of''. We assume $T_i\bot C_i$ and $\left(U_i, \delta_i\right)$ are also i.i.d. The observed data consists of two parts. $U_i$ is continuous while $\delta_i$ is binary.
+\[
+  \begin{aligned}
+    & \left(U_i, \delta_i\right) = \left(u_i, 1\right)
+    && \quad\quad T_i \text{ is uncensored at } u_i    \\
+    & \left(U_i, \delta_i\right) = \left(u_i, 0\right)
+    && \quad\quad T_i \text{ is censored at } u_i    \\
+  \end{aligned}
+\]
+
+\textbf{When $C_i$s are known constants}, the likelihood for $\left(U_i, \delta_i\right)$ is
+\[
+  \begin{aligned}
+      L_i\left(F\right) =& \left\{
+    \begin{aligned}
+      & f\left(u_i\right) && \quad \text{if } \delta_i = 1    \\
+      & 1 - F\left(u_i\right) && \quad \text{if } \delta_i = 0
+    \end{aligned}
+  \right.    \\
+  =& f\left(u_i\right)^{\delta_i}\left(1 - F\left(u_i\right)\right)^{1 - \delta_i}
+  \end{aligned}
+\]
+Therefore
+\begin{equation}
+  \label{eq:likelihood_core}
+  L\left(F\right) = \prod\limits_{i = 1}^nL_i\left(F\right)
+  = \prod\limits_{i = 1}^n\left(
+    f\left(u_i\right)^{\delta_i}\left(1 - F\left(u_i\right)\right)^{1 - \delta_i}
+  \right)
+\end{equation}
+
+\subsection{Parametric MLE}
+\label{sec:parametric-mle}
+
+\subsection{Nonparametric MLE}
+\label{sec:nonparametric-mle}
+
+
 
 
 \bibliographystyle{plainnat}
