@@ -185,10 +185,41 @@ $h\left(t\right)$ represents the {\color{red} instant hazard? unified probabilit
   Also to simplify the notation and avoid confusion, we use $S\left(\cdot\right)$ and $F\left(\cdot\right)$ instead of $S_T\left(\cdot\right)$ and $F_T\left(\cdot\right)$ like before.
 \end{proof}
 
+\begin{enumerate}
+\item \textbf{Exponential distribution:} Denote $T\sim EXP(\lambda)$. Then
+  \[
+    \begin{aligned}
+      & f\left(t\right) = \lambda e^{-\lambda t}    \\
+      & F\left(t\right) = 1 - e^{-\lambda t}
+      \quad\quad S\left(t\right) = e^{-\lambda t}    \\
+      & h\left(t\right) = \lambda
+      \quad\quad{\color{red}\text{constant hazard}}\\
+      & H\left(t\right) = \lambda t    \\
+      & \mathrm{E}\left(T\right) = 1 / \lambda
+      \quad\quad \mathrm{Var}\left(T\right) = 1 / \lambda ^ 2
+    \end{aligned}
+  \]
+  
+\item \textbf{Weibull distribution:} Denote $T\sim W\left(p, \lambda\right)$. Then
+  \[
+    \begin{aligned}
+      & f\left(t\right) = p\lambda^pt^{p - 1}\mathrm{exp}\left(-\left(\lambda t\right)^p\right)    \\
+      & F\left(t\right) = 1 - \mathrm{exp}\left(-\left(\lambda t\right)^p\right)
+      \quad\quad S\left(t\right) = \mathrm{exp}\left(-\left(\lambda t\right)^p\right)    \\
+      & h\left(t\right) = p\lambda^pt^{p - 1}    \\
+      & H\left(t\right) = \left(\lambda t\right)^p    \\
+      & \mathrm{E}\left(T\right) = \frac{1}{\lambda} \cdot \Gamma\left(1 + \frac{1}{p}\right)
+      \quad\quad \mathrm{Var}\left(T\right) = \frac{1}{\lambda^2}\left(
+        \Gamma\left(1 + \frac{2}{p}\right)
+        - \Gamma\left(1 + \frac{1}{p}\right)
+      \right)    \\
+      & \mathrm{E}\left(T^m\right) = \frac{1}{\lambda^m}\Gamma\left(1 + \frac{m}{p}\right)
+    \end{aligned}
+  \]
+\end{enumerate}
+
 \subsection{Censor}
 \label{sec:censor}
-
-
 
 \subsubsection{Right censor}
 \label{sec:right-censor}
