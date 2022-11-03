@@ -209,7 +209,194 @@ https://stats.stackexchange.com/questions/113602/
 \end{verbatim}
 Here this $\hat{p}\left(1 - \hat{p}\right)$ can be seen as an estimate for the variance $p\left(1 - p\right)$ when $H_0$ is true by directly plugging in $\hat{p}$. This is \textbf{NOT} a pooled variance for these two samples, which should always be no greater than $\hat{p}\left(1 - \hat{p}\right)$.
 \par
-The power of this test statistic is hard to compute under $H_1$.
+The power of this test statistic is hard to compute under $H_1$. But we can use some approximation again. Here we consider the power of a {\color{red}theoretical} statistics
+\[
+  \tilde{Z} = \frac{\bar{x} - \bar{y}}{
+    \sqrt{
+      \bar{p}\left(1 - \bar{p}\right)
+      \left(\frac{1}{n} + \frac{1}{m}\right)
+    }
+  }
+  ,
+\]
+where $\bar{p} = \frac{p_1 + p_2}{2}$. Note that here $\bar{p}$, the average of $p_1$ and $p_2$, is directly used. While in real life test statistic $Z$, $\hat{p}$ can be seen as an estimate of $\bar{p}$. The distribution of $\bar{x} - \bar{y}$ is asymptotically
+\[
+  \bar{x} - \bar{y} \overset{\mathrm{asymp}}{\sim} N\left(
+    p_1 - p_2,
+    \frac{p_1\left(1 - p_1\right)}{n_1}
+    + \frac{p_2\left(1 - p_2\right)}{n_2}
+  \right)
+\]
+Then the power of $\tilde{Z}$ is
+\[\small
+  \begin{aligned}
+    & P\left(\left|\tilde{Z}\right| \geq z_{1 - \alpha / 2}\right) \geq 1 - \beta    \\
+    \implies & P\left(\tilde{Z} \leq z_{\alpha / 2}\right)
+    + P\left(\tilde{Z} \geq z_{1 - \alpha / 2}\right)
+    \geq 1 - \beta    \\
+    \implies &
+    P\left(
+      \bar{x} - \bar{y}
+      \leq
+      \sqrt{\bar{p}\left(1 - \bar{p}\right)\left(\frac{1}{n_1} + \frac{1}{n_2}\right)}
+      \cdot z_{\alpha / 2}
+    \right)
+    + P\left(
+      \bar{x} - \bar{y}
+      \geq
+      \sqrt{\bar{p}\left(1 - \bar{p}\right)\left(\frac{1}{n_1} + \frac{1}{n_2}\right)}
+      \cdot z_{1 - \alpha / 2}
+    \right)
+    \geq 1 - \beta
+  \end{aligned}
+\]
+For the first part of the probability summation, we can write
+\[
+  \begin{aligned}
+    & P\left(
+      \bar{x} - \bar{y}
+      \leq
+      \sqrt{\bar{p}\left(1 - \bar{p}\right)\left(\frac{1}{n_1} + \frac{1}{n_2}\right)}
+      \cdot z_{\alpha / 2}
+    \right)    \\
+    = & P\left(
+      \frac{\bar{x} - \bar{y} - \left(p_1 - p_2\right)}{
+        \sqrt{
+          \frac{p_1\left(1 - p_1\right)}{n_1}
+          + \frac{p_2\left(1 - p_2\right)}{n_2}
+        }
+      }
+      \leq \frac{
+        \sqrt{\bar{p}\left(1 - \bar{p}\right)\left(\frac{1}{n_1} + \frac{1}{n_2}\right)}
+        \cdot z_{\alpha / 2}
+        -\left(p_1 - p_2\right)
+      }{
+        \sqrt{
+          \frac{p_1\left(1 - p_1\right)}{n_1}
+          + \frac{p_2\left(1 - p_2\right)}{n_2}
+        }
+      }
+    \right)    \\
+    =& P\left(
+      Z_{normal} \leq \frac{
+        \sqrt{\bar{p}\left(1 - \bar{p}\right)\left(1 + \frac{1}{k}\right)}
+        \cdot z_{\alpha / 2}
+        -\sqrt{n_1}\left(p_1 - p_2\right)
+      }{
+        \sqrt{
+          p_1\left(1 - p_1\right)
+          + \frac{p_2\left(1 - p_2\right)}{k}
+        }
+      }
+    \right)   \\
+    =& \Phi\left(
+      \frac{
+        \sqrt{\bar{p}\left(1 - \bar{p}\right)\left(1 + \frac{1}{k}\right)}
+        \cdot z_{\alpha / 2}
+        -\sqrt{n_1}\left(p_1 - p_2\right)
+      }{
+        \sqrt{
+          p_1\left(1 - p_1\right)
+          + \frac{p_2\left(1 - p_2\right)}{k}
+        }
+      }
+    \right)
+    ,
+  \end{aligned}
+\]
+where $Z_{normal}$ is a random variable that follows standard normal distribution and $k = n_2 / n_1$. Same deduction can be done for the second part of the probability summation. Therefore the power is
+\[\small
+  \begin{aligned}
+& P\left(
+      \bar{x} - \bar{y}
+      \leq
+      \sqrt{\bar{p}\left(1 - \bar{p}\right)\left(\frac{1}{n_1} + \frac{1}{n_2}\right)}
+      \cdot z_{\alpha / 2}
+    \right)
+    + P\left(
+      \bar{x} - \bar{y}
+      \geq
+      \sqrt{\bar{p}\left(1 - \bar{p}\right)\left(\frac{1}{n_1} + \frac{1}{n_2}\right)}
+      \cdot z_{1 - \alpha / 2}
+    \right)    \\
+    =& \Phi\left(
+      \frac{
+        \sqrt{\bar{p}\left(1 - \bar{p}\right)\left(1 + \frac{1}{k}\right)}
+        \cdot z_{\alpha / 2}
+        -\sqrt{n_1}\left(p_1 - p_2\right)
+      }{
+        \sqrt{
+          p_1\left(1 - p_1\right)
+          + \frac{p_2\left(1 - p_2\right)}{k}
+        }
+      }
+    \right)
+    + \left(
+      1 -
+      \Phi\left(
+      \frac{
+        \sqrt{\bar{p}\left(1 - \bar{p}\right)\left(1 + \frac{1}{k}\right)}
+        \cdot z_{1 - \alpha / 2}
+        -\sqrt{n_1}\left(p_1 - p_2\right)
+      }{
+        \sqrt{
+          p_1\left(1 - p_1\right)
+          + \frac{p_2\left(1 - p_2\right)}{k}
+        }
+      }
+    \right)
+  \right)    \\
+  \geq& 1 - \beta
+  \end{aligned}
+\]
+W.l.o.g, assume $p_1 > p_2$. Then the power will mostly be provided by the second part of the probability summation. Loosely speaking, we can require
+\[
+  1 -
+  \Phi\left(
+    \frac{
+      \sqrt{\bar{p}\left(1 - \bar{p}\right)\left(1 + \frac{1}{k}\right)}
+      \cdot z_{1 - \alpha / 2}
+      -\sqrt{n_1}\left(p_1 - p_2\right)
+    }{
+      \sqrt{
+        p_1\left(1 - p_1\right)
+        + \frac{p_2\left(1 - p_2\right)}{k}
+      }
+    }
+  \right)
+  \geq 1 - \beta
+  ,
+\]
+which means
+\[
+  \frac{
+    \sqrt{\bar{p}\left(1 - \bar{p}\right)\left(1 + \frac{1}{k}\right)}
+    \cdot z_{1 - \alpha / 2}
+    -\sqrt{n_1}\left(p_1 - p_2\right)
+  }{
+    \sqrt{
+      p_1\left(1 - p_1\right)
+      + \frac{p_2\left(1 - p_2\right)}{k}
+    }
+  }
+  \leq z_{\beta}
+\]
+Hence
+\begin{equation}
+  \label{eq:sample_size_normal_approximation}
+    n_1 \geq \frac{\left(
+      \sqrt{\bar{p}\left(1 - \bar{p}\right)\left(1 + \frac{1}{k}\right)}
+      \cdot z_{\alpha / 2}
+      + \sqrt{
+      p_1\left(1 - p_1\right)
+      + \frac{p_2\left(1 - p_2\right)}{k}
+    }
+    z_{\beta}
+    \right)^2
+  }{\left(p_1 - p_2\right)^2}
+  .
+\end{equation}
+When $p_1 < p_2$, then the first part of probability summation provdes most power. But luckily, the results for sample size $n_1$ takes the same form as that in \eqref{eq:sample_size_normal_approximation}.
 \par
 \textbf{Note: } One can also use the same idea in the ``t-test.pdf'' notes and propose the test statistic
 \[
