@@ -281,7 +281,7 @@ There is an i.i.d survival time sample $T_1, \cdots, T_n$ with common and unknow
     & \delta_i = 1\left(T_i \leq C_i\right)
   \end{aligned}
 \]
-and $C_i$ is the ({\color{red} fixed} or {\color{red} random}) censoring time. Let $\bot$ denote ``is independent of''. We assume $T_i\bot C_i$ and $\left(U_i, \delta_i\right)$ are also i.i.d. The observed data consists of two parts. $U_i$ is continuous while $\delta_i$ is binary.
+and $C_i$ is the ({\color{red} fixed} or {\color{red} random}) censoring time. Let $\bot$ denote ``is independent of''. We assume $T_i\bot C_i$ ({\color{red} Non-informative censoring, the key assumption}) and $\left(U_i, \delta_i\right)$ are also i.i.d. The observed data consists of two parts. $U_i$ is continuous while $\delta_i$ is binary.
 \[
   \begin{aligned}
     & \left(U_i, \delta_i\right) = \left(u_i, 1\right)
@@ -310,7 +310,12 @@ Therefore
   = \prod\limits_{i = 1}^n\left(
     f\left(u_i\right)^{\delta_i}\left(1 - F\left(u_i\right)\right)^{1 - \delta_i}
   \right)
+  = \prod\limits_{i = 1}^n\left(
+    h\left(u_i\right)^{\delta_i}S\left(u_i\right)
+  \right)
+  .
 \end{equation}
+The last equality relies on the fact that $f\left(t\right) = h\left(t\right)S\left(t\right)$.
 
 \textbf{When $C_i$s are i.i.d. $\sim G$}, where $G$ is continuous with p.d.f $g$. Then we have
 \[
