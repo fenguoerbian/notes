@@ -1,0 +1,237 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{geometry}
+\geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+\renewcommand{\textfraction}{0.15}
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\bottomfraction}{0.65}
+\renewcommand{\floatpagefraction}{0.60}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{mathrsfs}
+\usepackage{amsthm}
+\usepackage{extarrows}
+\usepackage{bm}
+% \newcommand{\bm}{\symbfit}    % `bm` confilicts with `unicode-math`. In that case use \symbfit for bold math symbols
+\usepackage{graphicx}
+\usepackage[section]{placeins}
+\usepackage{flafter}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{color}
+\usepackage{multirow}
+\usepackage{natbib}
+% \usepackage{enumerate}
+\usepackage{enumitem}    % more flexible than `enumerate` package, the reference will carry the whole label appearance, not just the counter, unlike the `enumerate` package.
+\usepackage{upgreek}    % 'upgreek' letters
+
+% \pdfstringdefDisableCommands{\let\bm=\relax}
+
+\newtheorem{thm}{Theorem}
+\newtheorem{cor}{Corollary}
+\newtheorem{assum}{Assumption}
+\newtheorem{rem}{Remark}
+\newtheorem{lem}{Lemma}
+\newtheorem{prop}{Proposition}
+
+\setcounter{topnumber}{5}    % Maximum number of floats that can appear at the top of a text page; default 2. 
+\setcounter{bottomnumber}{5}   % Maximum number of floats that can appear at the bottom of a text page; default 1. 
+\setcounter{totalnumber}{10}    % Maximum number of floats that can appear on a text page; default 3. 
+
+\DeclareMathOperator*{\argmaxdown}{arg\,max}
+\DeclareMathOperator*{\argmindown}{arg\,min}
+\DeclareMathOperator{\argmax}{arg\,max}
+\DeclareMathOperator{\argmin}{arg\,min}
+
+% cross-reference to other files
+% the externaldocument should be compiled 
+% (and at least twice if you're using xr-hyper)
+% \usepackage{xr-hyper}
+% \usepackage{xr}
+
+% --- external document (ordinary setting) ---
+% \externaldocument{external_tex_file}
+% --- end of ordinary setting ---
+
+% --- external document (overleaf setting) ---
+% externaldocument settings for Overleaf
+% \makeatletter
+% \newcommand*{\addFileDependency}[1]{% argument=file name and extension
+% \typeout{(#1)}
+% \@addtofilelist{#1}
+% \IfFileExists{#1}{}{\typeout{No file #1.}}
+% }
+%   \makeatother
+%   \newcommand*{\myexternaldocument}[1]{%
+%   \externaldocument{#1}%
+%   \addFileDependency{#1.tex}%
+%   \addFileDependency{#1.aux}%
+% }
+%   \myexternaldocument{external_tex_file}
+%   --- end of overleaf setting ---
+
+%   mathtools can be used to define labeling format for equations
+%   one can use \eqref for a reference to a labeled equation.
+\usepackage{mathtools}
+\newtagform{supp}{(S-}{)}    % define a equation labeling format for suppliment
+\usetagform{supp}            % use the supp format
+\usetagform{default}         % use the default format
+
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+% package for hyperlinks
+% It's error-prone because hyper link is quite difficult
+% due to the fact the typesetting environment is complex.
+% So you can disable this package and finish the document.
+% Then sort out the hyperlink thing.
+\usepackage[colorlinks,linkcolor=red,anchorcolor=blue,citecolor=green,CJKbookmarks=True]{hyperref}
+
+% package for displaying highlighted codes
+\usepackage{minted}
+
+% package for input codec and output rendering font
+\usepackage[utf8]{inputenc}    % it is always good practice to use utf8
+% you can also try latin1, latin2, cp1252 and cp1250
+\usepackage[T1]{fontenc}    % the default is T0, which only contains 128 characters
+% you can try T1, T2A, T2B
+% you can refer to https://www.overleaf.com/learn/latex/international_language_support#Font_encoding
+% for more details.
+
+
+\title{Fisher Information in MLE}
+\author{Chao Cheng}
+\date{\today}
+
+
+
+\begin{document}
+\maketitle
+\tableofcontents{}
+
+
+Let i.i.d sample $x_1, \cdots, x_n \sim F_x$. The p.d.f is $f_x\left(x\middle|\theta\right)$ where $\theta$ is the parameter and we use $\theta_0$ to denote the value of underlying parameter $\theta$. Then the log-likelihood
+\[
+  l = \mathrm{log}L = \sum\limits_{i = 1}^n\mathrm{log}f\left(x_i\middle|\theta\right)
+  .
+\]
+
+\section{Score function}
+\label{sec:score-function}
+
+The {\color{red} score function} is the first derivative ({\color{red} the gradient}) of log-likelihood
+\begin{equation}
+  \label{eq:score_function}
+  S\left(\bm{x}\middle|\theta\right)
+  = \frac{\partial l}{\partial \theta}
+\end{equation}
+The MLE $\hat{\theta}$ makes $S\left(\bm{x}\middle|\theta\right)$ equals to zero:
+\[
+  S\left(\bm{x}\middle|\hat{\theta}\right) = 0
+  .
+\]
+Also under some regularity conditions
+\[
+  \mathrm{E}_{\theta_0}\left(
+    S\left(\bm{x}\middle|\theta_0\right)
+  \right)
+  = \bm{\int} \frac{\partial l}{\partial\theta}
+  \cdot f\left(\bm{x}\middle|\theta_0\right)
+  \mathrm{d}\bm{x}
+  = \bm{\int} \sum\limits_{i = 1}^n\frac{\partial\mathrm{log}f\left(x_i\middle|\theta_0\right)}{\partial \theta}
+  \prod\limits_{i = 1}^nf\left(x_i\middle|\theta_0\right)
+  \mathrm{d}x_1\cdots\mathrm{d}x_n
+\]
+Note that
+\[
+  \begin{aligned}
+    & \bm{\int} \frac{\partial\mathrm{log}f\left(x_1\middle|\theta_0\right)}{\partial \theta}
+      \prod\limits_{i = 1}^nf\left(x_i\middle|\theta_0\right)
+      \mathrm{d}x_1\cdots\mathrm{d}x_n    \\
+    =& \bm{\int}
+       \frac{\partial f\left(x_1\middle|\theta_0\right)}{\partial \theta}
+       \cdot \frac{1}{f\left(x_1\middle|\theta_0\right)}
+       \prod\limits_{i = 1}^nf\left(x_i\middle|\theta_0\right)
+       \mathrm{d}x_1\cdots\mathrm{d}x_n    \\
+    =& \bm{\int}
+       \left(
+       \int \frac{\partial f\left(x_1\middle|\theta_0\right)}{\partial \theta}
+       \mathrm{d}x_1
+       \right)
+  \mathrm{E}_{\theta_0}\left(
+    S\left(\bm{x}\middle|\theta_0\right)
+  \right)       \prod\limits_{i = 2}^nf\left(x_i\middle|\theta_0\right)
+       \mathrm{d}x_2\cdots\mathrm{d}x_n    \\
+    =& \frac{\partial}{\partial\theta}
+       \int f\left(x_1\middle|\theta_0\right)\mathrm{d}x_1
+       \cdot \bm{\int}
+       \prod\limits_{i = 2}^nf\left(x_i\middle|\theta_0\right)
+       \mathrm{d}x_2\cdots\mathrm{d}x_n    \\
+    =& 0
+       .
+  \end{aligned}
+\]
+Therefore
+\[
+  \mathrm{E}_{\theta_0}\left(
+    S\left(\bm{x}\middle|\theta_0\right)
+  \right)
+  = 0
+  .
+\]
+
+\section{Fisher information}
+\label{sec:fisher-information}
+
+Fisher information (matrix) is the second order moment of the score function
+\begin{equation}
+  \label{eq:def_fisher_info}
+  I\left(\theta\right) = \mathrm{E}_{\theta_0}\left(
+    S\left(\bm{x}\middle|\theta\right)
+    S\left(\bm{x}\middle|\theta\right)^\top
+  \right)
+  .
+\end{equation}
+Since $  \mathrm{E}_{\theta_0}\left(S\left(\bm{x}\middle|\theta_0\right)\right)= 0$, the fisher information is the covariance matrix of $S\left(\bm{x}\middle|\theta_0\right)$
+\[
+  I\left(\theta_0\right) = \mathrm{Var}_{\theta_0}\left(S\left(\bm{x}\middle|\theta_0\right)\right)
+  .
+\]
+Also it can be shown that
+\[
+  I\left(\theta_0\right) =
+  -\mathrm{E}\left(
+    \left.\frac{\partial^2l}{\partial\theta^2}\right|_{\theta = \theta_0}
+  \right)
+  ,
+\]
+and
+\[
+  I^\star\left(\theta_0\right) = I\left(\theta_0\right) / n,
+\]
+where $I^{\star}\left(\theta_0\right)$ is the fisher info for only one single sample. Additionally
+\[
+  \sqrt{n}\left(
+    \hat{\theta} - \theta_0
+  \right)
+  \overset{D}{\rightarrow}
+  N\left(0, I^\star\left(\theta_0\right)^{-1}\right)
+  .
+\]
+
+\bibliographystyle{plainnat}
+\bibliography{../ref}
+
+
+
+
+
+\end{document}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
