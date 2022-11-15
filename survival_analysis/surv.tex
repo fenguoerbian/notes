@@ -359,6 +359,40 @@ So the core to maximize $L\left(F, G\right)$ with respect to $F$ in \eqref{eq:li
 \subsection{Parametric MLE}
 \label{sec:parametric-mle}
 
+Suppose $T_1, \cdots, T_n$ are i.i.d. $Exp\left(\lambda\right)$, and subject to noninformative right censoring. Then \eqref{eq:likelihood_core} becomes
+
+\[
+  L = L\left(\lambda\right) =
+  \prod\limits_{i = 1}^m\left\{
+    \left(
+      \lambda e^{-\lambda u_i}
+    \right)^{\delta_i}
+    \left(
+      e^{-\lambda u_i}
+    \right)^{1 - \delta_i}
+  \right\}
+  = \lambda^{\sum\limits_{i = 1}^n \delta_i}
+  e^{-\lambda \sum\limits_{i = 1}^n u_i}
+  = \lambda^r
+  e^{-\lambda W}
+  ,
+\]
+where $r = \sum\limits_{i = 1}^n \delta_i$ is the number of observed events and $W = \sum\limits_{i = 1}^n u_i$ is the total of observed time. Therefore $\mathrm{log}L = r\mathrm{log}\lambda - \lambda W$ and the MLE for $\lambda$ is
+\[
+  \hat{\lambda} = \frac{r}{W}
+  .
+\]
+Furthermore, we know that
+\[
+  \left.
+    \begin{aligned}
+      \frac{\partial \mathrm{log}L}{\partial \lambda} &= \frac{r}{\lambda} - W    \\
+      \frac{\partial^2 \mathrm{log}L}{\partial \lambda^2} &= - \frac{r}{\lambda^2}
+    \end{aligned}
+  \right\}
+  \implies
+\]
+
 \subsection{Nonparametric MLE}
 \label{sec:nonparametric-mle}
 
