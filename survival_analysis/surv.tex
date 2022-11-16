@@ -359,6 +359,9 @@ So the core to maximize $L\left(F, G\right)$ with respect to $F$ in \eqref{eq:li
 \subsection{Parametric MLE}
 \label{sec:parametric-mle}
 
+\subsubsection{One-sample setting}
+\label{sec:one-sample-setting}
+
 Suppose $T_1, \cdots, T_n$ are i.i.d. $Exp\left(\lambda\right)$, and subject to noninformative right censoring. Then \eqref{eq:likelihood_core} becomes
 
 \[
@@ -384,13 +387,103 @@ where $r = \sum\limits_{i = 1}^n \delta_i$ is the number of observed events and 
 \]
 Furthermore, we know that
 \[
-  \left.
+  \left\{
     \begin{aligned}
       \frac{\partial \mathrm{log}L}{\partial \lambda} &= \frac{r}{\lambda} - W    \\
       \frac{\partial^2 \mathrm{log}L}{\partial \lambda^2} &= - \frac{r}{\lambda^2}
     \end{aligned}
-  \right\}
-  \implies
+  \right.
+  .
+\]
+Based on properties of fisher information ({\color{blue} See the notes about fisher information for more details.}), we know that at the {\color{red}true underlying value} $\lambda$, it must satisfy
+\begin{equation}
+  \label{eq:fisher_info_property}
+  \left\{
+    \begin{aligned}
+      \mathrm{E}\frac{\partial \mathrm{log}L}{\partial \lambda}
+      &= \frac{\mathrm{E}r}{\lambda} - \mathrm{E}W
+      &&= 0    \\
+      I\left(\lambda\right)
+      &= -\mathrm{E}\frac{\partial^2 \mathrm{log}L}{\partial \lambda^2}
+      &&= \frac{\mathrm{E}r}{\lambda^2}    \\
+      I^\star\left(\lambda\right)
+      &= \frac{1}{n}I\left(\lambda\right)
+      &&= \frac{\mathrm{E}r}{n\lambda^2}
+    \end{aligned}
+  \right.
+  .    
+\end{equation}
+Note that in \eqref{eq:fisher_info_property}, $r$ and $W$ are random variables. And the probability to observe an event is
+\[
+  p = P\left(\delta_i = 1\right)
+  = P\left(U_i \leq \infty, \delta_i = 1\right)
+  = \int_0^\infty f\left(t\right)\left(1 - G\left(t\right)\right)\mathrm{d}t
+  .
+\]
+Therefore $r\sim binomial\left(n, p\right)$, $\mathrm{E}r = np$. And from property of MLE, we can write
+\[
+  \frac{\sqrt{n}\left(\hat{\lambda} - \lambda\right)}{\sqrt{I^\star\left(\lambda\right)^{-1}}}
+  = \frac{\left(\hat{\lambda} - \lambda\right)}{\sqrt{I\left(\lambda\right)^{-1}}}
+  \overset{D}{\rightarrow}
+  N\left(0, 1\right)
+  ,
+\]
+which means approximately
+\[
+  \hat{\lambda}
+  \overset{\mathrm{apx}}{\sim}
+  N\left(\lambda, I\left(\lambda\right)^{-1}\right)
+  = N\left(\lambda, \frac{\lambda^2}{np}\right)
+  .
+\]
+Unfortunately, both $\lambda$ and $p$ (essentially $G\left(\cdot\right)$) are unknown. We plug in the estimation $\hat{\lambda} = r / W$ and $\hat{p} = r / W$ and apply Slutsky's theorem. This means for the purpose of estimation, we use
+\begin{equation}
+  \label{eq:fisher_info_estimate}
+  \left\{
+    \begin{aligned}
+      & \hat{\lambda} = \frac{r}{W}    \\
+      & \hat{I\left(\lambda\right)} = \frac{r}{\hat{\lambda}^2}
+      ,\quad
+      \hat{I^\star\left(\lambda\right)} = \frac{r}{n\hat{\lambda}^2}
+    \end{aligned}
+  \right.
+\end{equation}
+Not that unlike \eqref{eq:fisher_info_property}, here in \eqref{eq:fisher_info_estimate}, $r$ and $W$ are observations. And we have
+\begin{equation}
+  \label{eq:normal_approximation}
+    \hat{\lambda} \overset{\mathrm{apx}}{\sim}
+  N\left(\lambda, \frac{r}{W^2}\right)
+  .
+\end{equation}
+Note that it turns out that a better approximation is to assume $\mathrm{log}\hat{\lambda}$ is normal. Using the delta method, this gives
+\begin{equation}
+  \label{eq:lognormal_approximation}
+    \mathrm{log}\hat{\lambda}
+  \overset{\mathrm{apx}}{\sim}
+  N\left(
+    \mathrm{log}\lambda,
+    \frac{1}{np}
+  \right)
+  \approx
+  N\left(\mathrm{log}\lambda, \frac{1}{r}\right)
+  .
+\end{equation}
+\par
+Now based on \eqref{eq:normal_approximation} or \eqref{eq:lognormal_approximation}, we can construct CI on $\lambda$, which also means we can perform hypothesis testing about $\lambda$.
+
+\subsubsection{Two-sample setting}
+\label{sec:two-sample-setting}
+
+For two samples $x_1, \cdots, x_n$ and $y_1, \cdots, y_m$, both follow exponential distribution with parameters $\lambda_1$ and $\lambda_2$. Assume noninformative censoring in each group, using same tech in Section~\ref{sec:one-sample-setting} we can get
+\[
+  Z = \frac{
+    \mathrm{log}\hat{\lambda_1} - \mathrm{log}\hat{\lambda_2}
+  }{
+    \sqrt{\frac{1}{r_1} + \frac{1}{r_2}}
+  }
+  \overset{\mathrm{apx}}{\sim}
+  N\left(0, 1\right)
+  .
 \]
 
 \subsection{Nonparametric MLE}
