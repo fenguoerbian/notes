@@ -499,7 +499,7 @@ where $T_i$s are i.i.d survival times and $C_i$s are i.i.d {\color{red} non-info
 \subsubsection{Discrete time points}
 \label{sec:discrete-time-points}
 
-To begin with, let's assume $F\left(\cdot\right)$ takes discrete values with mass points at $\left\{v_i\right\}$s: $0 \leq v_1 < v_2 < \cdots < ...$, and define the discrete hazard functions as
+To begin with, let's assume $F\left(\cdot\right)$ takes discrete values with mass points at $\left\{v_i\right\}$s: $0 \leq v_1 < v_2 < \cdots < \cdots$, and define the discrete hazard functions as
 \begin{equation}
   \label{eq:def_discrete_hazard_function}
     \begin{aligned}
@@ -548,16 +548,157 @@ Then if we want to estimate $F\left(\cdot\right)$ from likelihood, either \eqref
     .
   \end{aligned}
 \]
-Let $I\left(\cdot\right)$ be an index mapping function that returns the index in $v_i$s that matches $u_i$, i.e. $I\left(u_i\right) = j$ if and only if $v_j = u_i$. Then we know that $u_i = v_{I\left(u_i\right)}$ and we can write
-\[
-  \begin{aligned}
+Let $I\left(\cdot\right)$ be an index mapping function that returns the index in $v_i$s that matches $u_i$, i.e. $I\left(u_i\right) = j$ if and only if $u_i\in\left[v_j, v_{j + 1}\right)$. Then we know that $u_i = v_{I\left(u_i\right)}$ and we can write
+\begin{equation}
+  \label{eq:discrete_likelihood}
+    \begin{aligned}
     L\left(F\right)
     &= \prod\limits_{\left\{u_i\middle|\delta_i = 1\right\}}
-    f\left(v_{I\left(u_i\right)}\right)
-    \prod\limits_{\left\{u_i\middle|\delta_i = 0\right\}}
-    S\left(v_{I\left(u_i\right)}\right)
+      f\left(v_{I\left(u_i\right)}\right)
+      \prod\limits_{\left\{u_i\middle|\delta_i = 0\right\}}
+      S\left(v_{I\left(u_i\right)}\right)    \\
+    &= \left[
+      \prod\limits_{\left\{u_i\middle|\delta_i = 1, u_i = v_1\right\}}
+      f\left(v_1\right)
+      \right]
+      \left[
+      \prod\limits_{\left\{u_i\middle|\delta_i = 1, u_i \neq v_1\right\}}
+      f\left(v_{I\left(u_i\right)}\right)
+      \right]
+      \left[
+      \prod\limits_{\left\{u_i\middle|\delta_i = 0\right\}}
+      \prod\limits_{k = 1}^{I\left(u_i\right)}\left(1 - h_k\right)
+      \right]    \\
+    &= \left[
+      \prod\limits_{\left\{u_i\middle|\delta_i = 1, u_i = v_1\right\}}
+      h_1
+      \right]
+      \left[
+            \prod\limits_{\left\{u_i\middle|\delta_i = 1, u_i \neq v_1\right\}}
+      \left(
+      h_{I\left(u_i\right)}
+      \prod\limits_{k = 1}^{I\left(u_i\right) - 1}
+      \left(1 - h_k\right)
+      \right)
+      \right]
+      \left[
+      \prod\limits_{\left\{u_i\middle|\delta_i = 0\right\}}
+      \prod\limits_{k = 1}^{I\left(u_i\right)}\left(1 - h_k\right)
+      \right]    \\
+    &= \left[
+      \prod\limits_{\left\{u_i\middle|\delta_i = 1\right\}}
+      h_{I\left(u_i\right)}
+      \right]
+      \left[
+      \prod\limits_{\left\{u_i\middle|\delta_i = 1, u_i \neq v_1\right\}}
+      \prod\limits_{k = 1}^{I\left(u_i\right) - 1}
+      \left(1 - h_k\right)
+      \right]
+      \left[
+      \prod\limits_{\left\{u_i\middle|\delta_i = 0\right\}}
+      \prod\limits_{k = 1}^{I\left(u_i\right)}\left(1 - h_k\right)
+      \right]
+      .
   \end{aligned}
+\end{equation}
+Note that in \eqref{eq:discrete_likelihood}, the first part is
+\begin{equation}
+  \label{eq:discrete_likelihood_part1}
+  \prod\limits_{\left\{u_i\middle|\delta_i = 1\right\}}
+  h_{I\left(u_i\right)}
+  = \prod\limits_{j = 1}^{\infty}
+  h_j^{d_j}
+  ,
+\end{equation}
+where $d_j = \sum\limits_{i = 1}^n\delta_i \cdot 1\left(u_i = v_j\right)$ is the number of event at $v_j$. The second and third part in \eqref{eq:discrete_likelihood} is
+\begin{equation}
+  \label{eq:discrete_likelihood_part23}
+  \begin{aligned}
+    & \left[
+      \prod\limits_{\left\{u_i\middle|\delta_i = 1, u_i \neq v_1\right\}}
+      \prod\limits_{k = 1}^{I\left(u_i\right) - 1}
+      \left(1 - h_k\right)
+      \right]
+      \left[
+      \prod\limits_{\left\{u_i\middle|\delta_i = 0\right\}}
+      \prod\limits_{k = 1}^{I\left(u_i\right)}\left(1 - h_k\right)
+      \right]    \\
+    =& \left[
+       \prod\limits_{k = 1}^{\infty}
+       \prod\limits_{\left\{
+       i\middle|\delta_i = 1, I\left(u_i\right) - 1 \geq k
+       \right\}}
+       \left(1 - h_k\right)
+       \right]
+       \left[
+       \prod\limits_{k = 1}^{\infty}
+       \prod\limits_{\left\{i|\delta_i = 0, I\left(u_i\right)\geq k\right\}}
+       \left(1 - h_k\right)^{}
+       \right]    \\
+    =& \left[
+       \prod\limits_{k = 1}^{\infty}
+       \left(1 - h_k\right)^{\sum\limits_{i = 1}^n \delta_i \cdot 1\left(I\left(u_i\right) - 1 \geq k\right)}
+       \right]
+       \left[
+       \prod\limits_{k = 1}^{\infty}
+       \left(1 - h_k\right)^{\sum\limits_{i = 1}^n \left(1 - \delta_i\right) \cdot 1\left(I\left(u_i\right) \geq k\right)}
+       \right]    \\
+    =& \left[
+       \prod\limits_{k = 1}^{\infty}
+       \left(1 - h_k\right)^{
+       \sum\limits_{i = 1}^n \delta_i \cdot \left[
+       1\left(I\left(u_i\right) \geq k\right)
+       - 1\left(I\left(u_i\right) = k\right)
+       \right]
+       }
+       \right]
+       \left[
+       \prod\limits_{k = 1}^{\infty}
+       \left(1 - h_k\right)^{\sum\limits_{i = 1}^n \left(1 - \delta_i\right) \cdot 1\left(I\left(u_i\right) \geq k\right)}
+       \right]    \\
+    =& \prod\limits_{k = 1}^{\infty}
+       \left(1 - h_k\right)^{Y\left(v_k\right) - d_k}
+       ,
+  \end{aligned}
+\end{equation}
+where
+\[
+  Y\left(v_k\right) = \sum\limits_{i = 1}^n1\left(I\left(u_i\right)\geq k\right)
+  = \sum\limits_{i = 1}^n1\left(u_i \geq v_k\right)
 \]
+is the number of subjects that are ``at risk'' at time $v_k$. \textbf{Note: }by the word ``at risk'', we also count the subjects that died just at $v_k$, which means $Y\left(v_j\right) \geq d_j$.
+\par
+Then from \eqref{eq:discrete_likelihood_part1} and \eqref{eq:discrete_likelihood_part23} we know that \eqref{eq:discrete_likelihood} can be written as
+\begin{equation}
+  \label{eq:discrete_likelihood_rewrite}
+  L\left(F\right) = \prod\limits_{j = 1}^{\infty}h_j^{d_j}\left(1 - h_j\right)^{Y\left(v_j\right) - d_j}
+  .
+\end{equation}
+And the NPMLE is just
+\begin{equation}
+  \label{eq:discrete_NPMLE_hazard}
+  \hat{h}_j = \frac{d_j}{Y\left(v_j\right)}
+\end{equation}
+for $j = 1, \cdots, \infty$ and $Y\left(v_j\right) > 0$. \eqref{eq:discrete_NPMLE_hazard} implies some properties of this discrete NPMLE:
+\begin{enumerate}
+\item This estimation makes sense: the probability of dying at $v_j$ given the fact you live past $v_{j - 1}$ can be estimated by the proportion of subjects die at $v_j$ over the number of ``at risk'' at $v_j$.
+\item $\hat{h}_j$ is only defined at time points where $Y\left(v_j\right) > 0$. Therefore, for large enough $v_j$, there will be no observation, no matter event or censoring, resulting inability to make estimation about hazard at those time points.
+\item For time points where $Y\left(v_j\right) >0$ but no event occurs, the hazard is estimated to be 0.
+\end{enumerate}
+This means
+\[
+  \hat{S}\left(t\right) =\left\{
+  \begin{aligned}    
+    & 1 && t < v_1    \\
+    & \prod\limits_{j = 1}^{k}\left(1 - \hat{h}_j\right) && v_{k} \leq t < v_{k + 1}
+  \end{aligned}
+  \right.
+\]
+\textbf{Note: } $S\left(\cdot\right)$ is defined to be {\color{red} right-continuous}.
+\par
+Let $v_g$ denotes the largest time point with observation, which means $Y\left(v_g\right) > 0$ and $Y\left(v_{g+ 1}\right) = 0$. Then either $d_g = Y\left(v_g\right)$ or $d_g < Y\left(v_g\right)$. If $d_g = Y\left(v_g\right)$, then $\hat{h}_g = 1$ and $\hat{S}\left(t\right) = 0$ for $t \geq v_g$. But if $d_g < Y\left(v_g\right)$, then $\hat{S}\left(t\right) > 0$ for $v_g \leq t < v_{g+1}$ and $\hat{S}\left(t\right)$ is undefined on $t\in\left[v_{g + 1}, \infty\right)$.
+\par
+Here one might say that the KM estimator is undefined on $t\in\left[v_{g+ 1}, \infty\right)$. Or another explanation is that NPMLE is not unique and any survival function that is identical to $\hat{S}$ at previous time is the NPMLE.
 
 \bibliographystyle{plainnat}
 \bibliography{../ref}
