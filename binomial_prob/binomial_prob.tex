@@ -413,6 +413,8 @@ And for Case 2
   ,
 \]
 where $S_p^2 = \frac{\left(n - 1\right)S_x^2 + \left(m - 1\right)S_y^2}{n + m - 2}$ and $\Delta = p_1 - p_2$. But again it is hard to evaluate the testing power of these statistics.
+\par
+\textbf{Another Note: } Normal approximation is somewhat conservative when computing power. In softwares they often use different algorithm/methods. These can be found in \mintinline{r}{R} functions such as: \mintinline{r}{rpact::getSampleSizeRates}, \mintinline{r}{Hmisc::samplesize.bin} and \mintinline{r}{gsDesign::nBinomial}.
 
 
 \section{Chi-square approximation}
