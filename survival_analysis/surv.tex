@@ -138,8 +138,9 @@ $S_T\left(t\right)$ is often called the {\color{red} survival function?} and cle
   .
 \]
 The \textbf{hazard function} $h\left(t\right)$ is defined as
-\[
-  h\left(t\right) = \underset{\Delta\to0}{\mathrm{lim}}
+\begin{equation}
+  \label{eq:def_hazard_function}
+    h\left(t\right) = \underset{\Delta\to0}{\mathrm{lim}}
   \frac{
     P\left(
       T \leq t + \Delta \middle| T > t
@@ -151,7 +152,7 @@ The \textbf{hazard function} $h\left(t\right)$ is defined as
   }{\Delta \cdot S_T\left(t\right)}
   = \frac{f_T\left(t\right)}{S_T\left(t\right)}
   .
-\]
+\end{equation}
 $h\left(t\right)$ represents the {\color{red} instant hazard? unified probability?} that the subject will be dead instantly after $t$ given the fact that it's alive at $t$. And the \textbf{cummulative hazard function} is
 \[
   H\left(t\right) = \int_0^th\left(x\right)\mathrm{d}x
@@ -489,13 +490,74 @@ For two samples $x_1, \cdots, x_n$ and $y_1, \cdots, y_m$, both follow exponenti
 \subsection{Nonparametric MLE}
 \label{sec:nonparametric-mle}
 
-The NPMLE of survivor function $S\left(\cdot\right)$ based on i.i.d. survival time and non-informative right censoring is often known as Kaplan-Meier estimator or the Product-Limit Estimator. Here we provide some heuristic development, but formal proofs will be deferred to other notes.
+The NPMLE of survivor function $S\left(\cdot\right)$ based on i.i.d. survival time and non-informative right censoring is often known as Kaplan-Meier estimator or the Product-Limit Estimator. Here we provide some heuristic development, but formal proofs will be deferred to other notes. With the same notation as before, the observed data is
+\[
+  U_i = \mathrm{min}\left(T_i, C_i\right),\quad\quad \delta_i = 1\left(T_i \leq C_i\right),
+\]
+where $T_i$s are i.i.d survival times and $C_i$s are i.i.d {\color{red} non-informative} censoring time. The full likelihood is already shown in \eqref{eq:likelihood_full}.
 
 \subsubsection{Discrete time points}
 \label{sec:discrete-time-points}
 
-To begin with, 
-
+To begin with, let's assume $F\left(\cdot\right)$ takes discrete values with mass points at $\left\{v_i\right\}$s: $0 \leq v_1 < v_2 < \cdots < ...$, and define the discrete hazard functions as
+\begin{equation}
+  \label{eq:def_discrete_hazard_function}
+    \begin{aligned}
+    & h_1 = P\left(T = v_1\right)    \\
+    & h_j = P\left(T = v_j\middle| T > v_{j - 1}\right)
+    \quad\quad j > 1.
+  \end{aligned}
+\end{equation}
+Note that \eqref{eq:def_discrete_hazard_function} can be seen as discrete version of \eqref{eq:def_hazard_function}. And for $t \in {\color{red} \left[\right.} v_j, v_{j + 1}\left.\right)$,
+\[
+  \begin{aligned}
+    S\left(t\right)
+    &\overset{\mathrm{def}}{=} P\left(T {\color{red} >} t\right) = P\left(T {\color{red} > }v_j\right)    \\
+    &= P\left(T > v_{j}\middle|T > v_{j - 1}\right)P\left(T > v_{j - 1}\right)    \\
+    &= P\left(T > v_{j}\middle|T > v_{j - 1}\right)
+    P\left(T > v_{j - 1}\middle| T > v_{j - 2}\right)P\left(T > v_{j - 2}\right)    \\
+    & = \cdots    \\
+    &= P\left(T > v_1\right)\prod\limits_{i = 1}^{j - 1}P\left(T > v_{i + 1}\middle| T > v_{i}\right)    \\
+    &= \prod\limits_{i = 1}^j\left(1 - h_i\right)
+    \quad\quad j > 1
+    .
+  \end{aligned}
+\]
+For discrete case, the p.m.f $f\left(\cdot\right)$ is
+\[
+  \begin{aligned}
+    f\left(v_1\right) &= P\left(T = v_1\right) = h_1    \\
+    f\left(v_j\right) &= P\left(T = v_j\right)
+    = P\left(T = v_j\middle|T > v_{j - 1}\right)P\left(T > v_{j - 1}\right)
+    = h_j\prod\limits_{i = 1}^{j - 1}\left(1 - h_i\right)
+    .
+  \end{aligned}
+\]
+Then if we want to estimate $F\left(\cdot\right)$ from likelihood, either \eqref{eq:likelihood_core} or \eqref{eq:likelihood_full}, we are just trying to maximizing
+\[
+  \begin{aligned}
+    L\left(F\right)
+    &= \prod\limits_{i = 1}^n\left\{
+      f\left(u_i\right)^{\delta_i}
+      \left(1 - F\left(u_i\right)\right)^{1 - \delta_i}
+    \right\}    \\
+    &= \prod\limits_{\left\{u_i\middle|\delta_i = 1\right\}}
+    f\left(u_i\right)
+    \prod\limits_{\left\{u_i\middle|\delta_i = 0\right\}}
+    S\left(u_i\right)
+    .
+  \end{aligned}
+\]
+Let $I\left(\cdot\right)$ be an index mapping function that returns the index in $v_i$s that matches $u_i$, i.e. $I\left(u_i\right) = j$ if and only if $v_j = u_i$. Then we know that $u_i = v_{I\left(u_i\right)}$ and we can write
+\[
+  \begin{aligned}
+    L\left(F\right)
+    &= \prod\limits_{\left\{u_i\middle|\delta_i = 1\right\}}
+    f\left(v_{I\left(u_i\right)}\right)
+    \prod\limits_{\left\{u_i\middle|\delta_i = 0\right\}}
+    S\left(v_{I\left(u_i\right)}\right)
+  \end{aligned}
+\]
 
 \bibliographystyle{plainnat}
 \bibliography{../ref}
