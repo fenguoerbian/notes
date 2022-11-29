@@ -666,7 +666,7 @@ where
   Y\left(v_k\right) = \sum\limits_{i = 1}^n1\left(I\left(u_i\right)\geq k\right)
   = \sum\limits_{i = 1}^n1\left(u_i \geq v_k\right)
 \]
-is the number of subjects that are ``at risk'' at time $v_k$. \textbf{Note: }by the word ``at risk'', we also count the subjects that died just at $v_k$, which means $Y\left(v_j\right) \geq d_j$.
+is the number of subjects that are ``at risk'' at time $v_k$. \textbf{Note: }by the word ``at risk'', we also count the subjects that died just at $v_k$, which means $Y\left(v_j\right) \geq d_j$. But we do NOT count the subjects that are censored before $v_j$.
 \par
 Then from \eqref{eq:discrete_likelihood_part1} and \eqref{eq:discrete_likelihood_part23} we know that \eqref{eq:discrete_likelihood} can be written as
 \begin{equation}
@@ -699,6 +699,28 @@ This means
 Let $v_g$ denotes the largest time point with observation, which means $Y\left(v_g\right) > 0$ and $Y\left(v_{g+ 1}\right) = 0$. Then either $d_g = Y\left(v_g\right)$ or $d_g < Y\left(v_g\right)$. If $d_g = Y\left(v_g\right)$, then $\hat{h}_g = 1$ and $\hat{S}\left(t\right) = 0$ for $t \geq v_g$. But if $d_g < Y\left(v_g\right)$, then $\hat{S}\left(t\right) > 0$ for $v_g \leq t < v_{g+1}$ and $\hat{S}\left(t\right)$ is undefined on $t\in\left[v_{g + 1}, \infty\right)$.
 \par
 Here one might say that the KM estimator is undefined on $t\in\left[v_{g+ 1}, \infty\right)$. Or another explanation is that NPMLE is not unique and any survival function that is identical to $\hat{S}$ at previous time is the NPMLE.
+
+\subsubsection{Continuous time points}
+\label{sec:cont-time-points}
+
+Now, if we don't know in advance the times at which $F$ had mass, or even did not want to assume $F$ was discrete distribution? The core of likelihood still takes the form of \eqref{eq:likelihood_core}, but now we have to maximize it over all c.d.f., including discrete, continuous and mixed distributions.
+\par
+Kaplan and Meier argue that the solution must be a discrete distribution with mass on the observed times $u_i$ only. That is, the KM (product-limit) estimator of $F\left(\cdot\right)$ is
+\begin{equation}
+  \label{eq:km_estimator}
+  \hat{S}\left(t\right) =\left\{
+  \begin{aligned}    
+    & 1 && t < v_1    \\
+    & \prod\limits_{j = 1}^{k}
+      \left(1 - \frac{d_j}{Y\left(v_j\right)}\right) && v_{k} \leq t < v_{k + 1}
+  \end{aligned}
+  \right.  
+\end{equation}
+Note that \eqref{eq:km_estimator} only puts weight at the observed ({\color{red} uncensored}) failure time.
+
+\subsubsection{Some extensions}
+\label{sec:some-extensions}
+
 
 \bibliographystyle{plainnat}
 \bibliography{../ref}
