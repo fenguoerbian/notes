@@ -716,11 +716,48 @@ Kaplan and Meier argue that the solution must be a discrete distribution with ma
   \end{aligned}
   \right.  
 \end{equation}
-Note that \eqref{eq:km_estimator} only puts weight at the observed ({\color{red} uncensored}) failure time.
+Note that \eqref{eq:km_estimator} only puts weight at the observed ({\color{red} uncensored}) failure time. Another (equivalent) representation of $\hat{S}\left(t\right)$ is given by
+\begin{equation}
+  \label{eq:km_estimator_2}
+  \hat{S}\left(t\right) = \prod\limits_{j:v_j \leq t}\left(
+    \frac{Y\left(v_j\right) - d_j}{Y\left(v_j\right)}
+  \right)
+  \quad\quad \text{for } t \leq \mathrm{max}\left(v_i\right)
+  ,
+\end{equation}
+where $v_1 < v_2 < \cdots$ are the distinct observed failure time.
 
 \subsubsection{Some extensions}
 \label{sec:some-extensions}
 
+Besides the KM-estimator, there is also Efron's ``Redistribution of Mass'' algorithm that gives the same results.
+\par
+Another point of view is that the KM estmator can be seen as the self-consistency estimator. If there's no censoring, the survival function can be estimated as
+\[
+  \hat{S}\left(t\right) = n^{-1} \sum\limits_{i = 1}^n1\left(T_i > t\right)
+  .
+\]
+In the precense of censoring, and the observed data $\left\{\left(U_i, \delta_i\right), i = 1, \cdots, n\right\}$, the survival function can be estimated as
+\[
+  \hat{S}\left(t\right)
+  = n^{-1}\sum\limits_{i = 1}^n
+  \mathrm{E}\left\{
+    1\left(T_i > t\right)
+    \middle| U_i, \delta_i
+  \right\}
+\]
+where
+\[
+  \begin{aligned}
+    \mathrm{E}\left\{1\left(T > t_i\right)\middle| U_i, \delta_i = 1\right\}
+      =& 1(U_i > t)    \\
+    \mathrm{E}\left\{1\left(T > t_i\right)\middle| U_i, \delta_i = 0\right\}
+      =& \mathrm{E}\left(
+      1\left(T > t_i, U_i < t\right)
+      + 1\left(T > t_i, U_i \geq t\right)\middle| U_i, \delta_i = 0\right)    \\
+    =& S\left(t\right) / S\left(U_i\right) 1\left(t > U_i\right) + 1\left(t \leq U_i\right)
+  \end{aligned}
+\]
 
 \bibliographystyle{plainnat}
 \bibliography{../ref}
