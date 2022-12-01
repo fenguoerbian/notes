@@ -749,15 +749,57 @@ In the precense of censoring, and the observed data $\left\{\left(U_i, \delta_i\
 where
 \[
   \begin{aligned}
-    \mathrm{E}\left\{1\left(T > t_i\right)\middle| U_i, \delta_i = 1\right\}
-      =& 1(U_i > t)    \\
-    \mathrm{E}\left\{1\left(T > t_i\right)\middle| U_i, \delta_i = 0\right\}
-      =& \mathrm{E}\left(
-      1\left(T > t_i, U_i < t\right)
-      + 1\left(T > t_i, U_i \geq t\right)\middle| U_i, \delta_i = 0\right)    \\
-    =& S\left(t\right) / S\left(U_i\right) 1\left(t > U_i\right) + 1\left(t \leq U_i\right)
+    \mathrm{E}\left\{1\left(T > t\right)\middle| U_i, \delta_i = 1\right\}
+    =& 1(U_i > t)    \\
+    \mathrm{E}\left\{1\left(T > t\right)\middle| U_i, \delta_i = 0\right\}
+    =& \mathrm{E}\left(
+       1\left(T > t, U_i \leq t\right)
+       + 1\left(T > t, U_i > t\right)\middle| U_i, \delta_i = 0\right)    \\
+    =& \mathrm{E}\left(
+       1\left(T > t\right)\middle| U_i = u_i \leq t, \delta_i = 0\right)
+       1\left(u_i \leq t\right)
+       + 1\left(U_i > t\right)    \\
+    =& \mathrm{E}\left(
+       1\left(T > t\right)\middle| T > u_i\right)
+       1\left(u_i \leq t\right)
+       + 1\left(U_i > t\right)    \\
+        =& P\left(
+       T > t\middle| T > u_i\right)
+       1\left(u_i \leq t\right)
+       + 1\left(U_i > t\right)    \\
+    =& S\left(t\right) / S\left(U_i\right) 1\left(t \geq U_i\right)
+       + 1\left(t < U_i\right)
+       .
   \end{aligned}
 \]
+Unfortunately, $S\left(\cdot\right)$ is unknown, and we calculate $\hat{S}\left(\cdot\right)$ iteratively via
+\[
+  \begin{aligned}
+    \hat{S}_{new}\left(t\right)
+    =& n^{-1}\sum\limits_{i = 1}^n\left\{
+       \delta_i \cdot 1\left(U_i > t\right)
+       + \left(1 - \delta_i\right) \cdot 1\left(U_i \leq t\right)
+       \cdot \frac{\hat{S}_{old}\left(t\right)}{\hat{S}_{old}\left(U_i\right)}
+       + \left(1 - \delta_i\right) \cdot 1\left(U_i > t\right)
+       \right\}    \\
+    =& n^{-1}\sum\limits_{i = 1}^n\left\{
+       1\left(U_i > t\right)
+       + \left(1 - \delta_i\right) \cdot 1\left(U_i \leq t\right)
+       \cdot \frac{\hat{S}_{old}\left(t\right)}{\hat{S}_{old}\left(U_i\right)}
+       \right\}
+  \end{aligned}
+\]
+And the limit $\hat{S}\left(t\right)$ solves
+\[
+  \hat{S}\left(t\right)
+  = n^{-1}\sum\limits_{i = 1}^n\left\{
+    1\left(U_i > t\right)
+    + \left(1 - \delta_i\right) \cdot 1\left(U_i \leq t\right)
+    \cdot \frac{\hat{S}\left(t\right)}{\hat{S}\left(U_i\right)}
+  \right\}
+  ,
+\]
+which gives the same results as KM estimator.
 
 \bibliographystyle{plainnat}
 \bibliography{../ref}
