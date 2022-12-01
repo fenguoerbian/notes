@@ -801,6 +801,23 @@ And the limit $\hat{S}\left(t\right)$ solves
 \]
 which gives the same results as KM estimator.
 
+\par
+
+Since $H\left(t\right) = -\mathrm{log}\left(S\left(t\right)\right)$, it follows that a nonparametric estimator for $H\left(t\right)$ is
+\[
+  \tilde{H}\left(t\right) = -\mathrm{log}\left(\hat{S}\left(t\right)\right) =
+  -\sum\limits_{i = 1}^k\mathrm{log}\left(1 - \hat{h}_i\right)
+  \quad\quad\text{for } v_k\leq t < v_{k + 1}
+  .
+\]
+Note that $\mathrm{log}\left(1 - x\right) \approx \mathrm{log}\left(1\right) + \frac{-1}{1 - x}|_{x = 0}\cdot x = -x$, therefore an alternative estimator (for $k\geq 1$) is
+\[
+  \hat{H}\left(t\right) = \sum\limits_{i = 1}^k\hat{h}_i
+  \quad\quad\text{for } v_k\leq t < v_{k + 1}
+  .  
+\]
+And this is called the Nelson-Aalen estimator of $H\left(\cdot\right)$.
+
 \bibliographystyle{plainnat}
 \bibliography{../ref}
 
