@@ -818,7 +818,25 @@ Note that $\mathrm{log}\left(1 - x\right) \approx \mathrm{log}\left(1\right) + \
 \]
 And this is called the {\color{red}Nelson-Aalen} estimator of $H\left(\cdot\right)$.
 \par
-Now what if we want to approximate the distribution of $\hat{S}\left(t\right)$? One can use the large-sample property of MLE (but the ordinary regularity conditions do not hold here since it is not a finite-dimensional parameter space). Nevertheless, let's proceed as if this is not a problem.
+Now what if we want to approximate the distribution of $\hat{S}\left(t\right)$? One can use the large-sample property of MLE (but the ordinary regularity conditions do not hold here since it is not a finite-dimensional parameter space). Nevertheless, let's proceed as if this is not a problem. Then from \eqref{eq:discrete_likelihood_rewrite} we know that
+\[
+  \begin{aligned}
+    -\frac{\partial^2\mathrm{log}L}{\partial h_ih_j}
+    =& 0
+       \quad\quad\text{for } i\neq j    \\
+    -\frac{\partial^2\mathrm{log}L}{\partial h_j^2}
+    =& - \frac{\partial^2}{\partial h_j^2}\left(
+       d_j\mathrm{log}h_j + \left(Y\left(v_j\right) - d_j\right)\mathrm{log}\left(1 - h_j\right)
+       \right)    \\
+    =& - \frac{\partial}{\partial h_j}\left(
+       \frac{d_j}{h_j} - \frac{Y\left(v_j\right) - d_j}{1 - h_j}
+       \right)    \\
+    =& - \left(
+       -d_j h_j^{-2}
+       + \left(Y\left(v_j\right) - d_j\right)\left(1 - h_j\right)^{-2}
+       \right)
+  \end{aligned}
+\]
 
 \bibliographystyle{plainnat}
 \bibliography{../ref}
