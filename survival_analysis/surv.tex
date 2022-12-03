@@ -686,14 +686,16 @@ for $j = 1, \cdots, \infty$ and $Y\left(v_j\right) > 0$. \eqref{eq:discrete_NPML
 \item For time points where $Y\left(v_j\right) >0$ but no event occurs, the hazard is estimated to be 0.
 \end{enumerate}
 This means
-\[
+\begin{equation}
+  \label{eq:discrete_NPMLE}
   \hat{S}\left(t\right) =\left\{
   \begin{aligned}    
     & 1 && t < v_1    \\
     & \prod\limits_{j = 1}^{k}\left(1 - \hat{h}_j\right) && v_{k} \leq t < v_{k + 1}
   \end{aligned}
-  \right.
-\]
+  \right.  
+\end{equation}
+
 \textbf{Note: } $S\left(\cdot\right)$ is defined to be {\color{red} right-continuous}.
 \par
 Let $v_g$ denotes the largest time point with observation, which means $Y\left(v_g\right) > 0$ and $Y\left(v_{g+ 1}\right) = 0$. Then either $d_g = Y\left(v_g\right)$ or $d_g < Y\left(v_g\right)$. If $d_g = Y\left(v_g\right)$, then $\hat{h}_g = 1$ and $\hat{S}\left(t\right) = 0$ for $t \geq v_g$. But if $d_g < Y\left(v_g\right)$, then $\hat{S}\left(t\right) > 0$ for $v_g \leq t < v_{g+1}$ and $\hat{S}\left(t\right)$ is undefined on $t\in\left[v_{g + 1}, \infty\right)$.
@@ -833,10 +835,76 @@ Now what if we want to approximate the distribution of $\hat{S}\left(t\right)$? 
        \right)    \\
     =& - \left(
        -d_j h_j^{-2}
-       + \left(Y\left(v_j\right) - d_j\right)\left(1 - h_j\right)^{-2}
+       - \left(Y\left(v_j\right) - d_j\right)\left(1 - h_j\right)^{-2}
        \right)
   \end{aligned}
 \]
+and
+\[
+  \left.
+    -\frac{\partial^2\mathrm{log}L}{\partial h_ih_j}
+    \middle|_{h_j = \hat{h}_j}
+  \right.
+  = \frac{Y\left(v_j\right)}{\hat{h}_j\left(1 - \hat{h}_j\right)}
+\]
+since $\hat{h}_j = \frac{d_j}{Y\left(v_j\right)}$. So the hessain matrix of $\mathrm{log}L$ is diagonal, which means $\hat{h}_1, \hat{h}_2, \cdots$ are approximatly uncorrelated, with the approximated means $h_1, h_2, \cdots$ and
+\[
+  \mathrm{Var}\left(\hat{h}_j\right)
+  \approx
+  \frac{\hat{h}_j\left(1 - \hat{h}_j\right)}{Y\left(v_j\right)}
+  = \frac{d_j\left(Y\left(v_j\right) - d_j\right)}{Y\left(v_j\right)^3}
+  .
+\]
+Therefore approximately
+\[
+  \hat{h}_j \overset{\text{apx}}{\sim} N\left(h_j, \frac{d_j\left(Y\left(v_j\right) - d_j\right)}{Y\left(v_j\right)^3}\right)
+  .
+\]
+
+\par
+
+Furthermore, from \eqref{eq:discrete_NPMLE} we konw that in the discrete time setting $\hat{S}\left(t\right)$ is approximatly unbiased. Now for the variance of $\hat{S}\left(t\right)$, we can write, for $v_j \leq t < v_{j + 1}$ that
+\[
+  \begin{aligned}
+    \mathrm{Var}\left(\mathrm{log}\hat{S}\left(t\right)\right)
+    =& \mathrm{Var}\left(
+       \sum\limits_{j = 1}^k\mathrm{log}\left(1 - \hat{h}_j\right)
+       \right)    \\
+    \approx& \sum\limits_{j = 1}^k\mathrm{Var}\left(
+       \mathrm{log}\left(1 - \hat{h}_j\right)
+       \right)
+             \quad\quad \hat{h}_j\text{s are approximatly uncorrelated}    \\
+    \approx& \sum\limits_{j = 1}^k
+             \mathrm{Var}\left(\hat{h}_j\right)
+             \cdot
+             \frac{1}{\left(1 - \hat{h}_j\right)^2}
+             \quad\quad \delta-method    \\
+    =& \sum\limits_{j = 1}^k
+       \frac{d_j}{Y\left(v_j\right)\left(Y\left(v_j\right) - d_j\right)}
+       .
+  \end{aligned}
+\]
+Also from $\delta$-method we know that
+\begin{equation}
+  \label{eq:greenwood_formula}
+    \mathrm{Var}\left(\hat{S}\left(t\right)\right)
+  \approx
+  \mathrm{Var}\left(\mathrm{log}\hat{S}\left(t\right)\right)
+  \cdot
+  \left(
+    e^{\mathrm{log}\hat{S}\left(t\right)}
+  \right)^2
+  \approx
+  \hat{S}\left(t\right)^2
+  \sum\limits_{j = 1}^k
+  \frac{d_j}{Y\left(v_j\right)\left(Y\left(v_j\right) - d_j\right)}
+  \quad\quad \text{for } v_j \leq t < v_{j + 1}.
+\end{equation}
+And \eqref{eq:greenwood_formula} is often called the {\color{red}Greenwood's formula}.
+
+
+
+
 
 \bibliographystyle{plainnat}
 \bibliography{../ref}
