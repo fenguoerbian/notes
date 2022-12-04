@@ -732,6 +732,8 @@ where $v_1 < v_2 < \cdots$ are the distinct observed failure time.
 \subsubsection{Some extensions}
 \label{sec:some-extensions}
 
+\paragraph{Other perspective for this NPMLE}
+
 Besides the KM-estimator, there is also Efron's ``Redistribution of Mass'' algorithm that gives the same results.
 \par
 Another point of view is that the KM estmator can be seen as the self-consistency estimator. If there's no censoring, the survival function can be estimated as
@@ -803,7 +805,8 @@ And the limit $\hat{S}\left(t\right)$ solves
 \]
 which gives the same results as KM estimator.
 
-\par
+
+\paragraph{NP estimator for $H\left(t\right)$: }
 
 Since $H\left(t\right) = -\mathrm{log}\left(S\left(t\right)\right)$, it follows that a nonparametric estimator for $H\left(t\right)$ is
 \[
@@ -819,7 +822,9 @@ Note that $\mathrm{log}\left(1 - x\right) \approx \mathrm{log}\left(1\right) + \
   .  
 \]
 And this is called the {\color{red}Nelson-Aalen} estimator of $H\left(\cdot\right)$.
-\par
+
+\paragraph{Inference on $h_j$ and $S\left(t\right)$: }
+
 Now what if we want to approximate the distribution of $\hat{S}\left(t\right)$? One can use the large-sample property of MLE (but the ordinary regularity conditions do not hold here since it is not a finite-dimensional parameter space). Nevertheless, let's proceed as if this is not a problem. Then from \eqref{eq:discrete_likelihood_rewrite} we know that
 \[
   \begin{aligned}
@@ -900,10 +905,196 @@ Also from $\delta$-method we know that
   \frac{d_j}{Y\left(v_j\right)\left(Y\left(v_j\right) - d_j\right)}
   \quad\quad \text{for } v_j \leq t < v_{j + 1}.
 \end{equation}
-And \eqref{eq:greenwood_formula} is often called the {\color{red}Greenwood's formula}.
+And \eqref{eq:greenwood_formula} is often called the {\color{red}Greenwood's formula}. And from this we can construct a confidence interval for $S\left(t\right)$. One choice for an 95\% CI would be
+\[
+  \hat{S}\left(t\right) \pm 1.96 \sqrt{\mathrm{Var}\left(\hat{S}\left(t\right)\right)}
+  .
+\]
+However, it's all possible for this type of CI to be out the range of $[0, 1]$. One alternative is to make CI on $\mathrm{log}\left(-\mathrm{log}S\left(t\right)\right)$, which takes value from $-\infty$ to $\infty$, then transform back to the scale of $S\left(t\right)$. Again by $\delta$-method
+\[
+  \mathrm{Var}\left(
+    \mathrm{log}\left(-\mathrm{log}\hat{S}\left(t\right)\right)
+  \right)
+  \approx
+  \frac{
+    \sum\limits_{j = 1}^k
+    \frac{d_j}{Y\left(v_j\right)\left(Y\left(v_j\right) - d_j\right)}
+  }{
+    \left(
+      \mathrm{log}\hat{S}\left(t\right)
+    \right)^2
+  }
+\]
+Then a 95\% CI for $S\left(t\right)$ can be expressed as
+\[
+  \begin{aligned}
+    & \mathrm{log}\left(-\mathrm{log}\left(\hat{S}\left(t\right)\right)\right)
+      \pm 1.96\sqrt{
+      \frac{
+      \sum\limits_{j = 1}^k
+      \frac{d_j}{Y\left(v_j\right)\left(Y\left(v_j\right) - d_j\right)}
+      }{
+      \left(
+      \mathrm{log}\hat{S}\left(t\right)
+      \right)^2
+      }
+      }    \\
+    \implies &
+               \left(-\mathrm{log}\hat{S}\left(t\right)\right)
+               \cdot
+               \mathrm{exp}\left(
+               \pm 1.96\sqrt{
+               \frac{
+               \sum\limits_{j = 1}^k
+               \frac{d_j}{Y\left(v_j\right)\left(Y\left(v_j\right) - d_j\right)}
+               }{
+               \left(
+               \mathrm{log}\hat{S}\left(t\right)
+               \right)^2
+               }
+               }
+               \right)    \\
+    \implies &
+               \hat{S}\left(t\right)^{
+               - \mathrm{exp}\left(
+               \pm 1.96\sqrt{
+               \frac{
+               \sum\limits_{j = 1}^k
+               \frac{d_j}{Y\left(v_j\right)\left(Y\left(v_j\right) - d_j\right)}
+               }{
+               \left(
+               \mathrm{log}\hat{S}\left(t\right)
+               \right)^2
+               }
+               }
+               \right)    
+               }    \\
+    \implies & \left[
+               \hat{S}\left(t\right)^{
+               \mathrm{exp}\left(
+               1.96\sqrt{
+               \frac{
+               \sum\limits_{j = 1}^k
+               \frac{d_j}{Y\left(v_j\right)\left(Y\left(v_j\right) - d_j\right)}
+               }{
+               \left(
+               \mathrm{log}\hat{S}\left(t\right)
+               \right)^2
+               }
+               }
+               \right) 
+               }
+               ,\quad
+               \hat{S}\left(t\right)^{
+               \mathrm{exp}\left(
+               -1.96\sqrt{
+               \frac{
+               \sum\limits_{j = 1}^k
+               \frac{d_j}{Y\left(v_j\right)\left(Y\left(v_j\right) - d_j\right)}
+               }{
+               \left(
+               \mathrm{log}\hat{S}\left(t\right)
+               \right)^2
+               }
+               }
+               \right) 
+               }
+               \right]
+               .
+  \end{aligned}
+\]
+\par
+{\color{red}Breslow and Crowley (1974)}{\color{blue}(need reference here)} show that as $n\to\infty$,
+\[
+  \sqrt{n}\left(
+    \hat{S}\left(\cdot\right) - S\left(\cdot\right)
+  \right)
+  \overset{w}{\to}\quad
+  \text{zero mean Gaussian process}
+  ,
+\]
+which can be easily proved by if we express the KM esimator as a martingale process.
 
+\paragraph{CI for survival time: }
 
+The KM estimator can be used to estimated survival time and construct corresponding CI at given survival probability. For example, the median survival time $t_m$ can be estimated as $\hat{t}_m$, the solution such as
+\[
+  \hat{S}\left(\hat{t}_m\right) = 0.5
+  .
+\]
+Also from previous discussion, we can get $\hat{S}_L\left(\cdot\right)$ and $\hat{S}_U\left(\cdot\right)$ as the lower and upper bound of the 95\% CI for $S\left(\cdot\right)$, i.e.
+\[
+  P\left(
+    \hat{S}_L\left(t\right) \leq S\left(t\right)
+  \right)
+  = P\left(
+    \hat{S}_U\left(t\right) \geq S\left(t\right)
+  \right)
+  = 0.975
+  \quad\quad\forall\; t
+  .
+\]
+For $\hat{S}_L\left(t\right)$ and $\hat{S}_U\left(t\right)$ we can also find $\hat{t}_{ml}$ and $\hat{t}_{mu}$ such that
+\[
+  \hat{S}_L\left(\hat{t}_{ml}\right) = \hat{S}_U\left(\hat{t}_{mu}\right) = 0.5.
+\]
+Then we can deduct that
+\[
+  \begin{aligned}
+    & P\left(\hat{t}_{ml} \leq t_m\right)
+  = P\left(
+    \hat{S}_{L}\left(\hat{t}_{ml}\right)
+    {\color{red} \geq} \hat{S}_L\left(t_m\right)
+  \right)
+  = P\left(0.5 \geq \hat{S}_L\left(t_m\right)\right)
+  = P\left(S\left(t_m\right)
+    \geq \hat{S}_L\left(t_m\right)\right)
+      = 0.975    \\
+    & P\left(\hat{t}_{mu} \geq t_m\right)
+      = P\left(
+      \hat{S}_U\left(\hat{t}_{mu}\right)
+      {\color{red} \leq}
+      \hat{S}_U\left(t_m\right)
+      \right)
+      = P\left(0.5 \leq \hat{S}_U\left(t_m\right)\right)
+      = P\left(
+      S\left(t_m\right)
+      \leq \hat{S}_U\left(t_m\right)
+      \right)
+      = 0.975
+      ,
+  \end{aligned}
+\]
+which means a 95\% CI for $t_m$ is just $[\hat{t}_{ml}, \hat{t}_{mu}]$.
 
+\paragraph{Restricted mean survival time: }
+
+The area under survival time curve for any given $\tau$ is defined as
+\[
+  \mu = \int_0^\tau S\left(t\right)\mathrm{d}t.
+\]
+We can show that
+\[
+  \begin{aligned}
+    \mu =&
+           \left.
+           t\left(1 - F\left(t\right)\right)\middle|_0^\tau
+           \right.
+           - \int_0^\tau t\left(-f\left(t\right)\right)\mathrm{d}t    \\
+    =& \tau S\left(\tau\right) + \int_0^\tau tf\left(t\right)\mathrm{d}t    \\
+    =& \int_\tau^\infty \tau f\left(t\right)\mathrm{d}t    
+       + \int_0^\tau tf\left(t\right)\mathrm{d}t    \\
+    =& \mathrm{E}\left(
+       \mathrm{min}\left(\tau, T\right)
+       \right)
+       ,       
+  \end{aligned}
+\]
+which can be interpreted as restricted mean survival time. And $\mu$ can be estimated by
+\[
+  \hat{\mu} = \int_0^\tau\hat{S}\left(t\right)\mathrm{d}t
+  .
+\]
 
 
 \bibliographystyle{plainnat}
