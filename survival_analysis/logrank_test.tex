@@ -111,7 +111,40 @@
 \maketitle
 \tableofcontents{}
 
+\section{Introduction}
+\label{sec:introduction}
 
+The log-rank test is one of the most commonly used test for comparing two or more survival distributions. To simplify the discussion, let's assume there are two groups of subjects, coded by 0 and 1. In group $j$, there are $n_j$ i.i.d. underlying survival times with common c.d.f. denoted by $F_j\left(\cdot\right)$. And the corresponding hazard, cummulative hazard and survival functions are denoted by $h_j\left(\cdot\right)$, $H_j\left(\cdot\right)$ and $S_j\left(\cdot\right)$, respectively.
+\par
+As usual, we assume the {\color{red} non-informative right censoring}. So in each group, $T_i$ and $C_i$ are independent.
+\par
+Here we want to test the null hypothesis $F_1\left(\cdot\right) = F_2\left(\cdot\right)$. If we know the parametric form of $F_1\left(\cdot\right)$ and $F_2\left(\cdot\right)$, e.g. the exponential distribution family, then this test can be reduced to test against a point/region in a Eucilidean parameter space. However, here we want a non-parametric test; that is, a test whose validity dose not depend on any parametric assumptions.
+\par
+Clearly, a UMP test can not exist for this type of hypothesis. And there are two options in this case:
+\begin{itemize}
+\item \textbf{Directional test: }These are oriented towards a specific type of difference, e.g. $S_1\left(t\right) = S_0\left(t\right)^\theta$ for some $\theta$.
+\item \textbf{Omnibus test: }These test are designed to have some power against all types of difference, e.g. a test based on $\int\left|S_1\left(t\right) - S_0\left(t\right)\right|\mathrm{d}t$ over some time interval.
+\end{itemize}
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{|r|p{4cm}|p{4cm}|}
+    \hline
+    & Pros & Cons    \\
+    \hline
+    Directional test &
+                       Strong power against the specified type of difference &
+    (often) poor power against other types of difference    \\
+    \hline
+    Omnibus test & have some power against most types of difference &
+    lower power compared to a directional test for certain types of difference \\
+    \hline
+  \end{tabular}
+  \caption{Pros and cons for different types of tests}
+  \label{tab:pros_and_cons}
+\end{table}
+
+The Pros-and-Cons of these two options of tests are summarised in Table~\ref{tab:pros_and_cons}. And a chioce between these two types of tests in real application involves several factors. Here we just point out that log-rank test is a directional test, and the specific type is the {\color{red} constant hazard ratio over time}.
 
 \bibliographystyle{plainnat}
 \bibliography{../ref}
