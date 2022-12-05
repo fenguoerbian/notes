@@ -873,26 +873,26 @@ Furthermore, from \eqref{eq:discrete_NPMLE} we konw that in the discrete time se
   \begin{aligned}
     \mathrm{Var}\left(\mathrm{log}\hat{S}\left(t\right)\right)
     =& \mathrm{Var}\left(
-       \sum\limits_{j = 1}^k\mathrm{log}\left(1 - \hat{h}_j\right)
-       \right)    \\
+      \sum\limits_{j = 1}^k\mathrm{log}\left(1 - \hat{h}_j\right)
+    \right)    \\
     \approx& \sum\limits_{j = 1}^k\mathrm{Var}\left(
-       \mathrm{log}\left(1 - \hat{h}_j\right)
-       \right)
-             \quad\quad \hat{h}_j\text{s are approximatly uncorrelated}    \\
+      \mathrm{log}\left(1 - \hat{h}_j\right)
+    \right)
+    \quad\quad \hat{h}_j\text{s are approximatly uncorrelated}    \\
     \approx& \sum\limits_{j = 1}^k
-             \mathrm{Var}\left(\hat{h}_j\right)
-             \cdot
-             \frac{1}{\left(1 - \hat{h}_j\right)^2}
-             \quad\quad \delta-method    \\
+    \mathrm{Var}\left(\hat{h}_j\right)
+    \cdot
+    \frac{1}{\left(1 - \hat{h}_j\right)^2}
+    \quad\quad \delta-method    \\
     =& \sum\limits_{j = 1}^k
-       \frac{d_j}{Y\left(v_j\right)\left(Y\left(v_j\right) - d_j\right)}
-       .
+    \frac{d_j}{Y\left(v_j\right)\left(Y\left(v_j\right) - d_j\right)}
+    .
   \end{aligned}
 \]
 Also from $\delta$-method we know that
 \begin{equation}
   \label{eq:greenwood_formula}
-    \mathrm{Var}\left(\hat{S}\left(t\right)\right)
+  \mathrm{Var}\left(\hat{S}\left(t\right)\right)
   \approx
   \mathrm{Var}\left(\mathrm{log}\hat{S}\left(t\right)\right)
   \cdot
@@ -929,78 +929,78 @@ Then a 95\% CI for $S\left(t\right)$ can be expressed as
 \[
   \begin{aligned}
     & \mathrm{log}\left(-\mathrm{log}\left(\hat{S}\left(t\right)\right)\right)
-      \pm 1.96\sqrt{
+    \pm 1.96\sqrt{
       \frac{
-      \sum\limits_{j = 1}^k
-      \frac{d_j}{Y\left(v_j\right)\left(Y\left(v_j\right) - d_j\right)}
+        \sum\limits_{j = 1}^k
+        \frac{d_j}{Y\left(v_j\right)\left(Y\left(v_j\right) - d_j\right)}
       }{
-      \left(
-      \mathrm{log}\hat{S}\left(t\right)
-      \right)^2
+        \left(
+          \mathrm{log}\hat{S}\left(t\right)
+        \right)^2
       }
-      }    \\
+    }    \\
     \implies &
-               \left(-\mathrm{log}\hat{S}\left(t\right)\right)
-               \cdot
-               \mathrm{exp}\left(
-               \pm 1.96\sqrt{
-               \frac{
-               \sum\limits_{j = 1}^k
-               \frac{d_j}{Y\left(v_j\right)\left(Y\left(v_j\right) - d_j\right)}
-               }{
-               \left(
-               \mathrm{log}\hat{S}\left(t\right)
-               \right)^2
-               }
-               }
-               \right)    \\
+    \left(-\mathrm{log}\hat{S}\left(t\right)\right)
+    \cdot
+    \mathrm{exp}\left(
+      \pm 1.96\sqrt{
+        \frac{
+          \sum\limits_{j = 1}^k
+          \frac{d_j}{Y\left(v_j\right)\left(Y\left(v_j\right) - d_j\right)}
+        }{
+          \left(
+            \mathrm{log}\hat{S}\left(t\right)
+          \right)^2
+        }
+      }
+    \right)    \\
     \implies &
-               \hat{S}\left(t\right)^{
-               - \mathrm{exp}\left(
-               \pm 1.96\sqrt{
-               \frac{
-               \sum\limits_{j = 1}^k
-               \frac{d_j}{Y\left(v_j\right)\left(Y\left(v_j\right) - d_j\right)}
-               }{
-               \left(
-               \mathrm{log}\hat{S}\left(t\right)
-               \right)^2
-               }
-               }
-               \right)    
-               }    \\
+    \hat{S}\left(t\right)^{
+      - \mathrm{exp}\left(
+        \pm 1.96\sqrt{
+          \frac{
+            \sum\limits_{j = 1}^k
+            \frac{d_j}{Y\left(v_j\right)\left(Y\left(v_j\right) - d_j\right)}
+          }{
+            \left(
+              \mathrm{log}\hat{S}\left(t\right)
+            \right)^2
+          }
+        }
+      \right)    
+    }    \\
     \implies & \left[
-               \hat{S}\left(t\right)^{
-               \mathrm{exp}\left(
-               1.96\sqrt{
-               \frac{
-               \sum\limits_{j = 1}^k
-               \frac{d_j}{Y\left(v_j\right)\left(Y\left(v_j\right) - d_j\right)}
-               }{
-               \left(
-               \mathrm{log}\hat{S}\left(t\right)
-               \right)^2
-               }
-               }
-               \right) 
-               }
-               ,\quad
-               \hat{S}\left(t\right)^{
-               \mathrm{exp}\left(
-               -1.96\sqrt{
-               \frac{
-               \sum\limits_{j = 1}^k
-               \frac{d_j}{Y\left(v_j\right)\left(Y\left(v_j\right) - d_j\right)}
-               }{
-               \left(
-               \mathrm{log}\hat{S}\left(t\right)
-               \right)^2
-               }
-               }
-               \right) 
-               }
-               \right]
-               .
+      \hat{S}\left(t\right)^{
+        \mathrm{exp}\left(
+          1.96\sqrt{
+            \frac{
+              \sum\limits_{j = 1}^k
+              \frac{d_j}{Y\left(v_j\right)\left(Y\left(v_j\right) - d_j\right)}
+            }{
+              \left(
+                \mathrm{log}\hat{S}\left(t\right)
+              \right)^2
+            }
+          }
+        \right) 
+      }
+      ,\quad
+      \hat{S}\left(t\right)^{
+        \mathrm{exp}\left(
+          -1.96\sqrt{
+            \frac{
+              \sum\limits_{j = 1}^k
+              \frac{d_j}{Y\left(v_j\right)\left(Y\left(v_j\right) - d_j\right)}
+            }{
+              \left(
+                \mathrm{log}\hat{S}\left(t\right)
+              \right)^2
+            }
+          }
+        \right) 
+      }
+    \right]
+    .
   \end{aligned}
 \]
 \par
@@ -1042,27 +1042,27 @@ Then we can deduct that
 \[
   \begin{aligned}
     & P\left(\hat{t}_{ml} \leq t_m\right)
-  = P\left(
-    \hat{S}_{L}\left(\hat{t}_{ml}\right)
-    {\color{red} \geq} \hat{S}_L\left(t_m\right)
-  \right)
-  = P\left(0.5 \geq \hat{S}_L\left(t_m\right)\right)
-  = P\left(S\left(t_m\right)
-    \geq \hat{S}_L\left(t_m\right)\right)
-      = 0.975    \\
+    = P\left(
+      \hat{S}_{L}\left(\hat{t}_{ml}\right)
+      {\color{red} \geq} \hat{S}_L\left(t_m\right)
+    \right)
+    = P\left(0.5 \geq \hat{S}_L\left(t_m\right)\right)
+    = P\left(S\left(t_m\right)
+      \geq \hat{S}_L\left(t_m\right)\right)
+    = 0.975    \\
     & P\left(\hat{t}_{mu} \geq t_m\right)
-      = P\left(
+    = P\left(
       \hat{S}_U\left(\hat{t}_{mu}\right)
       {\color{red} \leq}
       \hat{S}_U\left(t_m\right)
-      \right)
-      = P\left(0.5 \leq \hat{S}_U\left(t_m\right)\right)
-      = P\left(
+    \right)
+    = P\left(0.5 \leq \hat{S}_U\left(t_m\right)\right)
+    = P\left(
       S\left(t_m\right)
       \leq \hat{S}_U\left(t_m\right)
-      \right)
-      = 0.975
-      ,
+    \right)
+    = 0.975
+    ,
   \end{aligned}
 \]
 which means a 95\% CI for $t_m$ is just $[\hat{t}_{ml}, \hat{t}_{mu}]$.
@@ -1077,17 +1077,17 @@ We can show that
 \[
   \begin{aligned}
     \mu =&
-           \left.
-           t\left(1 - F\left(t\right)\right)\middle|_0^\tau
-           \right.
-           - \int_0^\tau t\left(-f\left(t\right)\right)\mathrm{d}t    \\
+    \left.
+      t\left(1 - F\left(t\right)\right)\middle|_0^\tau
+    \right.
+    - \int_0^\tau t\left(-f\left(t\right)\right)\mathrm{d}t    \\
     =& \tau S\left(\tau\right) + \int_0^\tau tf\left(t\right)\mathrm{d}t    \\
     =& \int_\tau^\infty \tau f\left(t\right)\mathrm{d}t    
-       + \int_0^\tau tf\left(t\right)\mathrm{d}t    \\
+    + \int_0^\tau tf\left(t\right)\mathrm{d}t    \\
     =& \mathrm{E}\left(
-       \mathrm{min}\left(\tau, T\right)
-       \right)
-       ,       
+      \mathrm{min}\left(\tau, T\right)
+    \right)
+    ,       
   \end{aligned}
 \]
 which can be interpreted as restricted mean survival time. And $\mu$ can be estimated by
