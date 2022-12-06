@@ -146,6 +146,21 @@ Clearly, a UMP test can not exist for this type of hypothesis. And there are two
 
 The Pros-and-Cons of these two options of tests are summarised in Table~\ref{tab:pros_and_cons}. And a chioce between these two types of tests in real application involves several factors. Here we just point out that log-rank test is a directional test, and the specific type is the {\color{red} constant hazard ratio over time}.
 
+\section{Log-rank test}
+\label{sec:log-rank-test}
+
+Log-rank test can be viewed as modification for the contingency table test to allow censoring in the data. Now let's consider these 2 groups, and denote the \underline{distinct} times of \underline{observed} failures as $0 < \tau_1 < \cdots < \tau_k$. We also define
+\[
+  \begin{aligned}
+    Y_i\left(\tau_j\right) =&     \\
+    Y\left(\tau_j\right) =& Y_0\left(\tau_j\right) + Y_1\left(\tau_j\right)    \\
+    d_{ij} =&    \\
+    d_j =& d_{0j} + d_{1j}
+  \end{aligned}
+\]
+Then the information at time $\tau_j$ can be summarized in the following $2\times 2$ table:
+
+
 \bibliographystyle{plainnat}
 \bibliography{../ref}
 
