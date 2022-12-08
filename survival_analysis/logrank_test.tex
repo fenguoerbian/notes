@@ -158,18 +158,87 @@ Log-rank test can be viewed as modification for the contingency table test to al
     d_j =& d_{0j} + d_{1j}
   \end{aligned}
 \]
-Then the information at time $\tau_j$ can be summarized in the following $2\times 2$ table:
+Then the information at time $\tau_j$ can be summarized in the following $2\times 2$ table(Table~\ref{tab:contingency_table_at_tau_j}):
 \begin{table}[htbp]
   \centering
-  \begin{tabular}{|r|c|c|}
+  \begin{tabular}{|r|c|c|c|}
     \hline
-    Group & event & no event    \\
+    Group & event & no event & number at risk    \\
+    \hline
+    Group 0 & $d_{0j}$ & $Y_0\left(\tau_j\right) - d_{0j}$ & $Y_0\left(\tau_j\right)$    \\
+    \hline
+    Group 1 & $d_{1j}$ & $Y_1\left(\tau_j\right) - d_{1j}$ & $Y_1\left(\tau_j\right)$    \\
+    \hline
+    Overall & $d_j$ & $Y\left(\tau_j\right) - d_{j}$ & $Y\left(\tau_j\right)$    \\
     \hline
   \end{tabular}
   \caption{Information at $\tau_j$}
   \label{tab:contingency_table_at_tau_j}
 \end{table}
 
+Note that $d_{0j}/ Y_{0}\left(\tau_j\right)$, $d_{1j}/ Y_{1}\left(\tau_j\right)$ and $d_{j}/ Y\left(\tau_j\right)$ are the estimates of $h_0\left(\tau_j\right)$, $h_1\left(\tau_j\right)$ and $h\left(\tau_j\right)$. To test the difference between $F_0\left(\cdot\right)$ and $F_1\left(\cdot\right)$ at this time point $\tau_j$, one can consider the $\chi^2$-test ({\color{blue} details of $\chi^2$-test can be found in other notes}). But here we use the Fisher exact test, which is conditional on the marginal counts $Y_0\left(\tau_j\right)$, $Y_1\left(\tau_j\right)$, $d_j$ and $Y\left(\tau_j\right) - d_j$. ({\color{blue} This is more suitable in survival scenario because we know that the estimates are always conditional on the previous results. And this is just my personal opinion.})
+\par
+Now, given those four marginal counts and $H_0: F_0\left(\cdot\right) = F_1\left(\cdot\right)$, one can see that $d_{1j}$ determines the whole table and actually $d_{1j}$ follows a hypergeometric distribution
+\[
+  P\left(D_{1j} = d\right) =
+  \frac{
+    C_{Y_0\left(\tau_j\right)}^{d_{0j}}
+    C_{Y_1\left(\tau_j\right)}^{d_j - d_{0j}}
+  }{
+    C_{Y\left(\tau_j\right)}^{d_j}
+  }
+  ,
+\]
+where $d$ ranges such that
+\[
+  \begin{aligned}
+    d &\geq 0    \\
+    d_j - d &\geq 0    \\
+    Y_1\left(\tau_j\right) - d &\geq 0    \\
+    Y_0\left(\tau_j\right) - \left(d_j - d\right) &\geq 0
+  \end{aligned}
+\]
+Therefore
+\[
+  \mathrm{max}\left(0, d_j - Y_0\left(\tau_j\right)\right)
+  \leq d
+  \leq \mathrm{min}\left(d_j, Y_1\left(\tau_j\right)\right)
+  .
+\]
+And it's easy to know that
+\[
+  \begin{aligned}
+    \mathrm{E}_j &= \mathrm{E}\left(D_{1j}\right) &&= \frac{Y_1\left(\tau_j\right)d_j}{Y\left(\tau_j\right)}    \\
+    \mathrm{V}_j &= \mathrm{Var}\left(D_{1j}\right) &&=
+                                       \frac{Y\left(\tau_j\right) - Y_1\left(\tau_j\right)}{Y\left(\tau_j\right) - 1}
+                                       \cdot Y_1\left(\tau_j\right)
+                                       \left(
+                                       \frac{d_j}{Y\left(\tau_j\right)}
+                                       \right)
+                                       \left(
+                                       1 - \frac{d_j}{Y\left(\tau_j\right)}
+                                       \right)    \\
+    && &= \frac{
+       Y_0\left(\tau_j\right)Y_1\left(\tau_j\right)d_j\left(Y\left(\tau_j\right) - d_j\right)
+       }{
+       Y\left(\tau_j\right)^2
+       \left(Y\left(\tau_j\right) - 1\right)
+       }
+  \end{aligned}
+\]
+And denote the observation $O_j = d_{1j}$. And we can define for over the whole time points
+\[
+  \begin{aligned}
+    & \mathrm{O} = \sum\limits_{j = 1}^k O_j    \\
+    & \mathrm{E} = \sum\limits_{j = 1}^k \mathrm{E}_j    \\
+    & \mathrm{V} = \sum\limits_{j = 1}^k \mathrm{V}_j
+  \end{aligned}
+\]
+And the test statistic is argued to follow under $H_0$:
+\[
+  Z = \frac{O - \mathrm{E}}{\sqrt{\mathrm{V}}}
+  \overset{apx}{\sim}\; N\left(0, 1\right)
+\]
 
 
 \bibliographystyle{plainnat}
