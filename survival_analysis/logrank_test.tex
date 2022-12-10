@@ -152,9 +152,9 @@ The Pros-and-Cons of these two options of tests are summarised in Table~\ref{tab
 Log-rank test can be viewed as modification for the contingency table test to allow censoring in the data. Now let's consider these 2 groups, and denote the \underline{distinct} times of \underline{observed} failures as $0 < \tau_1 < \cdots < \tau_k$. We also define
 \[
   \begin{aligned}
-    Y_i\left(\tau_j\right) =&     \\
+    Y_i\left(\tau_j\right) =&\;\text{number at risk (including events) for group $i$ at $\tau_j$}     \\
     Y\left(\tau_j\right) =& Y_0\left(\tau_j\right) + Y_1\left(\tau_j\right)    \\
-    d_{ij} =&    \\
+    d_{ij} =&\;\text{number of events for group $i$ at $\tau_j$}   \\
     d_j =& d_{0j} + d_{1j}
   \end{aligned}
 \]
@@ -237,13 +237,37 @@ And denote the observation $O_j = d_{1j}$. And we can define for over the whole 
 And the test statistic is argued to follow under $H_0$:
 \[
   Z = \frac{O - \mathrm{E}}{\sqrt{\mathrm{V}}}
-  \overset{apx}{\sim}\; N\left(0, 1\right)
+  \overset{apx}{\sim}\; N\left(0, 1\right).
 \]
-
+Some comments about this test are
+\begin{itemize}
+\item 
+\end{itemize}
 
 
 \section{Extensions of Log-rank test}
 \label{sec:extensions-log-rank}
+
+\subsection{Stratified logrank test}
+\label{sec:strat-logr-test}
+
+For example in this case, we want to take into account (adjust for) some covariates, such as gender, in addition to the treatment-control (group1-group0) group. Then actually we will have 4 groups of subjects. In general, if we have overall $L$ stratified levels ($L$ is often the product of levels from each stratified covariates), then we want to test
+\[
+  H_0:\; S_0^{\left(l\right)}\left(\cdot\right) = S_1^{\left(l\right)}\left(\cdot\right)
+  ,\quad l = 1, \cdots, L.
+\]
+\par
+This stratified test is useful when the distributions of the stratum variable in the treatment-control groups are different, but the distribution of these relavent covariates within each stratum is the same between the treatment-control groups.
+
+\subsection{Weighted logrank test}
+\label{sec:weight-logr-test}
+
+\subsection{Logrank test for multiple groups}
+\label{sec:logr-test-mult}
+
+\subsection{Logrank trend test}
+\label{sec:logrank-trend-test}
+
 
 
 
