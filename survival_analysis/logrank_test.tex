@@ -241,7 +241,12 @@ And the test statistic is argued to follow under $H_0$:
 \]
 Some comments about this test are
 \begin{itemize}
-\item 
+\item $E_j$ can be viewed as a conditional expectation for each $j$, but strictly speaking, it is not clear that $E$ has such an interpretation. 
+\item The construction of $Z$ seems to imply that the distributions from each $\tau_j$ are independent $N\left(0, 1\right)$ under $H_0$. Is this true/accurate?
+\item Note that $Y_0\left(\tau_1\right), Y_0\left(\tau_2\right), \cdots$ and $Y_1\left(\tau_1\right), Y_1\left(\tau_2\right), \cdots$ are nonincreasing, and as soon as one reaches 0, it \textbf{must} follow that $O_j = E_j$ and $V_j = 0$ \textbf{at and beyond} that time. Thus there is no contribution for the data after that time point when computing $Z$.
+\item The logrank test is a \textbf{directional} test oriented towards alternatives where $S_1\left(t\right) = \left(S_0\left(t\right)\right)^\theta$, or equivalently, when $h_1\left(t\right) / h_0\left(t\right) = \theta$, the constant hazard ratio alternative.
+\item The logrank statistic arise as a score test from a partial likelihood function from Cox's proportional hazards model.
+\item This construction of logrank test in this notes is an intuitive way. Some more serious technical details, including how does the test behave as a function of the amount of censoring or the hazard functions, will be discussed in other notes.
 \end{itemize}
 
 
@@ -295,13 +300,139 @@ Suppose we want to compare groups, but in a way that \textbf{emphasizes} certain
   ,
 \]
 and under $H_0$, $Z_w \overset{apx}{\sim}N\left(0, 1\right)$.
+\par
+Some comments about the weighted logrank test:
+\begin{itemize}
+\item Choosing $w_i = 1$ for all $i$ is just the ordinary logrank test.
+\item One can choose to place larger weights at those $\tau_j$s where larger difference is anticipated. But what dose ``difference'' refer to? $h_0\left(\tau_j\right) - h_1\left(\tau_j\right)$, $h_0\left(\tau_j\right) / h_1\left(\tau_j\right)$, $S_0\left(\tau_j\right)/S_1\left(\tau_j\right)$, $\cdots$
+\item Choosing $w_j = Y\left(\tau_j\right)$ yields the \textbf{generalized wilcoxon} test. Since $Y\left(\tau_1\right) > Y\left(\tau_2\right) > \cdots$, this generalized wilcoxon test places greater weights on \textbf{early} differences between $h_0\left(\cdot\right)$ and $h_1\left(\cdot\right)$.
+\end{itemize}
 
 \subsection{Logrank test for multiple groups}
 \label{sec:logr-test-mult}
 
+So now we want to compare the survival functions among several($>2$) groups. Specifically, there are $p+1$ groups, indexed by $0, 1, 2, \cdots, p$ and the hypothesis is
+\[
+  H_0:\;
+  S_0\left(\cdot\right) = S_1\left(\cdot\right) = \cdots = S_p\left(\cdot\right)
+\]
+Then an extension of the ordinary logrank test can be constructed from Table~\Ref{tab:multiple_groups_contingency_table_at_tau_j}:
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{|r|c|c|c|}
+    \hline
+    Group & event & no event & number at risk    \\
+    \hline
+    Group 0 & $d_{0j}$ & $Y_0\left(\tau_j\right) - d_{0j}$ & $Y_0\left(\tau_j\right)$    \\
+    \hline
+    Group 1 & $d_{1j}$ & $Y_1\left(\tau_j\right) - d_{1j}$ & $Y_1\left(\tau_j\right)$    \\
+    \hline
+    $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$     \\
+    \hline
+    Group $p$ & $d_{pj}$ & $Y_j\left(\tau_j\right) - d_{pj}$ & $Y_p\left(\tau_j\right)$    \\
+    \hline
+    Overall & $d_j = \sum\limits_{i = 0}^pd_{ij}$
+                  & $Y\left(\tau_j\right) - d_{j}$
+                             & $Y\left(\tau_j\right) = \sum\limits_{i = 0}^pY_i\left(\tau_j\right)$    \\
+    \hline
+  \end{tabular}
+  \caption{Information at $\tau_j$ for multiple groups}
+  \label{tab:multiple_groups_contingency_table_at_tau_j}
+\end{table}
+And like before, we can construct
+\[
+  \bm{O}_j =
+  \begin{pmatrix}
+    d_{1j}    \\
+    d_{2j}    \\
+    \vdots    \\
+    d_{pj}
+  \end{pmatrix}_{p\times 1}
+  ,\quad
+  \bm{E}_j =
+  \begin{pmatrix}
+    E_{1j}    \\
+    E_{2j}    \\
+    \vdots    \\
+    E_{pj}
+  \end{pmatrix}_{p\times 1}
+  ,\quad\text{where }
+  E_{ij} = \frac{Y_i\left(\tau_j\right)}{Y\left(\tau_j\right)}\cdot d_j
+\]
+and
+\[
+  \bm{V}_j =
+  \begin{pmatrix}
+    V_{11,j} & \cdots & V_{1p,j}    \\
+    \vdots & \ddots & \vdots    \\
+    V_{p1,j} & \cdots & V_{pp,j}
+  \end{pmatrix}_{p\times p}
+  ,\quad\text{where }
+  V_{kl,j} = \frac{
+    d_j\left(Y\left(\tau_j\right) - d_j\right)Y_k\left(\tau_j\right)
+    \left(
+      Y\left(\tau_j\right) \cdot 1\left(k = l\right)
+      - Y_k\left(\tau_j\right)
+    \right)
+  }{
+    Y\left(\tau_j\right)^2\left(Y\left(\tau_j\right) - 1\right)
+  }
+\]
+Then with
+\[
+  \bm{O} = \sum\limits_{j = 1}^K\bm{O}_j
+  ,\quad
+  \bm{E} = \sum\limits_{j = 1}^K\bm{E}_j
+  ,\quad
+  \bm{V} = \sum\limits_{j = 1}^K\bm{V}_j
+\]
+we have under $H_0$:
+\[
+  Q_p  = \left(
+    \bm{O} - \bm{E}
+  \right)^T
+  \bm{V}^{-1}
+  \left(\bm{O} - \bm{E}\right)
+  \overset{apx}{\sim}
+  \chi^2_p
+  .
+\]
+Some comments about this test
+\begin{itemize}
+\item This test is \textbf{omnibus} in terms of how it combines the $p+1$ groups; i.e., it is not directed towards a dose-response, in contrast to the trend test below.
+\end{itemize}
+
+
 \subsection{Logrank trend test}
 \label{sec:logrank-trend-test}
 
+
+How can we test for a \textbf{trend} in the survival functions in the $p+1$ groups? For example, we want to test for a dose-response effect, where higher dose usage implies more significant response (the risk of failure to be monotone with exposure/dose). So we want to design a test that is especially oriented towards this type of \underline{alternative} to $H_0$.
+\par
+Let $\bm{c} = $ any $p\times 1$ vector of constants. If $\bm{O} - \bm{E} \overset{apx}{\sim} N\left(\bm{0}, \bm{V}\right)$ under $H_0$, then
+\[
+  \bm{c}^T\left(\bm{O} - \bm{E}\right)
+  \overset{apx}{\sim}
+  N\left(\bm{0}, \bm{c}^T\bm{V}\bm{c}\right)
+  ,
+\]
+which means
+\[
+  Z_{tr} = \frac{
+    \bm{c}^T\left(\bm{O} - \bm{E}\right)
+  }{
+    \sqrt{\bm{c}^T\bm{V}\bm{c}}
+  }
+  \overset{apx}{\sim}
+  N\left(0, 1\right)
+  ,\quad\text{under }H_0.
+\]
+Some comments are
+\begin{itemize}
+\item How to choose $\bm{c}$? One might consider setting $c_j = D_j$ for $j = 1, \cdots p$ where $D_j$ is the dose usage for group $j$. But in summary the choice of $\bm{c}$ depends in part on the setting. Sometimes we want to test for monotone trend, other times we want to distinguish a linear versus superlinear(e.g., quadratic) dose-response. 
+\item Entries in $\bm{c}$ should be \textbf{monotone}, but against what specific alternative is a paticular choice of $\bm{c}$ optimal and what are the consequences of selecting the \underline{wrong} value of $\bm{c}$?
+\end{itemize}
 
 
 
