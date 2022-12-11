@@ -257,10 +257,44 @@ For example in this case, we want to take into account (adjust for) some covaria
   ,\quad l = 1, \cdots, L.
 \]
 \par
-This stratified test is useful when the distributions of the stratum variable in the treatment-control groups are different, but the distribution of these relavent covariates within each stratum is the same between the treatment-control groups.
+This stratified test is useful when the distributions of the stratum variable in the treatment-control groups are different, but the distribution of these relavent covariates within each stratum is the same between the treatment-control groups. And the test can be constructed as follow:
+
+\begin{enumerate}
+\item Seperate data into $L$ groups according to your strata variables.
+\item Compute $O^{\left(l\right)}$, $E^{\left(l\right)}$ and $V^{\left(l\right)}$ within each stratified level, just as with ordinary logrank test.
+\item Compute the test statistics
+  \[
+    Z = \frac{\sum\limits_{l = 1}^L\left(O^{\left(l\right)} - E^{\left(l\right)}\right)}{
+      \sqrt{\sum\limits_{l = 1}^L V^{\left(l\right)}}
+    }.
+  \]
+  and under $H_0$, we have
+  \[
+    Z \overset{apx}{\sim} N\left(0, 1\right)
+    .
+  \]
+\end{enumerate}
+
+Some comments about the stratified logrank tests:
+\begin{itemize}
+\item Intuitively, I think this test assumes $\left\{O^{\left(l\right)}, E^{\left(l\right)}, V^{\left(l\right)}\right\}$ are (approximately) uncorrelated, so the test statistic will be $N\left(0, 1\right)$.
+\item If there are too many strata, this test will have poor power. That's because there is no contribution for any $2\times2$ table once one of the $Y_l\left(\tau_j\right)$ becomes zero.
+\item The stratified logrank test also arises as a score test from Cox's model. This relationship will also clarify the types of alternatives to $H_0$ for which the stratified logrank test is directed.
+\end{itemize}
 
 \subsection{Weighted logrank test}
 \label{sec:weight-logr-test}
+
+Note that in logrank test, $O_j - E_j$ measures of how $h_0\left(\tau_j\right)$ and $h_1\left(\tau_j\right)$ differ. And in ordinary logrank test, each time point has the contribution (weights) to the final test statistic.
+\par
+Suppose we want to compare groups, but in a way that \textbf{emphasizes} certain times more than others. Let $w_1, w_2, \cdots, w_k$ be known, non-negative constants. The weighted logrank test is given by
+\[
+  Z_w = \frac{\sum\limits_{j = 1}^Kw_j\left(O_j - E_j\right)}{
+    \sqrt{\sum\limits_{j = 1}^Kw_j^2V_j}
+  }
+  ,
+\]
+and under $H_0$, $Z_w \overset{apx}{\sim}N\left(0, 1\right)$.
 
 \subsection{Logrank test for multiple groups}
 \label{sec:logr-test-mult}
