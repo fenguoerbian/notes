@@ -1014,8 +1014,49 @@ Then a 95\% CI for $S\left(t\right)$ can be expressed as
   ,
 \]
 which can be easily proved by if we express the KM esimator as a martingale process.
+\par
+I think this previous work is summarised in {\color{red}Brookmeyer and Crowly(1982)}{\color{blue}(need reference here)}, that we can consider a transform function $g$, such that $g\left(S\left(t\right)\right)$ follows normal distribution. Again from $\delta$-method, we know that
+\[
+  \mathrm{Var}\left(g\left(\hat{S}\left(t\right)\right)\right)
+  \approx
+  \left(g'\left(\hat{S}\left(t\right)\right)\right)^2
+  \mathrm{Var}\left(\hat{S}\left(t\right)\right)
+  .
+\]
+Some popular transformations are
+\[
+  \begin{aligned}
+    & \text{linear: }\quad && g\left(x\right) = x    \\
+    & \text{log: }\quad && g\left(x\right) = \mathrm{log}x    \\
+    & \text{log-log: }\quad && g\left(x\right) = \mathrm{log}\left(-\mathrm{log}x\right)    \\
+    & \text{hall-werner, loghall, epband, logep: }\quad && \text{This is simultaneous CI, unlike befores are point-wise.}
+  \end{aligned}
+\]
+So we can construct the CI based on $g\left(S\left(t\right)\right)$ then transform back to original scale:
+\begin{equation}
+  \label{eq:general_ci_for_st}
+  \begin{aligned}
+    & g^{-1}\left\{
+      g\left(S\left(t\right)\right)
+      \pm
+      z_{\alpha / 2}
+      \times \sqrt{
+        \mathrm{Var}\left(g\left(S\left(t\right)\right)\right)
+      }
+    \right\}    \\
+    \approx& g^{-1}\left\{
+      g\left(\hat{S}\left(t\right)\right)
+      \pm
+      z_{\alpha / 2}
+      \times
+      g'\left(\hat{S}\left(t\right)\right)
+      \sqrt{\mathrm{Var}\left(\hat{S}\left(t\right)\right)}
+    \right\}
+    .
+  \end{aligned}
+\end{equation}
 
-\paragraph{CI for survival time: }
+\paragraph{CI for survival time at given survival rate: }
 
 The KM estimator can be used to estimated survival time and construct corresponding CI at given survival probability. For example, the median survival time $t_m$ can be estimated as $\hat{t}_m$, the solution such as
 \[
@@ -1066,6 +1107,57 @@ Then we can deduct that
   \end{aligned}
 \]
 which means a 95\% CI for $t_m$ is just $[\hat{t}_{ml}, \hat{t}_{mu}]$.
+
+\paragraph{CI for survival rate difference at given time point: }
+
+From \eqref{eq:general_ci_for_st} and we choose the linear trnasformation $g\left(x\right) = x$, then basically we are saying $\hat{S}\left(t\right)$ approximatly follows normal distribution and the variance is given by Greenwood's formula \eqref{eq:greenwood_formula}. Then the CI for survival rate at given time point can be seen as the CI for difference of two normal distributed variables.
+\begin{itemize}
+\item It's harder to construct CI for survival rate difference when choosing other $g\left(x\right)$.
+\item One can consider using bootstrap to construct this CI. Some reference R scripts are
+\begin{verbatim}
+set.seed(1234)
+
+library(survival)
+library(boot)
+
+km <- survfit(Surv(time, status) ~ sex, data = lung)
+year1_surv_est <- summary(km, t = 365)
+
+## Method 1
+year1_point_male <- year1_surv_est$surv[1]
+year1_std_male <- year1_surv_est$std.err[1]
+
+year1_point_female <- year1_surv_est$surv[2]
+year1_std_female <- year1_surv_est$std.err[2]
+
+diff_est <- year1_point_male -  year1_point_female
+## > -.19 (male survival is 19% lower than females at 1 year)
+
+diff_std <- sqrt(year1_std_male^2 + year1_std_female^2)
+## > .073 (standard error around this estimate of .073)
+
+diff_est + c(-1, 1) * 1.96 * diff_std
+## > (-.335, -.046) (95% CI)
+
+## Bootstrapping
+boot_func <- function(data, index) {
+  data <- data[index, ]
+  
+  km <- survfit(Surv(time, status) ~ sex, data = data)
+  
+  year1_surv_est <- summary(km, t = 365)
+  year1_point_male <- year1_surv_est$surv[1]
+  year1_point_female <- year1_surv_est$surv[2]
+  
+  year1_point_male - year1_point_female
+}
+
+boot_obj <- boot(lung, boot_func, R = 10000)
+boot.ci(boot_obj, type = "perc")
+## < (-0.334, -0.043) (95% CI via percentile) 
+\end{verbatim}
+  This discussion can be found at https://discourse.datamethods.org/t/kaplan-meier-se-for-absolute-difference-in-time-point-survival/5035/14
+\end{itemize}
 
 \paragraph{Restricted mean survival time: }
 
