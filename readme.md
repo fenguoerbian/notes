@@ -8,6 +8,6 @@ Upcoming topics are:
 
 - conditional power
 
-- multiple testing: close-set procedure
+- multiple testing: gatekeeping, fixed-sequence, fallback, close-set testing procedure
 
 - multiple imputation
