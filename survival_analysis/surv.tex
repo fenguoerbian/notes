@@ -1004,7 +1004,7 @@ Then a 95\% CI for $S\left(t\right)$ can be expressed as
   \end{aligned}
 \]
 \par
-{\color{red}Breslow and Crowley (1974)}{\color{blue}(need reference here)} show that as $n\to\infty$,
+\citet{Breslow1974p-} show that as $n\to\infty$,
 \[
   \sqrt{n}\left(
     \hat{S}\left(\cdot\right) - S\left(\cdot\right)
@@ -1013,9 +1013,9 @@ Then a 95\% CI for $S\left(t\right)$ can be expressed as
   \text{zero mean Gaussian process}
   ,
 \]
-which can be easily proved by if we express the KM esimator as a martingale process.
+which can be easily proved by if we express the KM esimator as a martingale process (the original proof in \citet{Breslow1974p-} is quite lengthy).
 \par
-I think this previous work is summarised in {\color{red}Brookmeyer and Crowly(1982)}{\color{blue}(need reference here)}, that we can consider a transform function $g$, such that $g\left(S\left(t\right)\right)$ follows normal distribution. Again from $\delta$-method, we know that
+I think this previous work is summarised in \citet{Brookmeyer1982p29-29}, that we can consider a transform function $g$, such that $g\left(S\left(t\right)\right)$ follows normal distribution. Again from $\delta$-method, we know that
 \[
   \mathrm{Var}\left(g\left(\hat{S}\left(t\right)\right)\right)
   \approx
@@ -1058,7 +1058,7 @@ So we can construct the CI based on $g\left(S\left(t\right)\right)$ then transfo
 
 \paragraph{CI for survival time at given survival rate: }
 
-The KM estimator can be used to estimated survival time and construct corresponding CI at given survival probability. For example, the median survival time $t_m$ can be estimated as $\hat{t}_m$, the solution such as
+({\color{blue} I think this is the idea from \citet{Brookmeyer1982p29-29}.}) The KM estimator can be used to estimated survival time and construct corresponding CI at given survival probability. For example, the median survival time $t_m$ can be estimated as $\hat{t}_m$, the solution such as
 \[
   \hat{S}\left(\hat{t}_m\right) = 0.5
   .
