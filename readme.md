@@ -11,3 +11,5 @@ Upcoming topics are:
 - multiple testing: gatekeeping, fixed-sequence, fallback, close-set testing procedure
 
 - multiple imputation
+
+- MMRM
