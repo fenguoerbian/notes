@@ -12,4 +12,4 @@ Upcoming topics are:
 
 - multiple imputation
 
-- MMRM
+- Mixed model: MMRM, etc.
