@@ -111,6 +111,21 @@
 \maketitle
 \tableofcontents{}
 
+\section{Introduction}
+\label{sec:introduction}
+
+In this note we will talk about the Cox's proportional hazards (Cox's PH) model. Suppose we observe some non-informativly right-censored data $\left(U, \delta\right)$ with covariate vector $Z$. That is, for subject $i$, the covariate vector is $Z_i$, survival time $T_i$ and censoring time $C_i$. The observed data is $\left(U_i, \delta_i\right)$ where $U_i = \mathrm{min}\left(T_i, C_i\right)$ and $\delta_i = 1\left(T_i \leq C_i\right)$. Also $T_i \perp C_i | Z_i$.
+\par
+And now we want to model the relationship between $Z$ and $T$. One way to do that is to incorporate $Z$ into the hazard function $h\left(\cdot\right)$, e.g.,
+\[
+  T \sim Exp\left(\lambda_Z\right)
+  \implies
+  h\left(t\right) = \lambda_Z
+  \overset{\Delta}{=} e^{\alpha + \beta Z} = \lambda_0 e^{\beta Z}
+  ,
+\]
+where $\lambda_0 = e^{\alpha}$ can be viewed as a baseline hazard. If $\beta = 0$ then $Z$ is not associated with $T$.
+
 
 
 \bibliographystyle{plainnat}
