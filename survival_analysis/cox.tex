@@ -125,6 +125,23 @@ And now we want to model the relationship between $Z$ and $T$. One way to do tha
   ,
 \]
 where $\lambda_0 = e^{\alpha}$ can be viewed as a baseline hazard. If $\beta = 0$ then $Z$ is not associated with $T$.
+\par
+We can generalize this idea as
+\[
+  h\left(t\middle|Z\right)
+  = h_0\left(t\right) \times g\left(Z\right)
+  .
+\]
+So the hazard can be factorized and this model is sometimes called a ``multiplicative intensive model'' or ``multiplicative hazard model'' or ``proportional hazard model'' because this factorization implies that
+\[
+  \frac{
+    h\left(t\middle| Z = z_1\right)}{
+    h\left(t\middle| Z = z_2\right)
+  }
+  = \frac{g\left(z_1\right)}{g\left(z_2\right)}
+  .
+\]
+The hazard ratio is constant with respect to $t$, hence the (constant) proportional hazard.
 
 
 
