@@ -170,7 +170,46 @@ is the \textbf{Cox's PH} model.
     ,
   \end{aligned}
 \]
-where $S_0\left(t\right) = \mathrm{exp}\left( - \int_0^t h_0\left(t\right)\mathrm{d}u\right)$, the survival function for $Z = 0$, hence $S\left(t\middle|Z = 0\right)$.
+where $S_0\left(t\right) = \mathrm{exp}\left( - \int_0^t h_0\left(t\right)\mathrm{d}u\right)$, the survival function for $Z = 0$, hence $S\left(t\middle|Z = 0\right)$. Also remember that $f\left(t\middle|Z\right) = h\left(t\middle|Z\right) S\left(t\middle|Z\right)$. Thus, given $n$ independent data $\left(u_i, \delta_i, z_i\right)$, the likelihood ({\color{blue} one can refer to our previous notes about survival analysis.}) is
+\[
+  \begin{aligned}
+    L\left(\beta, h_0\left(\cdot\right)\right)
+    =& \prod\limits_{i = 1}^n
+       \left(
+       f\left(u_i\middle|z_i\right)
+       \right)^{\delta_i}
+       \left(
+       S\left(u_i\middle|z_i\right)
+       \right)^{1 - \delta_i}
+       = \prod\limits_{i = 1}^n
+       h\left(u_i\middle|z_i\right)^{\delta_i}
+       S\left(u_i\middle|z_i\right)    \\
+    =& \prod\limits_{i = 1}^n
+       \left(
+       h_0\left(u_i\middle|z_i\right)
+       e^{\beta z_i}
+       \right)^{\delta_i}
+       \left(
+       \mathrm{exp}\left(-\int_0^{u_i}h_0\left(t\right)\mathrm{d}t\right)
+       \right)^{\mathrm{exp}\left(\beta z_i\right)}    \\
+    =& \text{function $\left(data, h_0\left(\cdot\right), \beta\right)$}.
+  \end{aligned}
+\]
+If $h_0\left(\cdot\right)$ is allowed to be ``arbitary'', then the ``parameter space `` is
+\[
+  \mathcal{H} \times \mathcal{R}^p
+  = \left\{
+    \left(h\left(\cdot\right), \beta\right)
+    \middle|
+    h_0\left(\cdot\right) \geq 0,
+    \int_0^\infty h_0\left(t\right)\mathrm{d}t = \infty,
+    \beta \in \mathrcal{R}^p
+  \right\}
+  ,
+\]
+where $\int_0^\infty h_0\left(t\right)\mathrm{d}t = \infty$ ensures that $S_0\left(\infty\right) = 0$.
+
+
 
 \section{Inference}
 \label{sec:inference}
