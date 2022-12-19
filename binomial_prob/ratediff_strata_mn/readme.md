@@ -7,5 +7,5 @@
 
 - `ratediff_strata_mn.sas`: SAS代码，来自于127_Final_Paper_PDF.pdf，可能是收录于[2016的WUSS conference](https://www.lexjansen.com/wuss/2016/127_Final_Paper_PDF.pdf)。
 
-- `scoreci.sas`: SAS代码，`ratesci`包作者提供的[sas code repo]（https://github.com/PeteLaud/ratesci-sas）
+- `scoreci.sas`: SAS代码，`ratesci`包作者提供的[sas code repo](https://github.com/PeteLaud/ratesci-sas)。
 
