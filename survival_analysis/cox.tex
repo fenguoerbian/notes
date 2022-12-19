@@ -147,10 +147,30 @@ The hazard ratio is constant with respect to $t$, hence the (constant) proportio
   = e^{\beta\left(z_1 - z_2\right)}
   .
 \]
+Also this exponential form of $g\left(Z\right)$
+\begin{equation}
+  \label{eq:cox_ph_form}
+  h\left(t\middle|Z\right) = h_0\left(t\right)
+  \cdot e^{\beta Z}  
+\end{equation}
+is the \textbf{Cox's PH} model.
 
 \section{Estimation}
 \label{sec:estimation}
 
+\eqref{eq:cox_ph_form} implies that
+\[
+  \begin{aligned}
+    S\left(t\middle|Z\right)
+    =& \mathrm{exp}\left(-H\left(t\middle|Z\right)\right)    \\
+    =& \mathrm{exp}\left(-\int_0^th\left(u\middle|Z\right)\mathrm{d}u\right)    \\
+    =& \mathrm{exp}\left(-\int_0^th_0\left(t\right)\mathrm{d}u \cdot g\left(Z\right)\right)    \\
+    =& \left(S_0\left(t\right)\right)^{g\left(Z\right)}
+    = \left(S_0\left(t\right)\right)^{\mathrm{exp}\left(\beta Z\right)}
+    ,
+  \end{aligned}
+\]
+where $S_0\left(t\right) = \mathrm{exp}\left( - \int_0^t h_0\left(t\right)\mathrm{d}u\right)$, the survival function for $Z = 0$, hence $S\left(t\middle|Z = 0\right)$.
 
 \section{Inference}
 \label{sec:inference}
