@@ -6,6 +6,8 @@ Existing topics are:
 
 Upcoming topics are:
 
+- MDD concept in testing
+
 - conditional power
 
 - multiple testing: gatekeeping, fixed-sequence, fallback, close-set testing procedure
