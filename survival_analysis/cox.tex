@@ -203,11 +203,25 @@ If $h_0\left(\cdot\right)$ is allowed to be ``arbitary'', then the ``parameter s
     \middle|
     h_0\left(\cdot\right) \geq 0,
     \int_0^\infty h_0\left(t\right)\mathrm{d}t = \infty,
-    \beta \in \mathrcal{R}^p
+    \beta \in \mathcal{R}^p
   \right\}
   ,
 \]
 where $\int_0^\infty h_0\left(t\right)\mathrm{d}t = \infty$ ensures that $S_0\left(\infty\right) = 0$.
+\par
+In general this likelihood is hard to maximize. And Cox proposed this idea: to factor $L\left(\beta, h_0\left(\cdot\right)\right)$ as
+\[
+  L\left(\beta, h_0\left(\cdot\right)\right)
+  = L_1\left(\beta\right)
+  \times
+  L_2\left(\beta, h_0\left(\cdot\right)\right)
+  ,
+\]
+where $L_1$ only depends on $\beta$ and its maximization ($\hat{\beta}$) enjoys nice properties such as consistency and asymptotic normality while $L_2$ contains relatively little information about $\beta$. And this $L_1$ is called a \textbf{partial likelihood}.
+
+\subsection{What is $L_1\left(\beta\right)$}
+\label{sec:what-is}
+
 
 \section{Inference}
 \label{sec:inference}
