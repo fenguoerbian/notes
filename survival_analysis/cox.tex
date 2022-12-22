@@ -222,7 +222,27 @@ where $L_1$ only depends on $\beta$ and its maximization ($\hat{\beta}$) enjoys 
 \subsection{What is $L_1\left(\beta\right)$}
 \label{sec:what-is}
 
-In this section we introduce the $L_1$ proposed by Cox.
+In this section we introduce the $L_1$ proposed by Cox. First let's assume there are \textbf{NO tied} nor censoring observations. And define the distinct times of failure $\tau_1 < \tau_2 < \cdots$. Denote
+\[
+  R_j = \left\{i\middle|U_i{\color{red} \geq}\tau_j\right\}
+  = \text{risk set at }\tau_j
+  ,
+\]
+and
+\[
+  Z_{\left(j\right)} = \text{value of Z for the subject who fails at $\tau_j$}
+  .
+\]
+Note that under this setting (no tie, no censor), we can reconstruct the data from $\left\{\tau_j\right\}$, $\left\{R_j\right\}$ and $\left\{Z_{\left(j\right)}\right\}$. And $L_1$ is defined as
+\[
+  L_1\left(\beta\right)
+  \overset{\Delta}{=}
+  \prod\limits_{j}\left\{
+    \frac{e^{\beta Z_{{\color{red}\left(j\right)}}}}{
+      \sum\limits_{l\in R_{j}}e^{\beta Z_{{\color{red}l}}}
+    }
+  \right\}
+\]
 
 \section{Inference}
 \label{sec:inference}
