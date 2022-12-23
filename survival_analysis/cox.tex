@@ -170,9 +170,10 @@ is the \textbf{Cox's PH} model.
     ,
   \end{aligned}
 \]
-where $S_0\left(t\right) = \mathrm{exp}\left( - \int_0^t h_0\left(t\right)\mathrm{d}u\right)$, the survival function for $Z = 0$, hence $S\left(t\middle|Z = 0\right)$. Also remember that $f\left(t\middle|Z\right) = h\left(t\middle|Z\right) S\left(t\middle|Z\right)$. Thus, given $n$ independent data $\left(u_i, \delta_i, z_i\right)$, the likelihood ({\color{blue} one can refer to our previous notes about survival analysis.}) is
-\[
-  \begin{aligned}
+where $S_0\left(t\right) = \mathrm{exp}\left( - \int_0^t h_0\left(u\right)\mathrm{d}u\right)$, the survival function for $Z = 0$, hence $S\left(t\middle|Z = 0\right)$. Also remember that $f\left(t\middle|Z\right) = h\left(t\middle|Z\right) S\left(t\middle|Z\right)$. Thus, given $n$ independent data $\left(u_i, \delta_i, z_i\right)$, the likelihood ({\color{blue} one can refer to our previous notes about survival analysis.}) is
+\begin{equation}
+  \label{eq:general_full_likelihood}
+    \begin{aligned}
     L\left(\beta, h_0\left(\cdot\right)\right)
     =& \prod\limits_{i = 1}^n
     \left(
@@ -186,7 +187,7 @@ where $S_0\left(t\right) = \mathrm{exp}\left( - \int_0^t h_0\left(t\right)\mathr
     S\left(u_i\middle|z_i\right)    \\
     =& \prod\limits_{i = 1}^n
     \left(
-      h_0\left(u_i\middle|z_i\right)
+      h_0\left(u_i\right)
       e^{\beta z_i}
     \right)^{\delta_i}
     \left(
@@ -194,7 +195,7 @@ where $S_0\left(t\right) = \mathrm{exp}\left( - \int_0^t h_0\left(t\right)\mathr
     \right)^{\mathrm{exp}\left(\beta z_i\right)}    \\
     =& \text{function $\left(data, h_0\left(\cdot\right), \beta\right)$}.
   \end{aligned}
-\]
+\end{equation}
 If $h_0\left(\cdot\right)$ is allowed to be ``arbitary'', then the ``parameter space `` is
 \[
   \mathcal{H} \times \mathcal{R}^p
@@ -233,7 +234,37 @@ and
   Z_{\left(j\right)} = \text{value of Z for the subject who fails at $\tau_j$}
   .
 \]
-Note that under this setting (no tie, no censor), we can reconstruct the data from $\left\{\tau_j\right\}$, $\left\{R_j\right\}$ and $\left\{Z_{\left(j\right)}\right\}$. And $L_1$ is defined as
+Note that under this setting (no tie, no censor), the full likelihood \eqref{eq:general_full_likelihood} becomes
+\[
+  L\left(\beta, h_0\left(\cdot\right)\right)
+  = \prod\limits_{i = 1}^n
+  h_0\left(u_i\right)
+  e^{\beta z_i}
+  \left(
+    \mathrm{exp}\left(-\int_0^{u_i}h_0\left(t\right)\mathrm{d}t\right)
+  \right)^{\mathrm{exp}\left(\beta z_i\right)}
+  .
+\]
+Furthermore, we can assume $u_i = \tau_i$, i.e. the data has been sorted based on survival time. And use the KM idea, i.e. assume the survival function is \textbf{discrete} with \underline{baseline} hazard value $h_j$ at $u_j$. Then this likelihood becomes
+\begin{equation}
+  \label{eq:discrete_likelihood}
+    L\left(\beta, h_1, \cdots, h_n\right)
+  = \prod\limits_{i = 1}^n h_i e^{\beta z_i}
+  \mathrm{exp}\left(
+    - \sum\limits_{j = 1}^i h_j
+  \right)^{\mathrm{exp}\left(\beta z_i\right)}
+  .
+\end{equation}
+Note that, in previous notes we have deduct that in discrete case, for any $t\in {\color{red}\left[\right.} v_j, v_{j + 1})$:
+\[
+  H\left(t\right) = \sum\limits_{i = 1}^j h_i
+  \quad\quad
+  S\left(t\right) = \prod\limits_{i = 1}^j\left(1 - h_i\right)
+  .
+\]
+Here in \eqref{eq:discrete_likelihood} we use the approximation that $e^{h_j} \approx 1 - h_j$ when $h_j$ is close to 0. Then we can use the method of \underline{profile likelihood}:
+\par
+we can reconstruct the data from $\left\{\tau_j\right\}$, $\left\{R_j\right\}$ and $\left\{Z_{\left(j\right)}\right\}$. And $L_1$ is defined as
 \[
   L_1\left(\beta\right)
   \overset{\Delta}{=}
