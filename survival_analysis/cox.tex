@@ -245,7 +245,7 @@ Note that under this setting (no tie, no censor), the full likelihood \eqref{eq:
   \right)^{\mathrm{exp}\left(\beta z_i\right)}
   .
 \]
-Furthermore, we can assume $u_i = \tau_i$, i.e. the data has been sorted based on survival time. And use the KM idea, i.e. assume the survival function is \textbf{discrete} with \underline{baseline} hazard value $h_j$ at $u_j$. Then this likelihood becomes
+Furthermore, we can assume $u_i = \tau_i$, i.e. the data has been \underline{sorted} based on survival time. And use the KM idea, i.e. assume the survival function is \textbf{discrete} with \underline{baseline} hazard value $h_j$ at $u_j$. Then this likelihood becomes
 \begin{equation}
   \label{eq:discrete_likelihood}
     L\left(\beta, h_1, \cdots, h_n\right)
@@ -262,7 +262,74 @@ Note that, in previous notes we have deduct that in discrete case, for any $t\in
   S\left(t\right) = \prod\limits_{i = 1}^j\left(1 - h_i\right)
   .
 \]
-Here in \eqref{eq:discrete_likelihood} we use the approximation that $e^{h_j} \approx 1 - h_j$ when $h_j$ is close to 0. Then we can use the method of \underline{profile likelihood}:
+Here in \eqref{eq:discrete_likelihood} we use the approximation that $e^{-h_j} \approx 1 - h_j$ when $h_j$ is close to 0. Then we can use the method of \underline{profile likelihood}: That is, for any given $\beta$, we maximize $L$ (or equivalently, $\mathrm{log}L$) over $h_j$s so the result is a function of $\beta$. Taking derivative, we have
+\[
+  \frac{\partial \mathrm{log}L}{\partial h_j}
+  = \frac{1}{h_j} - \sum\limits_{i \leq j}\mathrm{exp}\left(\beta z_i\right)
+  ,\quad\quad
+  j = 1, \cdots, n.
+\]
+Set them to 0 we have $\hat{h}_j = 1 / \sum\limits_{i \leq j} \mathrm{exp}\left(\beta z_i\right)$. And the \underline{log} profile likelihood of $\beta$ is
+\begin{equation}
+  \label{eq:profile_loglikelihood}
+  \begin{aligned}
+    \mathrm{log}L_{profile}\left(\beta\right) =&
+    \mathrm{log}\left\{
+      \prod\limits_{i = 1}^n
+      \frac{\mathrm{exp}\left(\beta z_i\right)}{
+        \sum\limits_{k \leq i}\mathrm{exp}\left(\beta z_k\right)
+      }
+      \mathrm{exp}\left(
+        - \sum\limits_{j = 1}^i
+        \frac{1}{\sum\limits_{k \leq j}\mathrm{exp}\left(\beta z_k\right)}
+      \right)^{\mathrm{exp}\left(\beta z_i\right)}
+    \right\}    \\
+    =& \sum\limits_{i = 1}^n\left\{
+      \mathrm{log}\left\{
+        \frac{\mathrm{exp}\left(\beta z_i\right)}{
+          \sum\limits_{k \leq i}\mathrm{exp}\left(\beta z_k\right)
+        }
+        \mathrm{exp}\left(
+          - \sum\limits_{j = 1}^i
+          \frac{1}{\sum\limits_{k \leq j}\mathrm{exp}\left(\beta z_k\right)}
+        \right)^{\mathrm{exp}\left(\beta z_i\right)}
+      \right\}
+    \right\}    \\
+    =& \sum\limits_{i = 1}^n\left\{
+      \mathrm{log}\left(
+        \frac{\mathrm{exp}\left(\beta z_i\right)}{
+          \sum\limits_{k \leq i}\mathrm{exp}\left(\beta z_k\right)
+        }
+      \right)
+      - \mathrm{exp}\left(\beta z_i\right)
+      \cdot
+      \left(
+        \sum\limits_{j = 1}^i
+        \frac{1}{\sum\limits_{k \leq j}\mathrm{exp}\left(\beta z_k\right)}
+      \right)
+    \right\}    \\
+    =& \sum\limits_{i = 1}^n\left\{
+      \mathrm{log}\left(
+        \frac{\mathrm{exp}\left(\beta z_i\right)}{
+          \sum\limits_{k \leq i}\mathrm{exp}\left(\beta z_k\right)
+        }
+      \right)\right\}
+      - \sum\limits_{i = 1}^n
+        \sum\limits_{j = 1}^i
+        \frac{\mathrm{exp}\left(\beta z_i\right)}{\sum\limits_{k \leq j}\mathrm{exp}\left(\beta z_k\right)}
+        ,
+  \end{aligned}
+\end{equation}
+where the second part of last equation can be reduced to {\color{red}$-n$?}, which means
+\[
+  L_{profile}\left(\beta\right)
+  \propto \prod\limits_{i = 1}^n
+  \frac{\mathrm{exp}\left(\beta z_i\right)}{
+    \sum\limits_{k \leq i}\mathrm{exp}\left(\beta z_k\right)
+  }
+  .
+\]
+And this is what Cox uses as $L_1\left(\beta\right)$.
 \par
 we can reconstruct the data from $\left\{\tau_j\right\}$, $\left\{R_j\right\}$ and $\left\{Z_{\left(j\right)}\right\}$. And $L_1$ is defined as
 \[
