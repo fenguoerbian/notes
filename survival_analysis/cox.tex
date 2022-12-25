@@ -234,6 +234,18 @@ and
   Z_{\left(j\right)} = \text{value of Z for the subject who fails at $\tau_j$}
   .
 \]
+we can reconstruct the data from $\left\{\tau_j\right\}$, $\left\{R_j\right\}$ and $\left\{Z_{\left(j\right)}\right\}$. And $L_1$ is defined as
+\begin{equation}
+  \label{eq:partial_likelihood}
+  L_1\left(\beta\right)
+  \overset{\Delta}{=}
+  \prod\limits_{j}\left\{
+    \frac{e^{\beta Z_{{\color{red}\left(j\right)}}}}{
+      \sum\limits_{l\in R_{j}}e^{\beta Z_{{\color{red}l}}}
+    }
+  \right\}
+\end{equation}
+\par
 Note that under this setting (no tie, no censor), the full likelihood \eqref{eq:general_full_likelihood} becomes
 \[
   L\left(\beta, h_0\left(\cdot\right)\right)
@@ -262,7 +274,12 @@ Note that, in previous notes we have deduct that in discrete case, for any $t\in
   S\left(t\right) = \prod\limits_{i = 1}^j\left(1 - h_i\right)
   .
 \]
-Here in \eqref{eq:discrete_likelihood} we use the approximation that $e^{-h_j} \approx 1 - h_j$ when $h_j$ is close to 0. Then we can use the method of \underline{profile likelihood}: That is, for any given $\beta$, we maximize $L$ (or equivalently, $\mathrm{log}L$) over $h_j$s so the result is a function of $\beta$. Taking derivative, we have
+Here in \eqref{eq:discrete_likelihood} we use the approximation that $e^{-h_j} \approx 1 - h_j$ when $h_j$ is close to 0.
+
+\subsubsection{Intuition: profile likelihood perspective}
+\label{sec:prof-likel-persp}
+
+We can use the method of \underline{profile likelihood}: That is, for any given $\beta$, we maximize $L$ (or equivalently, $\mathrm{log}L$) over $h_j$s so the result is a function of $\beta$. Taking derivative, we have
 \[
   \frac{\partial \mathrm{log}L}{\partial h_j}
   = \frac{1}{h_j} - \sum\limits_{i \leq j}\mathrm{exp}\left(\beta z_i\right)
@@ -330,17 +347,28 @@ where the second part of last equation can be reduced to {\color{red}$-n$?}, whi
   .
 \]
 And this is what Cox uses as $L_1\left(\beta\right)$.
-\par
-we can reconstruct the data from $\left\{\tau_j\right\}$, $\left\{R_j\right\}$ and $\left\{Z_{\left(j\right)}\right\}$. And $L_1$ is defined as
-\[
-  L_1\left(\beta\right)
-  \overset{\Delta}{=}
-  \prod\limits_{j}\left\{
-    \frac{e^{\beta Z_{{\color{red}\left(j\right)}}}}{
-      \sum\limits_{l\in R_{j}}e^{\beta Z_{{\color{red}l}}}
-    }
-  \right\}
-\]
+
+\subsubsection{Intuition: conditional distribution perspective}
+\label{sec:cond-distr-persp}
+
+{\color{red} To be added.}
+
+\subsubsection{What if there is censoring?}
+\label{sec:what-if-theres}
+
+Then \eqref{eq:partial_likelihood} is still used.
+
+\subsubsection{What if there are tied event times?}
+\label{sec:what-if-there}
+
+\paragraph{Exact partial likelihood}
+
+\paragraph{Breslow's approximation}
+
+\paragraph{Efron's approximation}
+
+
+
 
 \section{Inference}
 \label{sec:inference}
