@@ -353,19 +353,45 @@ And this is what Cox uses as $L_1\left(\beta\right)$.
 
 {\color{red} To be added.}
 
-\subsubsection{What if there is censoring?}
+\subsection{What if there is censoring?}
 \label{sec:what-if-theres}
 
 Then \eqref{eq:partial_likelihood} is still used.
 
-\subsubsection{What if there are tied event times?}
+\subsection{What if there are tied event times?}
 \label{sec:what-if-there}
 
-\paragraph{Exact partial likelihood}
+Through the probability of tie existance is 0 in the continuous time case, in real life it is pretty comman.
 
-\paragraph{Breslow's approximation}
+\subsubsection{Exact partial likelihood}
+\label{sec:exact-part-likel}
 
-\paragraph{Efron's approximation}
+The exact partial likelihood considers all the possible rankings for the tied observations. Specifically
+\[
+  L_1\left(\beta\right)
+  = \prod\limits_{j = 1}^K
+  \left\{
+    \sum\limits_{
+      \left(k_1, \cdots, k_{d_j}\right) = \left(1, 2, \cdots, d_j\right)
+    }
+    \prod\limits_{i = 1}^{d_j}\left\{
+      \frac{
+        \mathrm{exp}\left(\beta z_{\left(j\right)}^{k_i}\right)
+      }{
+        \sum_{l\in R_j}\mathrm{exp}\left(\beta z_l\right)
+        - \sum\limits_{s = i}^{d_j}\mathrm{exp}\left(\beta z_{\left(j\right)}^{\left(s\right)}\right)
+      }
+    \right\}
+  \right\}
+  .
+\]
+The computation of the exact partial likelihood gets out of hand pretty quickly as $d_j$ increases. So some modification/approximation methods are proposed.
+
+\subsubsection{Breslow's approximation}
+\label{sec:bresl-appr}
+
+\subsubsection{Efron's approximation}
+\label{sec:efrons-approximation}
 
 
 
