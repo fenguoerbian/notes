@@ -12,6 +12,6 @@ Upcoming topics are:
 
 - multiple testing: gatekeeping, fixed-sequence, fallback, close-set testing procedure
 
-- multiple imputation
+- multiple imputation: classic MI and Rubin's rule, joint model(JM) and full conditional specification(FCS, MICE), reference/control based MI
 
 - Mixed model: MMRM, etc.
