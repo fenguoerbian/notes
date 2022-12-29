@@ -158,7 +158,7 @@ is the \textbf{Cox's PH} model.
 \section{Estimation}
 \label{sec:estimation}
 
-\eqref{eq:cox_ph_form} implies that
+In this section, we will talk about what is the objective function for Cox's model. But we will not talk about the detailed optimization algorithm. \eqref{eq:cox_ph_form} implies that
 \[
   \begin{aligned}
     S\left(t\middle|Z\right)
@@ -394,13 +394,26 @@ Then \eqref{eq:partial_likelihood} is still used.
 \subsection{What if there are tied event times?}
 \label{sec:what-if-there}
 
-Through the probability of tie existance is 0 in the continuous time case, in real life it is pretty comman.
+Through the probability of tie existance is 0 in the continuous time case, in real life it is pretty comman. Let
+\[
+  \begin{aligned}
+    & \tau_1 < \tau_2 < \cdots < \tau_k
+    &&\quad \text{distinct failure times}    \\
+    & d_j
+    &&\quad \text{number of failures at $\tau_j$}    \\
+    & z_{\left(j\right)}^{\left(1\right)}, z_{\left(j\right)}^{\left(2\right)}, \cdots, z_{\left(j\right)}^{\left(d_j\right)}
+    &&\quad \text{values of z for the $d_j$ subjects who fail at $\tau_j$}    \\
+    & R_j &&\quad \text{as before}
+  \end{aligned}
+\]
+Then the exact, and two approximation of the partial likelihood are shown below.
 
 \subsubsection{Exact partial likelihood}
 \label{sec:exact-part-likel}
 
 The exact partial likelihood considers all the possible rankings for the tied observations. Specifically
-\[
+\begin{equation}
+  \label{eq:exact_l1_with_ties}
   L_1\left(\beta\right)
   = \prod\limits_{j = 1}^K
   \left\{
@@ -409,7 +422,7 @@ The exact partial likelihood considers all the possible rankings for the tied ob
     }
     \prod\limits_{i = 1}^{d_j}\left\{
       \frac{
-        \mathrm{exp}\left(\beta z_{\left(j\right)}^{k_i}\right)
+        \mathrm{exp}\left(\beta z_{\left(j\right)}^{\left(k_i\right)}\right)
       }{
         \sum_{l\in R_j}\mathrm{exp}\left(\beta z_l\right)
         - \sum\limits_{s = i}^{d_j}\mathrm{exp}\left(\beta z_{\left(j\right)}^{\left(s\right)}\right)
@@ -417,16 +430,142 @@ The exact partial likelihood considers all the possible rankings for the tied ob
     \right\}
   \right\}
   .
-\]
+\end{equation}
 The computation of the exact partial likelihood gets out of hand pretty quickly as $d_j$ increases. So some modification/approximation methods are proposed.
 
 \subsubsection{Breslow's approximation}
 \label{sec:bresl-appr}
 
+\begin{equation}
+  \label{eq:breslow_l1}
+  L_1\left(\beta\right) =
+  \prod\limits_{j = 1}^K\left\{
+    \prod\limits_{i = 1}^{d_j}\left\{
+      \frac{\mathrm{exp}\left(\beta z_{\left(j\right)}^{\left(i\right)}\right)}{
+        \sum\limits_{l\in R_j}\mathrm{exp}\left(\beta z_{\left(l\right)}\right)
+      }
+    \right\}
+  \right\}
+  .
+\end{equation}
+The idea is to treat these $d_j$ subjects separately as that in \eqref{eq:partial_likelihood}, the \textbf{same} risk set is used for each and product the results together.
+
 \subsubsection{Efron's approximation}
 \label{sec:efrons-approximation}
 
+\begin{equation}
+  \label{eq:efron_l1}
+  L_1\left(\beta\right) =
+  \prod\limits_{j = 1}^K\left\{
+    \frac{
+      \prod\limits_{i = 1}^{d_j}\mathrm{exp}\left(\beta z_{\left(j\right)}^{\left(i\right)}\right)
+    }{
+      \prod\limits_{i = 1}^{d_j}\left\{
+        \sum_{l\in R_j}\mathrm{exp}\left(\beta z_l\right)
+        - \frac{i - 1}{d_j}
+        \sum\limits_{s = 1}^{d_j}\mathrm{exp}\left(\beta z_{\left(j\right)}^{\left(s\right)}\right)
+      \right\}
+    }
+  \right\}
+  ,
+\end{equation}
+which is quite accurate for moderate $d_j$.
 
+\subsubsection{One example for comparison}
+\label{sec:one-example-comp}
+
+Let's assume $R_j = \left\{1, 2, 3\right\}$ and death set at $\tau_j$ is $D_j = \left\{1, 2\right\}$, which means \underline{two} tied event at $\tau_j$. Then at this time point,
+\begin{enumerate}
+\item the exact partial likelihood, from \eqref{eq:exact_l1_with_ties} is
+\[
+  \begin{aligned}
+    & \frac{
+      \mathrm{exp}\left(\beta z_1\right)
+    }{
+      \mathrm{exp}\left(\beta z_1\right)
+      + \mathrm{exp}\left(\beta z_2\right)
+      + \mathrm{exp}\left(\beta z_3\right)
+    }
+    \times \frac{
+      \mathrm{exp}\left(\beta z_2\right)
+    }{
+      \mathrm{exp}\left(\beta z_2\right)
+      + \mathrm{exp}\left(\beta z_3\right)
+    }    \\
+    &+ \frac{
+      \mathrm{exp}\left(\beta z_2\right)
+    }{
+      \mathrm{exp}\left(\beta z_1\right)
+      + \mathrm{exp}\left(\beta z_2\right)
+      + \mathrm{exp}\left(\beta z_3\right)
+    }
+    \times \frac{
+      \mathrm{exp}\left(\beta z_1\right)
+    }{
+      \mathrm{exp}\left(\beta z_1\right)
+      + \mathrm{exp}\left(\beta z_3\right)
+    }    \\
+    =& \frac{
+      \mathrm{exp}\left(\beta \left(z_1 + z_2\right)\right)
+    }{
+       \mathrm{exp}\left(\beta z_1\right)
+      + \mathrm{exp}\left(\beta z_2\right)
+      + \mathrm{exp}\left(\beta z_3\right)
+    }
+    \times \left(
+      \frac{1}{\mathrm{exp}\left(\beta z_2\right) + \mathrm{exp}\left(\beta z_3\right)}
+      + \frac{1}{\mathrm{exp}\left(\beta z_1\right) + \mathrm{exp}\left(\beta z_3\right)}
+    \right)
+  \end{aligned}
+\]
+\item the breslow'a approximation, from \eqref{eq:breslow_l1} is
+  \[
+    \begin{aligned}
+      & \frac{
+        \mathrm{exp}\left(\beta\left(z_1 + z_2\right)\right)
+      }{
+        \mathrm{exp}\left(\beta z_1\right)
+        + \mathrm{exp}\left(\beta z_2\right)
+        + \mathrm{exp}\left(\beta z_3\right)
+      }
+      \times
+      \frac{1}{
+        \mathrm{exp}\left(\beta z_1\right)
+        + \mathrm{exp}\left(\beta z_2\right)
+        + \mathrm{exp}\left(\beta z_3\right)
+      }    \\
+      =& \frac{
+        \mathrm{exp}\left(\beta\left(z_1 + z_2\right)\right)
+      }{
+        \left(
+          \mathrm{exp}\left(\beta z_1\right)
+          + \mathrm{exp}\left(\beta z_2\right)
+          + \mathrm{exp}\left(\beta z_3\right)
+        \right)^2
+      }
+    \end{aligned}
+  \]
+\item the efron's approximation, from \eqref{eq:efron_l1} is
+  \[
+    \frac{
+        \mathrm{exp}\left(\beta\left(z_1 + z_2\right)\right)
+      }{
+        \mathrm{exp}\left(\beta z_1\right)
+        + \mathrm{exp}\left(\beta z_2\right)
+        + \mathrm{exp}\left(\beta z_3\right)
+      }
+      \times
+      \frac{1}{
+        \mathrm{exp}\left(\beta z_1\right)
+        + \mathrm{exp}\left(\beta z_2\right)
+        + \mathrm{exp}\left(\beta z_3\right)
+        - \frac{1}{2}\left(
+          \mathrm{exp}\left(\beta z_1\right) + \mathrm{exp}\left(\beta z_2\right)
+        \right)
+      }
+  \]
+\end{enumerate}
+So normally speaking, efron's approximation is more accurate than breslow's, but breslow's is more easire to cmpute. In real application, when $d_j$ is big, it may be appropriate to consider analysis for discrete survival function.
 
 
 \section{Inference}
