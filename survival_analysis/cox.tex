@@ -571,6 +571,12 @@ So normally speaking, efron's approximation is more accurate than breslow's, but
 \section{Inference}
 \label{sec:inference}
 
+The idea is to just proceed with partial likelihood as if it is the full likelihood.
+\begin{itemize}
+\item Maximize $L_1$ over $\beta$. The maximization of full likelihood is sometimes called the ``semiparametric'' MLE. Usually the estimate $\hat{\beta} = \mathrm{argmax}L_1$ can not be obtained in closed form.
+\item Approximate the variance of $\hat{\beta}$ by inverse of observed information from $L_1$.
+\item Use Wald test, score test, LRT as in ordinary ML settings.
+\end{itemize}
 
 
 
