@@ -360,8 +360,31 @@ Given the fact that someone survies up to just prior to $\tau_j$, hence in the r
 \]
 In discrete case, this is the conditional probability {\color{blue}(in continuous case, this hazard value can go beyond 1.)} of someone fails at $\tau_j$ given the fact that subject survives past $\tau_{j - 1}$.
 \par
+Now, given the risk set $R_j$ and the fact that the subject with $z_\star$ fails at $\tau_j$, this conditional so-called ``probability''/``likelihood'' is
+\[
+  \frac{h_0\left(\tau_j\right)\mathrm{exp}\left(\beta z_\star\right)}{
+    \sum\limits_{l\in R_j}h_0\left(\tau_j\right)\mathrm{exp}\left(\beta z_l\right)
+  }
+  = \frac{
+    \mathrm{exp}\left(\beta z_\star\right)
+  }{
+    \sum\limits_{l\in R_j}\mathrm{exp}\left(\beta z_l\right)
+  }
+  .
+\]
+Then the cumproduct over all $\tau_j$ leads to $L_1$ in Cox's model.
+\par
+\textbf{Note:} strictly speaking, this is not a conditional \underline{probability}. In \underline{discrete} case, let $h\left(z_1, \tau\right), \cdots, h\left(z_n, \tau\right)$ denotes the hazard of subject $i$ at $\tau$, which is the conditional probability of the subject fails at $\tau_j$ given the fact that the subject survives past $\tau_{j - 1}$. Then given the risk set $R_j$ and the fact that exactly one subject fails at $\tau_j$. The probability of that subject being $z_i, i\in R_j$ is
+\[
+  \frac{h\left(z_i, \tau\right)
+    \prod\limits_{j\neq i}\left(1 - h\left(z_j, \tau\right)\right)}{
+    \sum\limits_{i \in R_j}\left(
+      h\left(z_i, \tau\right)
+      \prod\limits_{l\in R_j, l\neq i}\left(1 - h\left(z_l, \tau\right)\right)
+    \right)
+  }
+\]
 
-{\color{red} To be added.}
 
 \subsection{What if there is censoring?}
 \label{sec:what-if-theres}
