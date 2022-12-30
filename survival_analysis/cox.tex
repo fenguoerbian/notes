@@ -414,22 +414,28 @@ Then the exact, and two approximation of the partial likelihood are shown below.
 The exact partial likelihood considers all the possible rankings for the tied observations. Specifically
 \begin{equation}
   \label{eq:exact_l1_with_ties}
-  L_1\left(\beta\right)
-  = \prod\limits_{j = 1}^K
-  \left\{
-    \sum\limits_{
-      \left(k_1, \cdots, k_{d_j}\right) = \left(1, 2, \cdots, d_j\right)
-    }
-    \prod\limits_{i = 1}^{d_j}\left\{
-      \frac{
-        \mathrm{exp}\left(\beta z_{\left(j\right)}^{\left(k_i\right)}\right)
-      }{
-        \sum_{l\in R_j}\mathrm{exp}\left(\beta z_l\right)
-        - \sum\limits_{s = i}^{d_j}\mathrm{exp}\left(\beta z_{\left(j\right)}^{\left(s\right)}\right)
+  \begin{aligned}
+    L_1\left(\beta\right)
+    =& \prod\limits_{j = 1}^K
+    \left\{
+      \sum\limits_{
+        \left(k_1, \cdots, k_{d_j}\right) = \left(1, 2, \cdots, d_j\right)
       }
+      \prod\limits_{i = 1}^{d_j}\left\{
+        \frac{
+          \mathrm{exp}\left(\beta z_{\left(j\right)}^{\left(k_i\right)}\right)
+        }{
+          \sum_{l\in R_j}\mathrm{exp}\left(\beta z_l\right)
+          - \sum\limits_{s = i}^{d_j}\mathrm{exp}\left(\beta z_{\left(j\right)}^{\left(s\right)}\right)
+        }
+      \right\}
+    \right\}    \\
+    =& \prod\limits_{j = 1}^{K}\left\{
+      \prod\limits_{i = 1}^{d_j}\mathrm{exp}\left(\beta z_{\left(j\right)}^{\left(i\right)}\right)
+      {\color{red}\text{to be added.}}
     \right\}
-  \right\}
-  .
+    .
+  \end{aligned}
 \end{equation}
 The computation of the exact partial likelihood gets out of hand pretty quickly as $d_j$ increases. So some modification/approximation methods are proposed.
 
@@ -480,41 +486,33 @@ Let's assume $R_j = \left\{1, 2, 3\right\}$ and death set at $\tau_j$ is $D_j = 
 \[
   \begin{aligned}
     & \frac{
-      \mathrm{exp}\left(\beta z_1\right)
+      e^{\beta z_1}
     }{
-      \mathrm{exp}\left(\beta z_1\right)
-      + \mathrm{exp}\left(\beta z_2\right)
-      + \mathrm{exp}\left(\beta z_3\right)
+      e^{\beta z_1} + e^{\beta z_2} + e^{\beta z_3}
     }
     \times \frac{
-      \mathrm{exp}\left(\beta z_2\right)
+      e^{\beta z_2}
     }{
-      \mathrm{exp}\left(\beta z_2\right)
-      + \mathrm{exp}\left(\beta z_3\right)
-    }    \\
-    &+ \frac{
-      \mathrm{exp}\left(\beta z_2\right)
+      e^{\beta z_2} + e^{\beta z_3}
+    }
+    + \frac{
+      e^{\beta z_2}
     }{
-      \mathrm{exp}\left(\beta z_1\right)
-      + \mathrm{exp}\left(\beta z_2\right)
-      + \mathrm{exp}\left(\beta z_3\right)
+      e^{\beta z_1} + e^{\beta z_2} + e^{\beta z_3}
     }
     \times \frac{
-      \mathrm{exp}\left(\beta z_1\right)
+      e^{\beta z_1}
     }{
-      \mathrm{exp}\left(\beta z_1\right)
-      + \mathrm{exp}\left(\beta z_3\right)
+      e^{\beta z_1} + e^{\beta z_3}
     }    \\
     =& \frac{
-      \mathrm{exp}\left(\beta \left(z_1 + z_2\right)\right)
+      e^{\beta\left(z_1 + z_2\right)}
     }{
-       \mathrm{exp}\left(\beta z_1\right)
-      + \mathrm{exp}\left(\beta z_2\right)
-      + \mathrm{exp}\left(\beta z_3\right)
+      e^{\beta z_1} + e^{\beta z_2} + e^{\beta z_3}
     }
     \times \left(
-      \frac{1}{\mathrm{exp}\left(\beta z_2\right) + \mathrm{exp}\left(\beta z_3\right)}
-      + \frac{1}{\mathrm{exp}\left(\beta z_1\right) + \mathrm{exp}\left(\beta z_3\right)}
+      \frac{1}{e^{\beta z_2} + e^{\beta z_3}}
+      + \frac{1}{e^{\beta z_1} + e^{\beta z_3}}
     \right)
   \end{aligned}
 \]
@@ -522,25 +520,19 @@ Let's assume $R_j = \left\{1, 2, 3\right\}$ and death set at $\tau_j$ is $D_j = 
   \[
     \begin{aligned}
       & \frac{
-        \mathrm{exp}\left(\beta\left(z_1 + z_2\right)\right)
-      }{
-        \mathrm{exp}\left(\beta z_1\right)
-        + \mathrm{exp}\left(\beta z_2\right)
-        + \mathrm{exp}\left(\beta z_3\right)
-      }
+      e^{\beta\left(z_1 + z_2\right)}
+    }{
+      e^{\beta z_1} + e^{\beta z_2} + e^{\beta z_3}
+    }
       \times
       \frac{1}{
-        \mathrm{exp}\left(\beta z_1\right)
-        + \mathrm{exp}\left(\beta z_2\right)
-        + \mathrm{exp}\left(\beta z_3\right)
+        e^{\beta z_1} + e^{\beta z_2} + e^{\beta z_3}
       }    \\
       =& \frac{
-        \mathrm{exp}\left(\beta\left(z_1 + z_2\right)\right)
+        e^{\beta\left(z_1 + z_2\right)}
       }{
         \left(
-          \mathrm{exp}\left(\beta z_1\right)
-          + \mathrm{exp}\left(\beta z_2\right)
-          + \mathrm{exp}\left(\beta z_3\right)
+          e^{\beta z_1} + e^{\beta z_2} + e^{\beta z_3}
         \right)^2
       }
     \end{aligned}
@@ -548,19 +540,15 @@ Let's assume $R_j = \left\{1, 2, 3\right\}$ and death set at $\tau_j$ is $D_j = 
 \item the efron's approximation, from \eqref{eq:efron_l1} is
   \[
     \frac{
-        \mathrm{exp}\left(\beta\left(z_1 + z_2\right)\right)
-      }{
-        \mathrm{exp}\left(\beta z_1\right)
-        + \mathrm{exp}\left(\beta z_2\right)
-        + \mathrm{exp}\left(\beta z_3\right)
+      e^{\beta\left(z_1 + z_2\right)}
+    }{
+      e^{\beta z_1} + e^{\beta z_2} + e^{\beta z_3}
       }
       \times
       \frac{1}{
-        \mathrm{exp}\left(\beta z_1\right)
-        + \mathrm{exp}\left(\beta z_2\right)
-        + \mathrm{exp}\left(\beta z_3\right)
+        e^{\beta z_1} + e^{\beta z_2} + e^{\beta z_3}
         - \frac{1}{2}\left(
-          \mathrm{exp}\left(\beta z_1\right) + \mathrm{exp}\left(\beta z_2\right)
+          e^{\beta z_1} + e^{\beta z_2}
         \right)
       }
   \]
@@ -578,6 +566,12 @@ The idea is to just proceed with partial likelihood as if it is the full likelih
 \item Use Wald test, score test, LRT as in ordinary ML settings.
 \end{itemize}
 
+Here we consider a scalar value $z$. It is easy to verify from \eqref{eq:exact_l1_with_ties} that
+\[
+  U\left(\beta\right) =
+  \frac{\partial L_1\left(\beta\right)}{\partial \beta}
+  = 
+\]
 
 
 \bibliographystyle{plainnat}
