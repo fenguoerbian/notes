@@ -414,6 +414,7 @@ Then the exact, and two approximation of the partial likelihood are shown below.
 The exact partial likelihood considers all the possible rankings for the tied observations. Specifically
 \begin{equation}
   \label{eq:exact_l1_with_ties}
+  \footnotesize
   \begin{aligned}
     L_1\left(\beta\right)
     =& \prod\limits_{j = 1}^K
@@ -426,13 +427,27 @@ The exact partial likelihood considers all the possible rankings for the tied ob
           \mathrm{exp}\left(\beta z_{\left(j\right)}^{\left(k_i\right)}\right)
         }{
           \sum_{l\in R_j}\mathrm{exp}\left(\beta z_l\right)
-          - \sum\limits_{s = i}^{d_j}\mathrm{exp}\left(\beta z_{\left(j\right)}^{\left(s\right)}\right)
+          - \sum\limits_{s = 1}^{i - 1}\mathrm{exp}\left(\beta z_{\left(j\right)}^{\left(k_s\right)}\right)
         }
       \right\}
     \right\}    \\
     =& \prod\limits_{j = 1}^{K}\left\{
-      \prod\limits_{i = 1}^{d_j}\mathrm{exp}\left(\beta z_{\left(j\right)}^{\left(i\right)}\right)
-      {\color{red}\text{to be added.}}
+      \left[
+        \frac{
+         \prod\limits_{i = 1}^{d_j}\mathrm{exp}\left(\beta z_{\left(j\right)}^{\left(i\right)}\right) 
+       }{
+         \sum\limits_{l\in R_j}\mathrm{exp}\left(\beta z_l\right)
+       }        
+     \right]
+     \cdot
+     \left[
+       \sum\limits_{\left(k_1, \cdots, k_{d_j}\right) = \left(1, 2, \cdots, d_j\right)}
+       \prod\limits_{{\color{red}i = 2}}^{d_j}\frac{1}{
+         \sum\limits_{l\in R_j}\mathrm{exp}\left(\beta z_l\right)
+         - \sum\limits_{s = 1}^{i - 1}
+         \mathrm{exp}\left(\beta z_{\left(j\right)}^{\left(k_s\right)}\right)
+       }
+     \right]
     \right\}
     .
   \end{aligned}
