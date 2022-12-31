@@ -463,9 +463,16 @@ The computation of the exact partial likelihood gets out of hand pretty quickly 
   \prod\limits_{j = 1}^K\left\{
     \prod\limits_{i = 1}^{d_j}\left\{
       \frac{\mathrm{exp}\left(\beta z_{\left(j\right)}^{\left(i\right)}\right)}{
-        \sum\limits_{l\in R_j}\mathrm{exp}\left(\beta z_{\left(l\right)}\right)
+        \sum\limits_{l\in R_j}\mathrm{exp}\left(\beta z_{l}\right)
       }
     \right\}
+  \right\}
+  = \prod\limits_{j = 1}^K\left\{
+    \frac{\prod\limits_{i = 1}^{d_j}\mathrm{exp}\left(\beta z_{\left(j\right)}^{\left(i\right)}\right)}{
+      \left(
+        \sum\limits_{l\in R_j}\mathrm{exp}\left(\beta z_l\right)
+      \right)^{d_j}
+    }
   \right\}
   .
 \end{equation}
@@ -581,12 +588,47 @@ The idea is to just proceed with partial likelihood as if it is the full likelih
 \item Use Wald test, score test, LRT as in ordinary ML settings.
 \end{itemize}
 
-Here we consider a scalar value $z$. It is easy to verify from \eqref{eq:exact_l1_with_ties} that
+
+Here we consider a scalar value $z$. And we can see how it is easy to compute using the breslow's approximation. It is easy to verify from \eqref{eq:breslow_l1} that
 \[
-  U\left(\beta\right) =
-  \frac{\partial L_1\left(\beta\right)}{\partial \beta}
-  = 
+  \begin{aligned}
+    & U\left(\beta\right) =
+  \frac{\partial \mathrm{log}L_1\left(\beta\right)}{\partial \beta}
+  = \sum\limits_{j = 1}^K\left\{
+    \sum\limits_{i = 1}^{d_j}z_{\left(j\right)}^{\left(i\right)}
+    - d_j
+    \cdot
+    \sum\limits_{l \in R_j}w_l^{\left(j\right)}z_l
+  \right\}    \\
+  & \hat{I}\left(\beta\right)
+  = -\frac{\partial^2\mathrm{log}L_1\left(\beta\right)}{\partial \beta^2}
+  = {\color{red}\text{to be added.}}
+  ,
+  \end{aligned}
 \]
+where
+\[
+  w_l^{\left(j\right)} = \frac{
+    e^{\beta z_l}
+  }{
+    \sum\limits_{m\in R_j}e^{\beta z_m}
+  }
+  .
+\]
+
+\paragraph{Wald test:}
+
+based on
+\[
+  \hat{\beta} \overset{apx}{\sim}
+  N\left(\beta, \hat{I}^{-1}\left(\hat{\beta}\right)\right)
+  .
+\]
+
+\paragraph{Score test:}
+
+The null hypothesis is $H_0:\beta = 0$, based on this assuming $U\left(0\right) / \sqrt{I\left(0\right)} \overset{apx}{\sim}N\left(0, 1\right)$.
+
 
 
 \bibliographystyle{plainnat}
