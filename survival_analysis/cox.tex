@@ -577,6 +577,10 @@ Let's assume $R_j = \left\{1, 2, 3\right\}$ and death set at $\tau_j$ is $D_j = 
 \end{enumerate}
 So normally speaking, efron's approximation is more accurate than breslow's, but breslow's is more easire to cmpute. In real application, when $d_j$ is big, it may be appropriate to consider analysis for discrete survival function.
 
+\subsubsection{A fast algorithm for Breslow's and Efron's approximation}
+\label{sec:fast-algor-bresl}
+
+{\color{red} To be added.}
 
 \section{Inference}
 \label{sec:inference}
@@ -630,6 +634,60 @@ based on
 \paragraph{Score test:}
 
 The null hypothesis is $H_0:\beta = 0$, based on this assuming $U\left(0\right) / \sqrt{I\left(0\right)} \overset{apx}{\sim}N\left(0, 1\right)$.
+
+\section{Extensions}
+\label{sec:extensions}
+
+\subsection{Stratified Cox's model}
+\label{sec:strat-coxs-model}
+
+Assume we have to binary covariates: $Z$ for treatment or control, $W$ for male or female. We can incorporate them into the Cox's model as
+\[
+  h\left(t\middle|w, z\right) = h_0\left(t\right)e^{\beta_1 z + \beta_2 w}
+  .
+\]
+Then test for $\beta_1$ would tell us about the treatment effect and test for $\beta_2$ would tell up whether there is difference between male and female. Like we talked in the Logrank-test notes, this model is assumeing constant hazard ratio between both treatment and gender, which means
+\[
+  \begin{aligned}
+    & HR
+    = \frac{h\left(t\middle|z = 0, w = 0\right)}{h\left(t\middle|z = 1, w = 0\right)}
+    = \frac{h\left(t\middle|z = 0, w = 1\right)}{h\left(t\middle|z = 1, w = 1\right)}
+    = e^{\beta_1}    \\
+    & HR
+    = \frac{h\left(t\middle|z = 0, w = 0\right)}{h\left(t\middle|z = 0, w = 1\right)}
+    = \frac{h\left(t\middle|z = 1, w = 0\right)}{h\left(t\middle|z = 1, w = 1\right)}
+    = e^{\beta_2}
+    .
+  \end{aligned}
+\]
+But sometimes we just want to assume the constant hazard ratio between different treatment groups and let the hazard between male and female to be ``arbitrary''. Then we can consider the stratified Cox's model
+\begin{equation}
+  \label{eq:stratified_cox_model}
+  h\left(t\middle|z, w\right)
+  = h\left(t\middle|w\right)
+  e^{\beta z}
+  ,
+\end{equation}
+where $w$ is a categorical variable with $L$ levels. These $L$ levels of $W$ can have arbitrary underlying hazard, yet within each, the treatment relative risk is $e^{\beta}$. For each stratified level, we can construct the partial likelihood as normal, denoted by $L_1^{\left(l\right)}\left(\beta\right)$, then the overall partial likelihood is
+\begin{equation}
+  \label{eq:overall_partial_likelihood}
+  L_1\left(\beta\right)
+  = \prod\limits_{l = 1}^LL_1^{\left(l\right)}\left(\beta\right)
+  .
+\end{equation}
+\textbf{Note: } when $Z$ is binary, the resulting partial likelihood score test for $\beta = 0$ reduced to stratified logrank test.
+
+\subsection{Cox's model for comparing multiple groups and trend test}
+\label{sec:coxs-model-comparing}
+
+\subsection{Time varing covariates}
+\label{sec:time-varing-covar}
+
+\subsection{Estimating $H_0\left(t\right)$}
+\label{sec:estim-h_0l}
+
+
+
 
 
 
