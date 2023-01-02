@@ -680,11 +680,24 @@ where $w$ is a categorical variable with $L$ levels. These $L$ levels of $W$ can
 \subsection{Cox's model for comparing multiple groups and trend test}
 \label{sec:coxs-model-comparing}
 
+\subsubsection{Comparing multiple groups}
+\label{sec:comp-mult-groups}
+
+Suppose $Z$ is a categorical variable with $p + 1$ levels: $0, 1, \cdots, p$. One way to compare the $p+1$ survival distributions is a logrank test as introduced in previous notes. One we can use a Cox model with dummy variable
+\[
+  Z_i = 1\left(Z = i\right), \quad i = 1, \cdots, p.
+\]
+And testing the hypothesis $\beta_1 = \beta_2 = \cdots = \beta_p = 0$. This test is \underline{euivalent} to the logrank test for comparing $p + 1$ groups. So again we can see that logrank test is oriented towards PH alternatives. And logrank test can be adjusted for other covariates by using the Cox's model form.
+\par
+
+
 \subsection{Time varing covariates}
 \label{sec:time-varing-covar}
 
+
 \subsection{Estimating $H_0\left(t\right)$}
 \label{sec:estim-h_0l}
+
 
 
 
