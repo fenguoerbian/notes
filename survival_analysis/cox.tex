@@ -709,9 +709,20 @@ where $c_0 = 0$ and $c_1, \cdots, c_p$ are some constants. Then build the Cox's 
 \subsection{Estimating $H_0\left(t\right)$}
 \label{sec:estim-h_0l}
 
-
-
-
+Most of the time when using Cox's model, we are making inference about coefficient $\beta$. But sometimes we would also want to estimate $H_0\left(t\right)$. Maybe we want to check the shape the baseline hazard, or make prediction about survival probability, etc. The is NO unique correct way to estimate $H_0\left(t\right)$. One popular method is proposed by Breslow:
+\[
+  \widehat{H}_0\left(t\right)
+  = \sum\limits_{\tau_j \leq t}
+  \widehat{\Delta H_0}\left(\tau_j\right)
+  ,
+\]
+where
+\[
+  \widehat{\Delta H}_0\left(\tau_j\right)
+  = \frac{d_j}{\sum\limits_{l\in R_j}e^{\hat{\beta}z_l}}
+  .
+\]
+This is a discrete estimator and when $\hat{\beta} = 0$, this reduced to $d_j/Y\left(\tau_j\right)$, as in the Nelson-Aalen estimator of $H_0\left(\cdot\right)$.
 
 
 
