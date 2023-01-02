@@ -690,6 +690,17 @@ Suppose $Z$ is a categorical variable with $p + 1$ levels: $0, 1, \cdots, p$. On
 And testing the hypothesis $\beta_1 = \beta_2 = \cdots = \beta_p = 0$. This test is \underline{euivalent} to the logrank test for comparing $p + 1$ groups. So again we can see that logrank test is oriented towards PH alternatives. And logrank test can be adjusted for other covariates by using the Cox's model form.
 \par
 
+\subsubsection{Trend test}
+\label{sec:trend-test}
+
+Next let's assume the $p + 1$ levels of $Z$ is ordinal, such as increasing does of the same drug. We can construct a new \underline{scalar} variable
+\[
+  Z^\star = c_i
+  ,\quad \text{if }Z = i
+  ,\quad i = 0, 1, \cdots, p
+  ,
+\]
+where $c_0 = 0$ and $c_1, \cdots, c_p$ are some constants. Then build the Cox's model with $Z^\star$ and test the coefficient $\beta^\star = 0$ is equivalent to the logrank trend test with weight $c_1, \cdots, c_p$. Again, logrank test is oriented towards PH alternatives.
 
 \subsection{Time varing covariates}
 \label{sec:time-varing-covar}
