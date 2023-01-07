@@ -459,7 +459,23 @@ The weighted logrank test, $Z_w$, follows $N\left(\theta, 1\right)$, where $\the
   }
   ,
 \]
-where $d_j = P\left(\delta_i = 1\middle|z_i = j, H_0\right) = \int_0^{\infty}f_0\left(t\right)\left(1 - G_j\left(t\right)\right)\mathrm{d}t$, $j = 0, 1$. Also assume $P\left(z_i = 1\right) = p$ for all $i$.
+where $d_j = P\left(\delta_i = 1\middle|z_i = j, H_0\right) = \int_0^{\infty}f_0\left(t\right)\left(1 - G_j\left(t\right)\right)\mathrm{d}t$, $j = 0, 1$. Also assume $P\left(z_i = 1\right) = p$ for all $i$. And
+\[
+  p\left(t\right) = P\left(Z_i = 1\middle|U_i\geq t\right)
+  .
+\]
+\par
+
+\paragraph{$G_0\left(\cdot\right) = G_1\left(\cdot\right)$}: In the censoring distribution in the 2 groups are identical, $d_0 = d_1$ and $p\left(t\right) = p$. Therefore
+\[
+  ARE = \frac{\theta_{LR}}{\theta_{exp}} = 1
+  ,
+\]
+where $\theta_{LR}$ is the NCP for logrank test.
+\par
+\textbf{Note:} this NCP takes different form than the previous approximated one for sample size calculation.
+
+
 
 
 \bibliographystyle{plainnat}
