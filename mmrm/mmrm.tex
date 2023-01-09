@@ -1,0 +1,131 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{geometry}
+\geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+\renewcommand{\textfraction}{0.15}
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\bottomfraction}{0.65}
+\renewcommand{\floatpagefraction}{0.60}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{mathrsfs}
+\usepackage{amsthm}
+\usepackage{extarrows}
+\usepackage{bm}
+% \newcommand{\bm}{\symbfit}    % `bm` confilicts with `unicode-math`. In that case use \symbfit for bold math symbols
+\usepackage{graphicx}
+\usepackage[section]{placeins}
+\usepackage{flafter}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{color}
+\usepackage{multirow}
+\usepackage{natbib}
+% \usepackage{enumerate}
+\usepackage{enumitem}    % more flexible than `enumerate` package, the reference will carry the whole label appearance, not just the counter, unlike the `enumerate` package.
+\usepackage{upgreek}    % 'upgreek' letters
+
+% \pdfstringdefDisableCommands{\let\bm=\relax}
+
+\newtheorem{thm}{Theorem}
+\newtheorem{cor}{Corollary}
+\newtheorem{assum}{Assumption}
+\newtheorem{rem}{Remark}
+\newtheorem{lem}{Lemma}
+\newtheorem{prop}{Proposition}
+
+\setcounter{topnumber}{5}    % Maximum number of floats that can appear at the top of a text page; default 2. 
+\setcounter{bottomnumber}{5}   % Maximum number of floats that can appear at the bottom of a text page; default 1. 
+\setcounter{totalnumber}{10}    % Maximum number of floats that can appear on a text page; default 3. 
+
+\DeclareMathOperator*{\argmaxdown}{arg\,max}
+\DeclareMathOperator*{\argmindown}{arg\,min}
+\DeclareMathOperator{\argmax}{arg\,max}
+\DeclareMathOperator{\argmin}{arg\,min}
+
+% cross-reference to other files
+% the externaldocument should be compiled 
+% (and at least twice if you're using xr-hyper)
+% \usepackage{xr-hyper}
+% \usepackage{xr}
+
+% --- external document (ordinary setting) ---
+% \externaldocument{external_tex_file}
+% --- end of ordinary setting ---
+
+% --- external document (overleaf setting) ---
+% externaldocument settings for Overleaf
+% \makeatletter
+% \newcommand*{\addFileDependency}[1]{% argument=file name and extension
+% \typeout{(#1)}
+% \@addtofilelist{#1}
+% \IfFileExists{#1}{}{\typeout{No file #1.}}
+% }
+%   \makeatother
+%   \newcommand*{\myexternaldocument}[1]{%
+%   \externaldocument{#1}%
+%   \addFileDependency{#1.tex}%
+%   \addFileDependency{#1.aux}%
+% }
+%   \myexternaldocument{external_tex_file}
+%   --- end of overleaf setting ---
+
+%   mathtools can be used to define labeling format for equations
+%   one can use \eqref for a reference to a labeled equation.
+\usepackage{mathtools}
+\newtagform{supp}{(S-}{)}    % define a equation labeling format for suppliment
+\usetagform{supp}            % use the supp format
+\usetagform{default}         % use the default format
+
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+% package for hyperlinks
+% It's error-prone because hyper link is quite difficult
+% due to the fact the typesetting environment is complex.
+% So you can disable this package and finish the document.
+% Then sort out the hyperlink thing.
+\usepackage[colorlinks,linkcolor=red,anchorcolor=blue,citecolor=green,CJKbookmarks=True]{hyperref}
+
+% package for displaying highlighted codes
+\usepackage{minted}
+
+% package for input codec and output rendering font
+\usepackage[utf8]{inputenc}    % it is always good practice to use utf8
+% you can also try latin1, latin2, cp1252 and cp1250
+\usepackage[T1]{fontenc}    % the default is T0, which only contains 128 characters
+% you can try T1, T2A, T2B
+% you can refer to https://www.overleaf.com/learn/latex/international_language_support#Font_encoding
+% for more details.
+
+
+\title{Mixed Model for Repeated Measures}
+\author{Chao Cheng}
+\date{\today}
+
+
+
+\begin{document}
+\maketitle
+\tableofcontents{}
+
+\section{Introduction}
+\label{sec:introduction}
+
+
+\bibliographystyle{plainnat}
+\bibliography{../ref}
+
+
+
+
+
+\end{document}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
