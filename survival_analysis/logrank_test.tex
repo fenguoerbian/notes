@@ -449,7 +449,27 @@ The power of logrank test under alternative $H_1: h_1\left(t\right) = h_0\left(t
 where $D$ is the expected number of failures and $\pi_0$ is the proportion of patient in groups 0.
 
 {\color{red}To be added.}
-The weighted logrank test, $Z_w$, follows $N\left(\theta, 1\right)$, where $\theta = \xi / \sigma_w$. While for parametric test for exponential data, the NCP $\theta_{exp}$ is
+The weighted logrank test, $Z_w$, follows $N\left(\theta, 1\right)$, where $\theta = \xi / \sigma_w$, where
+\begin{equation}
+  \label{eq:xi}
+  \xi = \sqrt{p\left(1 - p\right)}
+  \int_0^{\infty}
+  {\color{red}\text{to be added.}}
+\end{equation}
+and
+\begin{equation}
+  \label{eq:sigma}
+  \sigma_w^2 =
+  \int_0^\infty
+  {\color{red}\text{to be added.}}
+\end{equation}
+In later analysis, we assume  $P\left(z_i = 1\right) = p$ for all $i$. And
+\[
+  p\left(t\right) = P\left(Z_i = 1\middle|U_i\geq t\right)
+  .
+\]
+\par
+While for parametric test for exponential data, the NCP $\theta_{exp}$ is
 \[
   \theta^2_{exp}
   = \frac{
@@ -459,11 +479,7 @@ The weighted logrank test, $Z_w$, follows $N\left(\theta, 1\right)$, where $\the
   }
   ,
 \]
-where $d_j = P\left(\delta_i = 1\middle|z_i = j, H_0\right) = \int_0^{\infty}f_0\left(t\right)\left(1 - G_j\left(t\right)\right)\mathrm{d}t$, $j = 0, 1$. Also assume $P\left(z_i = 1\right) = p$ for all $i$. And
-\[
-  p\left(t\right) = P\left(Z_i = 1\middle|U_i\geq t\right)
-  .
-\]
+where $d_j = P\left(\delta_i = 1\middle|z_i = j, H_0\right) = \int_0^{\infty}f_0\left(t\right)\left(1 - G_j\left(t\right)\right)\mathrm{d}t$, $j = 0, 1$. 
 \par
 
 \paragraph{$G_0\left(\cdot\right) = G_1\left(\cdot\right)$}: In the censoring distribution in the 2 groups are identical, $d_0 = d_1$ and $p\left(t\right) = p$. Therefore
