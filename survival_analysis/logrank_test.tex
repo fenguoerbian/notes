@@ -454,21 +454,86 @@ The weighted logrank test, $Z_w$, follows $N\left(\theta, 1\right)$, where $\the
   \label{eq:xi}
   \xi = \sqrt{p\left(1 - p\right)}
   \int_0^{\infty}
-  {\color{red}\text{to be added.}}
+    \frac{
+    f_0\left(s\right)\left(1 - G_0\left(s\right)\right)
+    \left(1 - G_1\left(s\right)\right)
+    w\left(s\right)g\left(s\right)
+  }{
+    \left(1 - p\right)
+    \left(1 - G_0\left(s\right)\right)
+    + p\left(1 - G_1\left(s\right)\right)
+  }
+  \mathrm{d}s
+  ,
 \end{equation}
 and
 \begin{equation}
   \label{eq:sigma}
   \sigma_w^2 =
   \int_0^\infty
-  {\color{red}\text{to be added.}}
+  \frac{
+    f_0\left(s\right)\left(1 - G_0\left(s\right)\right)\left(1 - G_1\left(s\right)\right)w^2\left(s\right)
+  }{
+    \left(1 - p\right)
+    \left(1 - G_0\left(s\right)\right)
+    + p\left(1 - G_1\left(s\right)\right)
+  }
+  \mathrm{d}s
 \end{equation}
-In later analysis, we assume  $P\left(z_i = 1\right) = p$ for all $i$. And
+In later analysis, we assume  $P\left(z_i = 1\right) = p$ for all $i$. And define $p\left(t\right)$ to be the null probability that some one at risk at time $t$ is in treatment group 1; that is 
 \[
   p\left(t\right) = P\left(Z_i = 1\middle|U_i\geq t\right)
+\]
+under $H_0$. Then we have
+\[
+  p\left(t\right) = \frac{
+    p\left(1 - G_1\left(t\right)\right)
+  }{
+    \left(1 - p\right)\left(1 - G_0\left(t\right)\right)
+    + p\left(1 - G_1\left(t\right)\right)
+  }
   .
 \]
+Also let $v\left(t\right)$ denote (under $H_0$) the density for observing a failure at  time $t$; that is
+\[
+  v\left(t\right)
+  = \left(
+    \left(1 - p\right)\left(1 - G_0\left(t\right)\right)
+    + p\left(1 - G_1\left(t\right)\right)
+  \right)f_0\left(t\right)
+  .
+\]
+Then we wan re-express $\xi$ and $\sigma_w^2$ and
+\begin{equation}
+  \label{eq:theta_lr}
+  \theta = \frac{\xi}{\sigma}
+  = \frac{
+    \int_0^\infty
+    p\left(t\right)\left(1 - p\left(t\right)\right)
+    w\left(t\right)
+    g\left(t\right)
+    v\left(t\right)
+    \mathrm{d}t
+  }{
+    \sqrt{\int_0^\infty
+      p\left(t\right)\left(1 - p\left(t\right)\right)
+      w^2\left(t\right)v\left(t\right)
+      \mathrm{d}t
+    }
+  }
+\end{equation}
+Also this NCP arise from the sequence of contiguous alternatives given by
+\[
+  H_{A, n}: \quad
+  \mathrm{log}\left(
+    \frac{\lambda_1\left(t\right)}{\lambda_2\left(t\right)}
+  \right)
+  = n^{-1 / 2}g\left(t\right)
+  ;
+\]
+that is $g\left(t\right)$ is proportional to the log hazard ratio.
 \par
+For a simple and special case, assume $G_0\left(\cdot\right) = G_1\left(\cdot\right)$ (i.e., same censoring distribution in each group); $w\left(t\right) = 1$ (i.e., ordinary logrank test); $\lambda_1\left(t\right) / \lambda_0\left(t\right) = \rho$ (i.e., constant hazard ratio);
 While for parametric test for exponential data, the NCP $\theta_{exp}$ is
 \[
   \theta^2_{exp}
