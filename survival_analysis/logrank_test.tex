@@ -533,16 +533,35 @@ Also this NCP arise from the sequence of contiguous alternatives given by
 \]
 that is $g\left(t\right)$ is proportional to the log hazard ratio.
 \par
-For a simple and special case, assume $G_0\left(\cdot\right) = G_1\left(\cdot\right)$ (i.e., same censoring distribution in each group); $w\left(t\right) = 1$ (i.e., ordinary logrank test); $\lambda_1\left(t\right) / \lambda_0\left(t\right) = \rho$ (i.e., constant hazard ratio). Then \eqref{eq:theta_lr} simplifies to
-\[
+For a simple and special case, assume $G_0\left(\cdot\right) = G_1\left(\cdot\right)$ (i.e., same censoring distribution in each group); $w\left(t\right) = 1$ (i.e., ordinary logrank test); $\lambda_1\left(t\right) / \lambda_0\left(t\right) = \rho$ (i.e., constant hazard ratio). Then we have $p\left(t\right) = p$ and \eqref{eq:theta_lr} simplifies to
+\begin{equation}
+  \label{eq:logrank_ncp}
   \theta =
-  {\color{red}\text{to be added.}}
-\]
+  \sqrt{p\left(1 - p\right)}
+  \cdot
+  \sqrt{n}\mathrm{log}\rho
+  \cdot
+  \sqrt{P\left(\delta = 1\right)}
+  =
+  \mathrm{log}\rho
+  \sqrt{
+    p\left(1 - p\right)
+    n
+    P\left(\delta = 1\right)
+  }
+  .  
+\end{equation}
 Here we use the fact, which can be found in {\color{red} previous survival notes} that
 \[
-  \int v\left(t\right)\mathrm{d}t =
-  {\color{red}\text{to be added.}}
+  \int_0^\infty v\left(t\right)\mathrm{d}t =
+  \int_0^\infty \left(1 - G\left(t\right)\right)f\left(t\right)
+  \mathrm{d}t
+  = P\left(U < \infty, \delta = 1\right)
+  = P\left(\delta = 1\right)
+  ,
 \]
+which is the probability to observe an event.
+\par
 While for parametric test for exponential data, the NCP $\theta_{exp}$ is
 \[
   \theta^2_{exp}
