@@ -2,6 +2,8 @@ This repo stores some notes.
 
 Existing topics are:
 
+- Hypothesis testing: t-test, binomial test and chisq test
+
 - to be added
 
 Upcoming topics are:
