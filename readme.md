@@ -4,6 +4,8 @@ Existing topics are:
 
 - Hypothesis testing: t-test, binomial test and chisq test
 
+- Survival analysis: basic concept, logrank test and Cox's PH model
+
 - to be added
 
 Upcoming topics are:
