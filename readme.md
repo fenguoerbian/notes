@@ -6,6 +6,8 @@ Existing topics are:
 
 - Survival analysis: basic concept, logrank test and Cox's PH model
 
+- Fisher's information
+
 - misc information, such as STDM and ADAM
 
 - to be added.
