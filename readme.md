@@ -8,6 +8,8 @@ Existing topics are:
 
 - Fisher's information
 
+- Gamma and Beta distribution
+
 - misc information, such as STDM and ADAM
 
 - to be added.
