@@ -2,7 +2,9 @@ This repo stores some notes.
 
 Existing topics are:
 
-- Hypothesis testing: t-test, binomial test and chisq test
+- Hypothesis testing: 
+
+    - Different testings, such as t-test, binomial test and chisq test
 
 - Survival analysis: basic concept, logrank test and Cox's PH model
 
