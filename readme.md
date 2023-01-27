@@ -5,6 +5,8 @@ Existing topics are:
 - Hypothesis testing: 
 
     - Different testings, such as t-test, binomial test and chisq test
+    
+    - Concepts in testing, such as chance (tolerance probability)
 
 - Survival analysis: basic concept, logrank test and Cox's PH model
 
