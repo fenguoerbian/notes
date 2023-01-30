@@ -132,8 +132,55 @@ A two-sided test with significant level $\alpha$ can be constructed as to reject
   z_{1 - \alpha / 2}
   ,
 \]
-since $\bar{x} \sim N\left(\mu_0, \sigma^2 / n\right)$ under $H_0$.
-
+since $\bar{x} \sim N\left(\mu_0, \sigma^2 / n\right)$ under $H_0$. And for any given underlying $\mu$ that is not equal to $\mu_0$, the probability to correctly reject $H_0$, i.e., the power is computed as
+\[
+  \begin{aligned}
+    & P\left(
+      \left|
+        \frac{\bar{x} - \mu_0}{\sqrt{\sigma^2 / n}}
+      \right|
+      \geq
+      z_{1 - \alpha / 2}
+    \right)    \\
+    =&
+    P\left(
+      \bar{x} \geq \mu_0 + z_{1 - \alpha / 2} * \sqrt{\sigma^2 / n}
+    \right)
+    + P\left(
+      \bar{x} \leq \mu_0 - z_{1 - \alpha / 2} * \sqrt{\sigma^2 / n}
+    \right)    \\
+    =& P\left(
+      \frac{\bar{x} - \mu}{\sqrt{\sigma^2 / n}}
+      \geq \frac{\mu_0 - \mu}{\sqrt{\sigma^2 / n}}
+      + z_{1 - \alpha / 2}
+    \right)
+    +  P\left(
+      \frac{\bar{x} - \mu}{\sqrt{\sigma^2 / n}}
+      \leq \frac{\mu_0 - \mu}{\sqrt{\sigma^2 / n}}
+      - z_{1 - \alpha / 2}
+    \right)    \\
+    =& \left(
+      1 - \Phi\left(
+        \frac{\mu_0 - \mu}{\sqrt{\sigma^2 / n}}
+        + z_{1 - \alpha / 2}
+      \right)
+    \right)
+    + \Phi\left(
+      \frac{\mu_0 - \mu}{\sqrt{\sigma^2 / n}}
+      - z_{1 - \alpha / 2}
+    \right)
+    .
+  \end{aligned}
+\]
+And a confidence interval for $\mu$ is constructed as
+\[
+  \left[
+    \bar{x} - z_{1 - \alpha / 2} * \sqrt{\sigma^2 / n}
+    ,\quad
+    \bar{x} + z_{1 - \alpha / 2} * \sqrt{\sigma^2 / n}
+  \right]
+  .
+\]
 \bibliographystyle{plainnat}
 \bibliography{../ref}
 
