@@ -114,6 +114,25 @@
 \section{Introduction}
 \label{sec:introduction}
 
+In this notes, we talk about minimum detectable difference (MDD) and other related concepts in hypothesis testing. First, we will use a test for normal mean when variance is known as an example. So for an i.i.d. sample $x_1, \cdots, x_n$ with $x_i \sim N\left(\mu, \sigma^2\right)$ with known $\sigma$, we want to test
+\[
+  H_0:\;\mu = \mu_0
+  \quad
+  \text{v.s.}
+  \quad
+  H_1:\;\mu\neq\mu_0
+  .
+\]
+A two-sided test with significant level $\alpha$ can be constructed as to reject $H_0$ when
+\[
+  \left|
+    \frac{\bar{x} - \mu_0}{\sqrt{\sigma^2 / n}}
+  \right|
+  \geq
+  z_{1 - \alpha / 2}
+  ,
+\]
+since $\bar{x} \sim N\left(\mu_0, \sigma^2 / n\right)$ under $H_0$.
 
 \bibliographystyle{plainnat}
 \bibliography{../ref}
