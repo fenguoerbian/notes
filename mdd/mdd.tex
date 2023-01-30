@@ -181,6 +181,15 @@ And a confidence interval for $\mu$ is constructed as
   \right]
   .
 \]
+
+So here we can see that in order to reject $H_0$, the critical point is the normalized \underline{difference} $\left|\frac{\bar{x} - \mu_0}{\sqrt{\sigma^2 / n}}\right|$ to be greater than $z_{1 - \alpha / 2}$. This critical point ($z_{1 - \alpha / 2}$) is determined by the type of test, which leads to the type of test statistics and the significant level. So in other words, as long as the observed difference $\left|\bar{x} - \mu_0\right|$ is greater than $z_{1 - \alpha / 2} * \sqrt{\sigma^2 / n}$, $H_0$ would be rejected no matter what the underlying $\mu$ is. So here $z_{1 - \alpha / 2} * \sqrt{\sigma^2 / n}$ is the minimum effect size (considering the sample size and variance) that would be just significant, hence the minimum detectable difference (MDD).
+
+\section{MDD and other concepts}
+\label{sec:mdd-other-concepts}
+
+
+
+
 \bibliographystyle{plainnat}
 \bibliography{../ref}
 
