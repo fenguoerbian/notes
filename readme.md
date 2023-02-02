@@ -22,6 +22,8 @@ Upcoming topics are:
 
 - MDD concept in testing
 
+- Some Bayesian concepts, such as posterior distribution and posterior predictive distribution
+
 - conditional power
 
 - multiple testing: gatekeeping, fixed-sequence, fallback, close-set testing procedure
