@@ -20,7 +20,7 @@ Existing topics are:
 
 Upcoming topics are:
 
-- MDD concept in testing
+- MDD and related concepts in testing
 
 - Some Bayesian concepts, such as posterior distribution and prior/posterior predictive distribution
 
