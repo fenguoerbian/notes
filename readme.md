@@ -14,7 +14,7 @@ Existing topics are:
 
 - Gamma and Beta distribution
 
-- misc information, such as STDM and ADAM
+- misc information, such as STDM and ADAM, etc.
 
 - to be added.
 
