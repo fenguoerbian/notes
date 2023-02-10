@@ -22,7 +22,7 @@ Upcoming topics are:
 
 - MDD and related concepts in testing
 
-- Some Bayesian concepts, such as prior/posterior distribution and prior/posterior predictive distribution
+- Some Bayesian concepts, such as prior/posterior distribution, prior/posterior predictive distribution and credible interval.
 
 - conditional power
 
