@@ -120,6 +120,17 @@
 \item Credible interval
 \end{enumerate}
 
+From the frequentist perspective, we have the data $x$ and the parameter of the distribution $\theta$ and we make estimation/inference about $\theta$. But $\theta$ is alwyas treated as a fixed parameter. But from bayesian perspective, $\theta$ is also a random variable.
+First we introduce some notations:
+
+\begin{itemize}
+\item The prior distribution
+  $\pi\left(\theta | \alpha\right)$, where $\alpha$ is fixed parameters for the distribution of $\theta$. This prior distribution of $\theta$ represents our previous  knowledge of $\theta$ before the data $x$ is collected.
+\item The data distribution
+  $f\left(x\middle|\theta\right)$, which is the same as that from frequentist's perspective.
+\item The posterior distribution
+  $f_{post}\left(\theta\middle| x\right)$
+\end{itemize}
 
 \bibliographystyle{plainnat}
 \bibliography{../ref}
