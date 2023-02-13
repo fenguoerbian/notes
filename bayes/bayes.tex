@@ -129,7 +129,11 @@ First we introduce some notations:
 \item The data distribution
   $f\left(x\middle|\theta\right)$, which is the same as that from frequentist's perspective.
 \item The posterior distribution
-  $f_{post}\left(\theta\middle| x\right)$
+  $f_{post}\left(\theta\middle| x\right)$, which is the distribution of $\theta$ based on (conditional on) the observed data. Note that
+  \[
+    f_{post}\left(\theta\middle| x\right)
+    = \frac{f\left(\theta, x\right)}{f\left(x\right)}
+  \]
 \end{itemize}
 
 \bibliographystyle{plainnat}
