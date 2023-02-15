@@ -24,6 +24,8 @@ Upcoming topics are:
 
 - Some Bayesian concepts, such as prior/posterior distribution, prior/posterior predictive distribution and credible interval.
 
+- BOIN and BLRM in early stage design, for single agent or combo.
+
 - conditional power
 
 - multiple testing: gatekeeping, fixed-sequence, fallback, close-set testing procedure
