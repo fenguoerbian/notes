@@ -1,0 +1,28 @@
+---
+title: "Sample size based on Clopper-Pearson Method"
+author: "Chao Cheng"
+date: "2023-02-21"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+Clopper-Pearson method is an exact method for one-sample proportional test. The power of this type of test under given sample size `n`, type-1 error `alpha`, alternative hypothesis `alternative`, underlying real proportion `p_trt` and reference proportion `p_ctrl` can be computed via binomial enumeration
+
+```{r power_function}
+power2 <- function(n, p_trt, p_ctrl, alpha, alternative = "two.sided"){
+    power <- 0
+    for(i in (seq(n + 1) - 1)){
+        prob <- dbinom(i, size = n, prob = p_trt)
+        tmp <- binom.test(i, n, p = p_ctrl, 
+                          alternative = alternative, 
+                          conf.level = 1 - alpha)
+        power <- power + (tmp$p.value < alpha) * prob
+    }
+    return(power)
+}
+```
