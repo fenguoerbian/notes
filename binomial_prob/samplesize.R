@@ -40,7 +40,7 @@ uniroot(function(n, p_trt, p_ctrl, alpha, power){
 
 # one-sided and two-sided results are somewhat different in exact test
 power2(41, 0.65, 0.4, 0.05, "two.sided")
-power2(46, 0.65, 0.4, 0.025, "greater")
+power2(41, 0.65, 0.4, 0.025, "greater")
 
 
 # normal approximation 2?
