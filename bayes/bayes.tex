@@ -133,8 +133,26 @@ First we introduce some notations:
   \[
     f_{post}\left(\theta\middle| x\right)
     = \frac{f\left(\theta, x\right)}{f\left(x\right)}
+    = \frac{
+      f\left(x\middle|\theta\right)\pi\left(\theta\middle|\alpha\right)
+    }{f\left(x\right)}
+    \propto f\left(x\middle|\theta\right)\pi\left(\theta\middle|\alpha\right)
+    ,
   \]
+  where the last $\propto$ is taken with respect to $\theta$. So the kernel of posterior distribution of $\theta$ given $x$ is determined by $f\left(x\middle|\theta\right)\pi\left(\theta\middle|\alpha\right)$. Sometimes we will write $f_{post}\left(\theta\middle|x\right)$ as $f_{post}\left(\theta\middle|x;\alpha\right)$ to emphasize that this posterior distribution depends on $x$ and parameter $\alpha$.
 \end{itemize}
+
+\section{Credible Interval}
+\label{sec:credible-interval}
+
+
+\section{Predictive distribution}
+\label{sec:pred-distr}
+
+
+
+
+
 
 \bibliographystyle{plainnat}
 \bibliography{../ref}

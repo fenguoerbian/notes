@@ -32,6 +32,7 @@ power2 <- function(n, p_trt, p_ctrl, alpha, alternative = "two.sided"){
     return(power)
 }
 
+# There are different logics to find the sample size that meets the power requirement
 uniroot(function(n, p_trt, p_ctrl, alpha, power){
     n <- round(n)
     power2(n, p_trt, p_ctrl, alpha, "greater") - power
