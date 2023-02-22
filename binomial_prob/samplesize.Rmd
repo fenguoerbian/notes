@@ -26,3 +26,5 @@ power2 <- function(n, p_trt, p_ctrl, alpha, alternative = "two.sided"){
     return(power)
 }
 ```
+
+## Sample size
