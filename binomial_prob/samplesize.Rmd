@@ -2,7 +2,8 @@
 title: "Sample size based on Clopper-Pearson Method"
 author: "Chao Cheng"
 date: "2023-02-21"
-output: html_document
+output: 
+    html_document
 ---
 
 ```{r setup, include=FALSE}
@@ -26,3 +27,5 @@ power2 <- function(n, p_trt, p_ctrl, alpha, alternative = "two.sided"){
     return(power)
 }
 ```
+
+Details about the reject probability of Clopper-Pearson method (the exact method) can be found in pdf notes (binomial_prob.pdf) of this repo.
