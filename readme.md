@@ -22,7 +22,7 @@ Upcoming topics are:
 
 - MDD and related concepts in testing
 
-- Some Bayesian concepts, such as prior/posterior distribution, prior/posterior predictive distribution and credible interval.
+- Some Bayesian concepts, such as prior/posterior distribution, prior/posterior predictive distribution and different methods to get credible interval.
 
 - BOIN and BLRM in early stage design, for single agent or combo agents.
 
