@@ -26,10 +26,10 @@ Upcoming topics are:
 
 - BOIN and BLRM in early stage design, for single agent or combo agents.
 
-- conditional power
+- Conditional power
 
-- multiple testing: gatekeeping, fixed-sequence, fallback, close-set testing procedure
+- Multiple testing: gatekeeping, fixed-sequence, fallback, close-set testing procedure
 
-- multiple imputation: classic MI and Rubin's rule, joint model(JM) and full conditional specification(FCS, MICE), reference/control based MI
+- Multiple imputation: classic MI and Rubin's rule, joint model(JM) and full conditional specification(FCS, MICE), reference/control based MI
 
 - Mixed model: MMRM, etc.
