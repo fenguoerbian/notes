@@ -133,8 +133,9 @@ A two-sided test with significant level $\alpha$ can be constructed as to reject
   ,
 \]
 since $\bar{x} \sim N\left(\mu_0, \sigma^2 / n\right)$ under $H_0$. And for any given underlying $\mu$ that is not equal to $\mu_0$, the probability to correctly reject $H_0$, i.e., the power is computed as
-\[
-  \begin{aligned}
+\begin{equation}
+  \label{eq:power_deduction}
+    \begin{aligned}
     & P\left(
       \left|
         \frac{\bar{x} - \mu_0}{\sqrt{\sigma^2 / n}}
@@ -171,7 +172,7 @@ since $\bar{x} \sim N\left(\mu_0, \sigma^2 / n\right)$ under $H_0$. And for any 
     \right)
     .
   \end{aligned}
-\]
+\end{equation}
 And a confidence interval for $\mu$ is constructed as
 \[
   \left[
@@ -183,7 +184,53 @@ And a confidence interval for $\mu$ is constructed as
 \]
 
 So here we can see that in order to reject $H_0$, the critical point is the normalized \underline{difference} $\left|\frac{\bar{x} - \mu_0}{\sqrt{\sigma^2 / n}}\right|$ to be greater than $z_{1 - \alpha / 2}$. This critical point ($z_{1 - \alpha / 2}$) is determined by the type of test, which leads to the type of test statistics and the significant level. So in other words, as long as the observed difference $\left|\bar{x} - \mu_0\right|$ is greater than $z_{1 - \alpha / 2} * \sqrt{\sigma^2 / n}$, $H_0$ would be rejected no matter what the underlying $\mu$ is. So here $z_{1 - \alpha / 2} * \sqrt{\sigma^2 / n}$ is the minimum effect size (considering the sample size and variance) that would be just significant, hence the minimum detectable difference (MDD).
-
+\par
+Also from \eqref{eq:power_deduction} one can see that to achieve a pre-specified power ($1 - \beta$) at some given $\mu \neq \mu_0$, it must satisfy that
+\[
+  \left(
+    1 - \Phi\left(
+      \frac{\mu_0 - \mu}{\sqrt{\sigma^2 / n}}
+      + z_{1 - \alpha / 2}
+    \right)
+  \right)
+  + \Phi\left(
+    \frac{\mu_0 - \mu}{\sqrt{\sigma^2 / n}}
+    - z_{1 - \alpha / 2}
+  \right)
+  \geq
+  1 - \beta
+  .
+\]
+W.l.o.g., assume $\mu > \mu_0$, the approximately we have
+\[
+  1 - \Phi\left(
+    \frac{\mu_0 - \mu}{\sqrt{\sigma^2 / n}}
+    + z_{1 - \alpha / 2}
+  \right)
+  \geq 1 - \beta
+  .
+\]
+Hence a minimum sample size should satisfy
+\[
+  \frac{\mu_0 - \mu}{\sqrt{\sigma^2 / n}}
+  + z_{1 - \alpha / 2}
+  =
+  z_{\beta}
+  ,
+\]
+which means
+\begin{equation}
+  \label{eq:sample_size}
+    n = \left(z_{\alpha / 2} + z_\beta\right)^2\sigma^2 / \left(\mu_0 - \mu\right)^2
+  .
+\end{equation}
+When designing a trial, we might choose the target improvemen $\mu - \mu_0$, then from \eqref{eq:sample_size} we can get the sample size at given $\alpha$ and $\beta$. Also from this we can connect MDD with the target improvement
+\[
+  MDD
+  = z_{1 - \alpha / 2} * \sqrt{\sigma^2 / n}
+  = \left(\mu - \mu_0\right) * \frac{z_{1 - \alpha / 2}}{\left(z_{1 - \alpha / 2} + z_{1 - \beta}\right)} 
+  .
+\]
 \section{MDD and other concepts}
 \label{sec:mdd-other-concepts}
 
