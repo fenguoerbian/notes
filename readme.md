@@ -8,6 +8,8 @@ Existing topics are:
     
     - Concepts in testing, such as chance (tolerance probability)
 
+    - MDD and related concepts
+
 - Survival analysis: basic concept, logrank test and Cox's PH model
 
 - Fisher's information
@@ -19,8 +21,6 @@ Existing topics are:
 - to be added.
 
 Upcoming topics are:
-
-- MDD and related concepts in testing
 
 - Some Bayesian concepts, such as prior/posterior distribution, prior/posterior predictive distribution and different methods to get credible interval.
 
