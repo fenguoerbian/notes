@@ -145,7 +145,37 @@ First we introduce some notations:
 \section{Credible Interval}
 \label{sec:credible-interval}
 
-equal tail or equal density?
+There are mainly two types of credible interval: equal tail interval (ETI) and highest (posterior) density interval (HDI). Denote the CI as $[lower, upper]$, then these two ends satisfies different conditions for ETI and HDI:
+\begin{itemize}
+\item For ETI, the CI has equal probability tails on both sides, that is $F\left(lower\right) = (1 - F(upper)) = \alpha / 2$ and the CI is $[lower, upper]$.
+\item For HDI, the CI has equal \textbf{density} on both ends, that is $f\left(lower\right) = f\left(upper\right)$ and $F\left(upper\right) - F\left(lower\right) = 1 - \alpha$. 
+\end{itemize}
+\textbf{Note:} sometimes we will use SDI (shortest density interval) to mean HDI, since SDI can be seen as a more robust method to compute HDI\citep{Liu2015p809-819}.
+\par
+ETI and HDI can produce same results as long as the distribution is symmetric. But in reality many posterior distribution is skewed, then HDI is a more reasonable CI. A demonstration is shown in Figure~\Ref{fig:eti_and_hdi}.
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width = 0.7\textwidth]{eti_and_hdi}
+  \caption{Comparison of 90\% ETI and HDI for Beta(18,4)}
+  \label{fig:eti_and_hdi}
+\end{figure}
+Note that HDI can be hard to compute, a starting point of \mintinline{r}{R} script is shown here, using package
+\mintinline{r}{bayestestR}:
+\begin{minted}{r}
+x <- seq(from = 0, to = 1, by = 0.001)
+a <- 18
+b <- 4
+y1 <- dbeta(x, a, b)
+
+# HDI
+tmp <- bayestestR::distribution_beta(n = 100000, shape1 = a, shape2 = b)
+tmp2 <- bayestestR::ci(tmp, ci = 0.90, method = "HDI")
+
+# Compare HDI and SDI
+bayestestR::ci(tmp, ci = 0.90, method = "HDI")
+str(bayestestR::hdi(tmp, ci = 0.9))
+str(bayestestR::spi(tmp, ci = 0.9))    # SPI is a more robust HDI
+\end{minted}
 
 
 
