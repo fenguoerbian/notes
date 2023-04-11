@@ -225,17 +225,57 @@ which means
   .
 \end{equation}
 When designing a trial, we might choose the target improvemen $\mu - \mu_0$, then from \eqref{eq:sample_size} we can get the sample size at given $\alpha$ and $\beta$. Also from this we can connect MDD with the target improvement
-\[
-  MDD
+\begin{equation}
+  \label{eq:mdd_and_mde}
+    MDD
   = z_{1 - \alpha / 2} * \sqrt{\sigma^2 / n}
   = \left(\mu - \mu_0\right) * \frac{z_{1 - \alpha / 2}}{\left(z_{1 - \alpha / 2} + z_{1 - \beta}\right)} 
   .
-\]
+\end{equation}
+Here $\left|\mu - \mu_0\right|$ is sometimes referred to as the minimum detectable effect (MDE) under given $\alpha$, $\beta$ and sample size $n$. And \eqref{eq:mdd_and_mde} is the relationship between MDD and MDE.
+
 \section{MDD and other concepts}
 \label{sec:mdd-other-concepts}
 
-
-
+Again, let's use the example in the introduction, in which we want to test
+\[
+  H_0:\;\mu = \mu_0
+  \quad
+  \text{v.s.}
+  \quad
+  H_1:\;\mu\neq\mu_0
+  .
+\]
+The reject rule is
+\[
+  \left|
+    \frac{\bar{x} - \mu_0}{\sqrt{\sigma^2 / n}}
+  \right|
+  \geq
+  z_{1 - \alpha / 2}
+  .
+\]
+Therefore on the original scale, the reject rule is
+\[
+  \bar{x} \leq \mu_0 - z_{1 - \alpha / 2} * \sqrt{\sigma^2 / n}
+  \quad\text{or}\quad
+  \bar{x} \geq \mu_0 + z_{1 - \alpha / 2} * \sqrt{\sigma^2 / n}
+  .
+\]
+\begin{itemize}
+\item The minimum detectable observation is $\bar{x}_{mdd} = \mu_0 \pm z_{1 - \alpha / 2} * \sqrt{\sigma^2 / n}$ and the MDD is
+  \[
+    \left|\bar{x}_{mdd} - \mu_0\right| = z_{1 - \alpha / 2} * \sqrt{\sigma^2 / n}
+    .
+  \]
+\item The $1 - \alpha$ CI for $\mu$ is
+  \[
+    \bar{x} - z_{1 - \alpha / 2} * \sqrt{\sigma^2 / n}, \bar{x} + z_{1 - \alpha / 2} * \sqrt{\sigma^2 / n}
+    ,
+  \]
+  where $\bar{x}$ is the observed effect on original scale in one test.
+\item MDE when designing the experiment, see equation \eqref{eq:mdd_and_mde} and the related paragraph.
+\end{itemize}
 
 
 
