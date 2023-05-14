@@ -182,6 +182,15 @@ str(bayestestR::spi(tmp, ci = 0.9))    # SPI is a more robust HDI
 \section{Predictive distribution}
 \label{sec:pred-distr}
 
+Note that if want to make some prediction/statement about $x$, like $x\in A$, then the probability can be computed as
+\begin{equation}
+  \label{eq:predictive_probability_definition}
+    P\left(X \in A\right) = \int_A f_X\left(x\right)\mathrm{d}x
+  = \int_A\int f_{X, \theta}\left(x, \theta\right)\mathrm{d}\theta\mathrm{d}x
+  = \int_A\int f_{X|\theta}\left(x\middle|\theta\right)f_\theta\left(\theta\right)\mathrm{d}\theta\mathrm{d}x
+  ,
+\end{equation}
+where $f_{X|\theta}\left(x\middle|\theta\right)$ is the data distribution and $f_\theta\left(\theta\right)$ is the distribution of $\theta$, either prior or posterior distribution. \eqref{eq:predictive_probability_definition} is called the \textbf{predictive probability} of $X\in A$, which is the probability based on marginal distribution of $X$.
 
 
 
