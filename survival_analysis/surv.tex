@@ -437,7 +437,7 @@ which means approximately
   = N\left(\lambda, \frac{\lambda^2}{np}\right)
   .
 \]
-Unfortunately, both $\lambda$ and $p$ (essentially $G\left(\cdot\right)$) are unknown. We plug in the estimation $\hat{\lambda} = r / W$ and $\hat{p} = r / W$ and apply Slutsky's theorem. This means for the purpose of estimation, we use
+Unfortunately, both $\lambda$ and $p$ (essentially $G\left(\cdot\right)$) are unknown. We plug in the estimation $\hat{\lambda} = r / W$ and $\hat{p} = r / n$ and apply Slutsky's theorem. This means for the purpose of estimation, we use
 \begin{equation}
   \label{eq:fisher_info_estimate}
   \left\{
@@ -449,7 +449,7 @@ Unfortunately, both $\lambda$ and $p$ (essentially $G\left(\cdot\right)$) are un
     \end{aligned}
   \right.
 \end{equation}
-Not that unlike \eqref{eq:fisher_info_property}, here in \eqref{eq:fisher_info_estimate}, $r$ and $W$ are observations. And we have
+Note that unlike \eqref{eq:fisher_info_property}, here in \eqref{eq:fisher_info_estimate}, $r$ and $W$ are observations. And we have
 \begin{equation}
   \label{eq:normal_approximation}
     \hat{\lambda} \overset{\mathrm{apx}}{\sim}
