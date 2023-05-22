@@ -1,0 +1,269 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{ctex}
+\usepackage{geometry}
+\geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+\renewcommand{\textfraction}{0.15}
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\bottomfraction}{0.65}
+\renewcommand{\floatpagefraction}{0.60}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{mathrsfs}
+\usepackage{amsthm}
+\usepackage{extarrows}
+\usepackage{bm}
+% \newcommand{\bm}{\symbfit}    % `bm` confilicts with `unicode-math`. In that case use \symbfit for bold math symbols
+\usepackage{graphicx}
+\usepackage[section]{placeins}
+\usepackage{flafter}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{color}
+\usepackage{multirow}
+\usepackage{natbib}
+% \usepackage{enumerate}
+\usepackage{enumitem}    % more flexible than `enumerate` package, the reference will carry the whole label appearance, not just the counter, unlike the `enumerate` package.
+\usepackage{upgreek}    % 'upgreek' letters
+
+% \pdfstringdefDisableCommands{\let\bm=\relax}
+
+\newtheorem{thm}{Theorem}
+\newtheorem{cor}{Corollary}
+\newtheorem{assum}{Assumption}
+\newtheorem{rem}{Remark}
+\newtheorem{lem}{Lemma}
+
+\setcounter{topnumber}{5}    % Maximum number of floats that can appear at the top of a text page; default 2. 
+\setcounter{bottomnumber}{5}   % Maximum number of floats that can appear at the bottom of a text page; default 1. 
+\setcounter{totalnumber}{10}    % Maximum number of floats that can appear on a text page; default 3. 
+
+\DeclareMathOperator*{\argmaxdown}{arg\,max}
+\DeclareMathOperator*{\argmindown}{arg\,min}
+\DeclareMathOperator{\argmax}{arg\,max}
+\DeclareMathOperator{\argmin}{arg\,min}
+
+% cross-reference to other files
+% the externaldocument should be compiled 
+%   (and at least twice if you're using xr-hyper)
+% \usepackage{xr-hyper}
+% \usepackage{xr}
+
+% --- external document (ordinary setting) ---
+% \externaldocument{external_tex_file}
+% --- end of ordinary setting ---
+
+% --- external document (overleaf setting) ---
+% externaldocument settings for Overleaf
+% \makeatletter
+% \newcommand*{\addFileDependency}[1]{% argument=file name and extension
+%   \typeout{(#1)}
+%   \@addtofilelist{#1}
+%   \IfFileExists{#1}{}{\typeout{No file #1.}}
+% }
+% \makeatother
+% \newcommand*{\myexternaldocument}[1]{%
+%     \externaldocument{#1}%
+%     \addFileDependency{#1.tex}%
+%     \addFileDependency{#1.aux}%
+% }
+% \myexternaldocument{external_tex_file}
+% --- end of overleaf setting ---
+
+% mathtools can be used to define labeling format for equations
+% one can use \eqref for a reference to a labeled equation.
+\usepackage{mathtools}
+\newtagform{supp}{(S-}{)}    % define a equation labeling format for suppliment
+\usetagform{supp}            % use the supp format
+\usetagform{default}         % use the default format
+
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+% package for hyperlinks
+% It's error-prone because hyper link is quite difficult
+% due to the fact the typesetting environment is complex.
+% So you can disable this package and finish the document.
+% Then sort out the hyperlink thing.
+\usepackage[colorlinks,linkcolor=red,anchorcolor=blue,citecolor=green,CJKbookmarks=True]{hyperref}
+
+% package for displaying highlighted codes
+\usepackage{minted}
+
+% package for input codec and output rendering font
+\usepackage[utf8]{inputenc}    % it is always good practice to use utf8
+                               % you can also try latin1, latin2, cp1252 and cp1250
+\usepackage[T1]{fontenc}    % the default is T0, which only contains 128 characters
+                            % you can try T1, T2A, T2B
+% you can refer to https://www.overleaf.com/learn/latex/international_language_support#Font_encoding
+% for more details.
+
+\usepackage{soul}    % \ul{} for underline, \st{} for strikethrough/overstriking, \hl{} for highlingt
+
+
+\title{Bayesian规则下的Go/Nogo概率}
+\author{Chao Cheng}
+\date{\today}
+
+
+
+\begin{document}
+\maketitle
+
+事件时间$T_e\sim Exp(\lambda_1)$, $f(t;\lambda_1) = \lambda_1 \mathrm{exp}\left(-\lambda_1 t\right)$，删失时间$T_c \sim Exp(\lambda_2)$, $f\left(t;\lambda_2\right) = \lambda_2 \mathrm{exp}\left(-\lambda_2t\right)$. 则观察到的数据的联合密度/质量
+\[
+  f\left(t, \delta\right) = \left\{
+    \begin{aligned}
+      &\lambda_1\mathrm{exp}\left(-(\lambda_1 + \lambda_2)t\right) && \quad \delta = 1    \\
+      &\lambda_2\mathrm{exp}\left(-(\lambda_1 + \lambda_2)t\right) && \quad \delta = 0    \\
+    \end{aligned}
+  \right.
+\]
+其中$\delta = 1$表示观察到事件，$\delta = 0$表示观察到删失。那么观察到事件的概率：
+\[
+  P\left(\delta = 1\right) = \int_0^\infty f\left(t, \delta = 1\right)\mathrm{d}t
+  = \frac{\lambda_1}{\lambda_1 + \lambda_2}
+  .
+\]
+那么观察时间的条件分布
+\[
+  P\left(T \leq t\middle|\delta\right) = \frac{P\left(T\leq t, \delta\right)}{P\left(\delta\right)}
+  = \left\{
+    \begin{aligned}
+          & \frac{P\left(T\leq t, \delta = 1\right)}{P\left(\delta = 1\right)}
+    \sim Exp\left(\lambda_1 + \lambda_2\right)
+    &&\quad \text{if } \delta = 1    \\
+    & \frac{P\left(T\leq t, \delta = 0\right)}{P\left(\delta = 0\right)}
+    \sim Exp\left(\lambda_1 + \lambda_2\right)
+    &&\quad \text{if } \delta = 0    \\
+    \end{aligned}
+  \right.
+\]
+可见该条件分布与$\delta$取值无关，因此$T$与$\delta$独立。（一般这样的结论是不会成立的，这里依赖于两者都是指数分布）。
+\par
+由此可得
+\[
+  \begin{aligned}
+    \sum\limits_{i = 1}^nT_i \sim Gamma\left(n, \lambda_1 + \lambda_2\right)    \\
+    \sum\limits_{i = 1}^n\delta_i \sim Binomial(n, \frac{\lambda_1}{\lambda_1 + \lambda_2})
+  \end{aligned}
+\]
+且$\sum\limits_{i = 1}^nT_i$和$\sum\limits_{i = 1}^n\delta_i$独立。
+\par
+在Bayesian角度下，风险的后验分布服从$Gamma\left(\text{prior\_shape} + \sum\limits_{i = 1}^n\delta_i, \text{prior\_rate} + \sum\limits_{i = 1}^nT_i\right)$对于给出某一个Go/Nogo的规则，例如$P\left(\lambda < \text{eff\_cut}\right) \geq \text{go\_prob}$后，我们可以将其转化为在所有可能的观察到的事件数的情况下，需要的总观察时间的要求，因此某一个潜在的风险$\lambda_1$给出Go信号的概率为
+\[
+  \begin{aligned}
+    & P\left(\text{Declare Go}\right)    \\
+    =& \sum\limits_{evt_{num} = 0}^{n}P\left(
+      \text{Declare Go}, \sum\limits_{i = 0}^n\delta_i = evt_{num}
+    \right)    \\
+    =& \sum\limits_{evt_{num} = 0}^{n}P\left(
+      \text{Declare Go}\middle| \sum\limits_{i = 0}^n\delta_i = evt_{num}
+    \right)
+    P\left(\sum\limits_{i = 0}^n\delta_i = evt_{num}\right)    \\
+    =& \sum\limits_{evt_{num} = 0}^{n}
+    P\left(
+      \sum\limits_{i = 1}^nT_i \geq t_{\text{eff cut for } evt_{num}}
+      \middle| \sum\limits_{i = 0}^n\delta_i = evt_{num}
+    \right)
+    P\left(\sum\limits_{i = 0}^n\delta_i = evt_{num}\right)    \\
+    =& \sum\limits_{evt_{num} = 0}^{n}
+    P\left(
+      \sum\limits_{i = 1}^nT_i \geq t_{\text{eff cut for } evt_{num}}
+    \right)
+    P\left(\sum\limits_{i = 0}^n\delta_i = evt_{num}\right)
+    .
+  \end{aligned}
+\]
+同理我们可以算出某个$\lambda_1$给出Nogo信号的概率为
+\[
+  P\left(\text{Declare Nogo}\right)
+  = \sum\limits_{evt_{num} = 0}^{n}
+    P\left(
+      \sum\limits_{i = 1}^nT_i \leq t_{\text{fut cut for } evt_{num}}
+    \right)
+    P\left(\sum\limits_{i = 0}^n\delta_i = evt_{num}\right)
+    .
+\]
+
+
+
+
+
+
+\clearpage
+\appendix
+
+
+\end{document}
+
+
+%%%%%%%%%%%%%%%%%%%%%Subfigure
+\begin{figure}[htb]
+\centering
+\begin{subfigure}[h]{0.49\textwidth}
+\centering
+\includegraphics[width=\textwidth]{5_23contour}
+\caption{Contour Graphic}
+\end{subfigure}
+\begin{subfigure}[h]{0.49\textwidth}
+\centering
+\includegraphics[width=\textwidth]{5_23lattice}
+\caption{Lattice Graphic}
+\end{subfigure}
+\caption{\label{fig:5.23.contour}}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%TukeyHSD
+\par
+\makeatletter\def\@captype{figure}\makeatother
+\begin{minipage}{.45\textwidth}
+  \begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{5_10tukeyplot}
+    \caption{Comparing Yield according to Pressure}
+    \label{fig:5.10.tukeyplot}
+  \end{figure}
+\end{minipage}
+\makeatletter\def\@captype{table}\makeatother
+\begin{minipage}{.45\textwidth}
+  \begin{table}
+    \centering
+    \begin{tabular}{rrrrr}
+      \hline
+      & diff & lwr & upr & p adj \\
+      \hline
+      215-200 & 0.32 & 0.11 & 0.52 & 0.00 \\
+      230-200 & -0.18 & -0.39 & 0.02 & 0.08 \\
+      230-215 & -0.50 & -0.70 & -0.30 & 0.00 \\
+      \hline
+    \end{tabular}
+    \caption{Tukey multiple comparisons}
+    \label{tab:5.10.tukeytable}
+  \end{table}
+\end{minipage}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%custimize \item
+\newcounter{Lcount}
+\setcounter{Lcount}{0}
+\begin{list}{2.1.\arabic{Lcount}}{\usecounter{Lcount}}
+\item
+\arabic 1, 2, 3 ...
+\alph a, b, c ...
+\Alph A, B, C ...
+\roman i, ii, iii ...
+\Roman I, II, III ...
+\fnsymbol 星号，单剑号，双剑号等
+
+
+\end{list}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
