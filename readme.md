@@ -10,7 +10,11 @@ Existing topics are:
 
     - MDD and related concepts
 
-- Survival analysis: basic concept, logrank test and Cox's PH model
+- Survival analysis: 
+    
+    - basic concept, logrank test and Cox's PH model
+
+    - Bayesian parametric model and Go/Nogo design
 
 - Fisher's information
 
@@ -18,11 +22,13 @@ Existing topics are:
 
 - misc information, such as STDM and ADAM, etc.
 
+- Some Bayesian concepts, such as prior/posterior distribution, prior/posterior predictive distribution and different methods to get credible interval.
+
 - to be added.
 
 Upcoming topics are:
 
-- Some Bayesian concepts, such as prior/posterior distribution, prior/posterior predictive distribution and different methods to get credible interval.
+- Some Bayesian monitoring concepts, for categorical/TTE end points go/nogo design.
 
 - BOIN and BLRM in early stage design, for single agent or combo agents.
 
