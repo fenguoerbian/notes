@@ -154,6 +154,9 @@ And the \textbf{half} length $d$ of this interval is just
 \section{Computation of the chance at given $d_0$}
 \label{sec:comp-chance-at}
 
+\subsection{When population variance $\sigma^2$ is known}
+\label{sec:when-popul-vari}
+
 Note that for a normal sample,
 \[
   \frac{\left(n - 1\right)S^2}{\sigma^2} \sim \chi^2_{n - 1}
@@ -200,6 +203,84 @@ Hence the chance of this CI falls in the half width limit of $d_0$ is the probab
     \sigma^2
   }
   .
+\]
+
+\textbf{Note:} Actually if population variance $\sigma^2$ is known, then we know that
+\[
+  \bar{x}\sim N\left(\mu, \sigma^2 / n\right),
+\]
+for normal sample. This even holds asymptotically for non-normal sample by CLT. So the $1 - \alpha$ CI can be constructed as
+\[
+  \left[
+    \bar{x}
+    - z_{1 - \alpha / 2}
+    \cdot \sigma
+    ,\quad
+    \bar{x}
+    + z_{1 - \alpha / 2}
+    \cdot \sigma
+  \right]
+  .  
+\]
+And the half width is just $z_{1 - \alpha / 2}\cdot \sigma$, a scalar, not a random variable and no need for the concept of chance.
+
+\subsection{When population variance $\sigma^2$ is from previous estimation}
+\label{sec:when-popul-vari-1}
+
+If $\sigma^2$ is unknown, but previously we have $m$ samples from the same normal distribution and the sample variance is $S_0^2$. Then again
+\[
+  \frac{\left(m - 1\right)S_0^2}{\sigma^2}\sim \chi^2_{m - 1}
+  ,
+\]
+and
+\[
+  \frac{S^2}{S_0^2} =
+  \frac{
+    \frac{\left(n - 1\right)S^2}{\sigma^2} / \left(n - 1\right)
+  }{
+    \frac{\left(m - 1\right)S_0^2}{\sigma^2} / \left(m - 1\right)
+  } \sim F_{n - 1, m - 1}
+\]
+Therefore
+\[
+  \begin{aligned}
+    P\left(
+      d \leq d_0
+    \right)
+    =& P\left(
+      t_{1 - \alpha / 2, n - 1}
+      \cdot \sqrt{\frac{S^2}{n}}
+      \leq d_0
+    \right)    \\
+    =& P\left(
+      \frac{S^2}{S_0^2}
+      \leq \frac{
+        nd_0^2
+      }{
+        t_{1 - \alpha / 2, n - 1}^2
+        S_0^2
+      }
+    \right)    \\
+    =& P\left(
+      F_{n - 1, m - 1} \leq
+      \frac{
+        nd_0^2
+      }{
+        t_{1 - \alpha / 2, n - 1}^2
+        S_0^2
+      }
+    \right)
+    .
+  \end{aligned}  
+\]
+Hence the chance of this CI falls in the half width limit of $d_0$ is the probability of a $F_{n - 1, m - 1}$ random variable being smaller than
+\[
+  \frac{
+    n\left(n - 1\right)d_0^2
+  }{
+    t_{1 - \alpha / 2, n - 1}^2
+    \sigma^2
+  }  
 \]
 
 \section{Additional notes and resources}
