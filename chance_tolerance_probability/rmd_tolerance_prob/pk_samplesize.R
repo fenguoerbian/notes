@@ -3,7 +3,7 @@ knitr::opts_chunk$set(echo = TRUE)
 knitr::knit_hooks$set(purl = knitr::hook_purl)
 
 ## -----------------------------------------------------------------------------
-library(tidyverse)
+library(ggplot2)
 
 ## ----fun_get_chance, echo = FALSE---------------------------------------------
 Get_Chance <- function(n = 6, a = 0.1, cv = 0.15, width_limit = 0.35){
@@ -23,13 +23,13 @@ width_limit <- 0.35
 
 # Get_Chance() 定义见后文
 chance <- Get_Chance(n = n, a = a, cv = cv, width_limit = width_limit)
-print(paste0("Change is : ", chance))
+print(paste0("Chance is : ", chance))
 
 
 ## ---- echo = FALSE------------------------------------------------------------
 width_vec <- seq(from = 0.1, to = 0.5, by = 0.025)
 chance_vec <- Get_Chance(n = n, a = a, cv = cv, width_limit = width_vec)
-tibble(width = width_vec, chance = chance_vec) %>%
+data.frame(width = width_vec, chance = chance_vec) |>
     ggplot(aes(x = width, y = chance)) + 
     geom_line() + 
     geom_point() + 
@@ -62,7 +62,7 @@ for(i in seq(nrow(res))){
 knitr::kable(res)
 
 ## ---- echo = FALSE------------------------------------------------------------
-write_csv(res, file = "case1.csv")
+readr::write_csv(res, file = "case1.csv")
 
 fig <- ggplot(res, aes(y = cv)) + 
     geom_errorbarh(aes(xmin = lower, xmax = upper), height = 0.01) + 
@@ -95,9 +95,9 @@ for(i in seq(nrow(res))){
 knitr::kable(res[, c("cv", "n", "chance")])
 
 ## ---- echo = FALSE, fig.showtext=TRUE-----------------------------------------
-write_csv(res, file = "case2.csv")
+readr::write_csv(res, file = "case2.csv")
 
-fig <- res %>%
+fig <- res |>
     ggplot(aes(x = cv, y = chance)) + 
     geom_line(aes(color = factor(n))) + 
     geom_point(aes(color = factor(n))) + 
