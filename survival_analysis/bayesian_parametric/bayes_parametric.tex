@@ -87,7 +87,7 @@
 % due to the fact the typesetting environment is complex.
 % So you can disable this package and finish the document.
 % Then sort out the hyperlink thing.
-\usepackage[colorlinks,linkcolor=red,anchorcolor=blue,citecolor=green,CJKbookmarks=True]{hyperref}
+\usepackage[colorlinks,linkcolor=red,anchorcolor=blue,citecolor=green,unicode=true]{hyperref}
 
 % package for displaying highlighted codes
 \usepackage{minted}
@@ -111,17 +111,89 @@
 
 \begin{document}
 \maketitle
+\tableofcontents{}
+
+\section{引言}
+\label{sec:introduction}
 
 事件时间$T_e\sim Exp(\lambda_1)$, $f(t;\lambda_1) = \lambda_1 \mathrm{exp}\left(-\lambda_1 t\right)$，删失时间$T_c \sim Exp(\lambda_2)$, $f\left(t;\lambda_2\right) = \lambda_2 \mathrm{exp}\left(-\lambda_2t\right)$. 则观察到的数据的联合密度/质量
-\[
-  f\left(t, \delta\right) = \left\{
+\begin{equation}
+  \label{eq:joint_density}
+    f\left(t, \delta\right) = \left\{
     \begin{aligned}
       &\lambda_1\mathrm{exp}\left(-(\lambda_1 + \lambda_2)t\right) && \quad \delta = 1    \\
       &\lambda_2\mathrm{exp}\left(-(\lambda_1 + \lambda_2)t\right) && \quad \delta = 0    \\
     \end{aligned}
   \right.
+\end{equation}
+
+其中$\delta = 1$表示观察到事件，$\delta = 0$表示观察到删失。
+
+\section{数据似然}
+\label{sec:data_likelihood}
+
+记实际观察到的数据为$\left(T, \delta\right)$，其中$T = \mathrm{min}\left(T_e, T_c\right)$；$\delta = 1$表示观察到事件，$\delta = 0$表示观察到删失。那么对于i.i.d.样本$\left(t_i, \delta_i\right)$, $i = 1, \cdots, n$，数据的likelihood为
+\begin{equation}
+  \label{eq:data_likelihood}
+  \begin{aligned}
+    L\left(\lambda_1, \lambda_2; Data\right)
+    =& \prod\limits_{i = 1}^nf\left(t_i, \delta_i\right)    \\
+    =& \lambda_1^{\sum\limits_{i = 1}^n\delta_i}
+    \lambda_2^{n - \sum\limits_{i = 1}^n\delta_i}
+    \mathrm{exp}\left(-\left(\lambda_1 + \lambda_2\right)\sum\limits_{i = 1}^n t_i\right)    \\
+    =& \lambda_1^{\sum\limits_{i = 1}^n\delta_i}
+    \mathrm{exp}\left(-\lambda_1\sum\limits_{i = 1}^n t_i\right)
+    \cdot
+    \lambda_2^{n - \sum\limits_{i = 1}^n\delta_i}
+    \mathrm{exp}\left(-\lambda_2\sum\limits_{i = 1}^n t_i\right)
+  \end{aligned}
+\end{equation}
+从\eqref{eq:data_likelihood}中可以看出最大化likelihood时，$\lambda_1$和$\lambda_2$相互独立。若要关于$\lambda_1$来最大化likelihood，只需要最大化
+\[
+  \lambda_1^{\sum\limits_{i = 1}^n\delta_i}
+  \mathrm{exp}\left(-\lambda_1\sum\limits_{i = 1}^n t_i\right)
 \]
-其中$\delta = 1$表示观察到事件，$\delta = 0$表示观察到删失。那么观察到事件的概率：
+若要关于$\lambda_2$来最大化likelihood，只需要最大化
+\[
+  \lambda_2^{n - \sum\limits_{i = 1}^n\delta_i}
+  \mathrm{exp}\left(-\lambda_2\sum\limits_{i = 1}^n t_i\right)
+\]
+因此MLE分别是
+\[
+  \hat{\lambda_1} = \frac{\sum\limits_{i = 1}^n\delta_i}{\sum\limits_{i = 1}^n t_i}
+  ,\quad
+  \hat{\lambda_2} = \frac{n - \sum\limits_{i = 1}^n\delta_i}{\sum\limits_{i = 1}^n t_i}
+\]
+
+\section{先验和后验分布}
+\label{sec:prior_and_posterior_distribution}
+
+一般对$\lambda$采用共轭先验$Gamma\left(\alpha, \beta\right)$分布，密度为
+\begin{equation}
+  \label{eq:prior_distribution}
+  \pi\left(\lambda\middle|\alpha, \beta\right)
+  = \frac{\beta^\alpha}{\Gamma\left(\alpha\right)}
+  \lambda^{\alpha - 1}\mathrm{exp}\left(-\beta\lambda\right)
+\end{equation}
+
+取决于参数的定义和记号的设置，有时会采用Inverse-Gamma分布，或参数$\beta$设置为$1 / \beta$，因此在实际使用中，请确认到底使用的何种形式的密度和先验。本文档中的写法，$\alpha$和$\beta$对应着\mintinline{r}|R|中\mintinline{r}|dgamma|函数中的\mintinline{r}|shape|和\mintinline{r}|rate|参数。
+\par
+结合\eqref{eq:data_likelihood}和\eqref{eq:prior_distribution}可知，$\lambda_1$的后验分布核心为
+\[
+  f\left(\lambda_1\middle|Data\right)
+  \propto
+  \lambda_1^{\alpha + \sum\limits_{i = 1}^n\delta_i - 1}
+  \mathrm{exp}\left(-\left(\beta + \sum\limits_{i = 1}^n t_i\right)\lambda_1\right)
+  ,
+\]
+因此$\lambda_1$的后验分布为$Gamma\left(\alpha + \sum\delta_i, \beta + \sum t_i\right)$。
+\par
+同理，$\lambda_2$的后验分布为$Gamma\left(\alpha + n - \sum \delta_i, \beta + \sum t_i\right)$。
+
+\section{操作特性的计算}
+\label{sec:computing_oc}
+
+观察到事件的概率：
 \[
   P\left(\delta = 1\right) = \int_0^\infty f\left(t, \delta = 1\right)\mathrm{d}t
   = \frac{\lambda_1}{\lambda_1 + \lambda_2}
