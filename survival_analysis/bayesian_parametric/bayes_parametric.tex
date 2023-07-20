@@ -272,69 +272,6 @@
 \end{document}
 
 
-%%%%%%%%%%%%%%%%%%%%%Subfigure
-\begin{figure}[htb]
-\centering
-\begin{subfigure}[h]{0.49\textwidth}
-\centering
-\includegraphics[width=\textwidth]{5_23contour}
-\caption{Contour Graphic}
-\end{subfigure}
-\begin{subfigure}[h]{0.49\textwidth}
-\centering
-\includegraphics[width=\textwidth]{5_23lattice}
-\caption{Lattice Graphic}
-\end{subfigure}
-\caption{\label{fig:5.23.contour}}
-\end{figure}
-
-%%%%%%%%%%%%%%%%%%%%%TukeyHSD
-\par
-\makeatletter\def\@captype{figure}\makeatother
-\begin{minipage}{.45\textwidth}
-  \begin{figure}
-    \centering
-    \includegraphics[width=\textwidth]{5_10tukeyplot}
-    \caption{Comparing Yield according to Pressure}
-    \label{fig:5.10.tukeyplot}
-  \end{figure}
-\end{minipage}
-\makeatletter\def\@captype{table}\makeatother
-\begin{minipage}{.45\textwidth}
-  \begin{table}
-    \centering
-    \begin{tabular}{rrrrr}
-      \hline
-      & diff & lwr & upr & p adj \\
-      \hline
-      215-200 & 0.32 & 0.11 & 0.52 & 0.00 \\
-      230-200 & -0.18 & -0.39 & 0.02 & 0.08 \\
-      230-215 & -0.50 & -0.70 & -0.30 & 0.00 \\
-      \hline
-    \end{tabular}
-    \caption{Tukey multiple comparisons}
-    \label{tab:5.10.tukeytable}
-  \end{table}
-\end{minipage}
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%custimize \item
-\newcounter{Lcount}
-\setcounter{Lcount}{0}
-\begin{list}{2.1.\arabic{Lcount}}{\usecounter{Lcount}}
-\item
-\arabic 1, 2, 3 ...
-\alph a, b, c ...
-\Alph A, B, C ...
-\roman i, ii, iii ...
-\Roman I, II, III ...
-\fnsymbol 星号，单剑号，双剑号等
-
-
-\end{list}
-
-
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: t
