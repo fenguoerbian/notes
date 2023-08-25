@@ -152,7 +152,7 @@ There are mainly two types of credible interval: equal tail interval (ETI) and h
 \end{itemize}
 \textbf{Note:} sometimes we will use SDI (shortest density interval) to mean HDI, since SDI can be seen as a more robust method to compute HDI\citep{Liu2015p809-819}.
 \par
-ETI and HDI can produce same results as long as the distribution is symmetric. But in reality many posterior distribution is skewed, then HDI is a more reasonable CI. A demonstration is shown in Figure~\Ref{fig:eti_and_hdi}.
+ETI and HDI can produce same results as long as the distribution is symmetric. But in reality many posterior distributions are skewed, then HDI is a more reasonable CI. A demonstration is shown in Figure~\Ref{fig:eti_and_hdi}.
 \begin{figure}[htbp]
   \centering
   \includegraphics[width = 0.7\textwidth]{figs/eti_and_hdi}
@@ -171,7 +171,7 @@ y1 <- dbeta(x, a, b)
 tmp <- bayestestR::distribution_beta(n = 100000, shape1 = a, shape2 = b)
 tmp2 <- bayestestR::ci(tmp, ci = 0.90, method = "HDI")
 
-# Compare HDI and SDI
+# Compare HDI and SPI
 bayestestR::ci(tmp, ci = 0.90, method = "HDI")
 str(bayestestR::hdi(tmp, ci = 0.9))
 str(bayestestR::spi(tmp, ci = 0.9))    # SPI is a more robust HDI
