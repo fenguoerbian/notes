@@ -10,6 +10,8 @@ Existing topics are:
 
     - MDD and related concepts
 
+    - Conditional power (work in progress)
+
 - Survival analysis: 
     
     - basic concept, logrank test and Cox's PH model
@@ -31,8 +33,6 @@ Upcoming topics are:
 - Some Bayesian monitoring concepts, for categorical/TTE end points go/nogo design.
 
 - BOIN and BLRM in early stage design, for single agent or combo agents.
-
-- Conditional power
 
 - Multiple testing: gatekeeping, fixed-sequence, fallback, close-set testing procedure
 
