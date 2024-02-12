@@ -1,0 +1,227 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{geometry}
+\geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+\renewcommand{\textfraction}{0.15}
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\bottomfraction}{0.65}
+\renewcommand{\floatpagefraction}{0.60}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{mathrsfs}
+\usepackage{amsthm}
+\usepackage{extarrows}
+\usepackage{bm}
+% \newcommand{\bm}{\symbfit}    % `bm` confilicts with `unicode-math`. In that case use \symbfit for bold math symbols
+\usepackage{graphicx}
+\usepackage[section]{placeins}
+\usepackage{flafter}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{color}
+\usepackage{multirow}
+\usepackage{natbib}
+% \usepackage{enumerate}
+\usepackage{enumitem}    % more flexible than `enumerate` package, the reference will carry the whole label appearance, not just the counter, unlike the `enumerate` package.
+\usepackage{upgreek}    % 'upgreek' letters
+
+% \pdfstringdefDisableCommands{\let\bm=\relax}
+
+\newtheorem{thm}{Theorem}
+\newtheorem{cor}{Corollary}
+\newtheorem{assum}{Assumption}
+\newtheorem{rem}{Remark}
+\newtheorem{lem}{Lemma}
+
+\setcounter{topnumber}{5}    % Maximum number of floats that can appear at the top of a text page; default 2. 
+\setcounter{bottomnumber}{5}   % Maximum number of floats that can appear at the bottom of a text page; default 1. 
+\setcounter{totalnumber}{10}    % Maximum number of floats that can appear on a text page; default 3. 
+
+\DeclareMathOperator*{\argmaxdown}{arg\,max}
+\DeclareMathOperator*{\argmindown}{arg\,min}
+\DeclareMathOperator{\argmax}{arg\,max}
+\DeclareMathOperator{\argmin}{arg\,min}
+
+% cross-reference to other files
+% the externaldocument should be compiled 
+% (and at least twice if you're using xr-hyper)
+% \usepackage{xr-hyper}
+% \usepackage{xr}
+
+% --- external document (ordinary setting) ---
+% \externaldocument{external_tex_file}
+% --- end of ordinary setting ---
+
+% --- external document (overleaf setting) ---
+% externaldocument settings for Overleaf
+% \makeatletter
+% \newcommand*{\addFileDependency}[1]{% argument=file name and extension
+% \typeout{(#1)}
+% \@addtofilelist{#1}
+% \IfFileExists{#1}{}{\typeout{No file #1.}}
+% }
+%   \makeatother
+%   \newcommand*{\myexternaldocument}[1]{%
+%   \externaldocument{#1}%
+%   \addFileDependency{#1.tex}%
+%   \addFileDependency{#1.aux}%
+% }
+%   \myexternaldocument{external_tex_file}
+%   --- end of overleaf setting ---
+
+%   mathtools can be used to define labeling format for equations
+%   one can use \eqref for a reference to a labeled equation.
+\usepackage{mathtools}
+\newtagform{supp}{(S-}{)}    % define a equation labeling format for suppliment
+\usetagform{supp}            % use the supp format
+\usetagform{default}         % use the default format
+
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+% package for hyperlinks
+% It's error-prone because hyper link is quite difficult
+% due to the fact the typesetting environment is complex.
+% So you can disable this package and finish the document.
+% Then sort out the hyperlink thing.
+\usepackage[colorlinks,linkcolor=red,anchorcolor=blue,citecolor=green,CJKbookmarks=True]{hyperref}
+
+% package for displaying highlighted codes
+\usepackage{minted}
+
+% package for input codec and output rendering font
+\usepackage[utf8]{inputenc}    % it is always good practice to use utf8
+% you can also try latin1, latin2, cp1252 and cp1250
+\usepackage[T1]{fontenc}    % the default is T0, which only contains 128 characters
+% you can try T1, T2A, T2B
+% you can refer to https://www.overleaf.com/learn/latex/international_language_support#Font_encoding
+% for more details.
+
+
+\title{Poisson and Negative Binomial Distribution}
+\author{Chao Cheng}
+\date{\today}
+
+
+
+\begin{document}
+\maketitle
+
+\tableofcontents{}
+
+\section{Introduction}
+\label{sec:introduction}
+
+This notes is about poisson and negative binomial distribution, and their application in modeling count data.
+
+\section{Poisson Distribution}
+\label{sec:poisson-distribution}
+
+\subsection{Basic Information}
+\label{sec:basic-information}
+
+The p.m.f of a random variable $X$ that follows Poisson distribution is
+\[
+  P\left(X = x\right) = \frac{\mathrm{e}^{-\lambda}\lambda^x}{x!}, \quad x = 0, 1, \cdots.
+\]
+The expectation and variance of $X$ is
+\[
+  \mathrm{E}X = \mathrm{Var}X = \lambda.
+\]
+
+\subsection{Some Additoinal Properties}
+\label{sec:some-addit-prop}
+
+\begin{enumerate}
+\item Summation of independent poisson distributed variables is still poisson distributed. That is to say,
+  \par
+  if
+  \[
+    X_1\sim Poisson(\lambda_1),\quad
+    X_2\sim Poisson(\lambda_2),\quad
+    X_1 \perp X_2
+    ,
+  \]
+  then
+  \[
+    X_1 + X_2 \sim Poisson(\lambda_1 + \lambda_2)
+    .
+  \]
+\item Poisson distribution can be related to Gamma distribution, which is also mentioned in ``gamma\_and\_beta.pdf'' notes.
+\item A poisson distributed variable can be seen as counts of customer to a store or occurence of some events. And the \textbf{time interval between each count} follows exponential distribution. 
+\end{enumerate}
+
+\section{Negative Binomial Distribution}
+\label{sec:negat-binom-distr}
+
+\subsection{Basic Information}
+\label{sec:basic-information-1}
+
+Denote $X$ the number of failing attempts just before reaching a total of $r$ times of success and $p$ the probability of success. If each attempt is independent of each other, then the distribution of $X$ is called a negative binomial distribution. And the p.m.f of $X$ is
+\[
+  P\left(X = x\right)
+  = C_{x + r - 1}^xp^r\left(1 - p\right)^x
+  = \frac{\left(x + r - 1\right)!}{\left(r - 1\right)!x!}p^r\left(1 - p\right)^x
+  ,\quad
+  x = 0, 1, \cdots .
+\]
+In this notation, $X$ is the number of failing attempts. In some cases, one will model the distribution of number of total attempts $X'$, which is just $X' = X + r$. 
+
+\par
+
+Previously, $r$ is the number of required success, which is naturally an positive integer. But one can actually generalize $r$ to positive real number using Gamma function. Then the p.m.f of $X$ is written as
+\[
+  P\left(X = x\right) = \frac{\Gamma(x + r)}{\Gamma(r)\Gamma(x + 1)}p^r\left(1 - p\right)^x
+  ,\quad
+  x = 0, 1, \cdots
+  ,
+\]
+which is also called \textbf{Polya} distribution.
+
+\par
+
+The expectation of a negative binomial/Polya distribution is
+\[
+  \mathrm{E}X = \frac{r\left(1 - p\right)}{p}
+  .
+\]
+The variance of a negative binomial/Polya distribution is
+\[
+  \mathrm{Var}X = \frac{r\left(1 - p\right)}{p ^ 2}
+  .
+\]
+
+\subsection{Some Additional Properties}
+\label{sec:some-addit-prop-1}
+
+\begin{enumerate}
+\item Summation of independent negative binomial distributed variables.
+\item Relationship to Poisson and Gamma distribution.
+\item Dispersion parameter and other parameterization of negative binomial distribution.
+\end{enumerate}
+
+\section{Modeling Counts Data}
+\label{sec:modeling-counts-data}
+
+\subsection{Basic Modeling}
+\label{sec:basic-modeling}
+
+\subsection{Zero Inflation}
+\label{sec:zero-inflation}
+
+
+
+\bibliographystyle{plainnat}
+\bibliography{../ref}
+
+
+\end{document}
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
