@@ -197,9 +197,47 @@ The variance of a negative binomial/Polya distribution is
 \label{sec:some-addit-prop-1}
 
 \begin{enumerate}
-\item Summation of independent negative binomial distributed variables.
+\item Summation of independent negative binomial distributed variables. That is to say, if $X_1 \sim NB\left(r_1, p\right)$, $X_2 \sim NB\left(r_2, p\right)$ and $X_1 \perp X_2$, then
+  \[
+    X_1 + X_2 \sim NB\left(r_1 + r_2, p\right)
+    .
+  \]
 \item Relationship to Poisson and Gamma distribution.
-\item Dispersion parameter and other parameterization of negative binomial distribution.
+  \begin{itemize}
+  \item Related to poisson when $r\to\infty$.
+  \item Related to poisson and gamma distribution.
+  \end{itemize}
+\item Dispersion parameter and other parametrization of negative binomial distribution.
+  \begin{itemize}
+  \item In some literature, expectation and variance are used to describe negative binomial distribution:
+    \[
+      \begin{aligned}
+        \mathrm{E}X &= \mu    \\
+        \mathrm{Var}X &= \sigma^2    \\
+        r &= \frac{\mu^2}{\sigma^2 - \mu}    \\
+        p &= \frac{\mu}{\sigma^2}
+      \end{aligned}
+    \]
+  \item In some literature, $\alpha = \frac{1}{r}$ is called the dispersion parameter while others call $r$ the dispersion parameter. It also has other names such as ``shape parameter'', ``clustering coefficient'', ``heterogeneity'' and ``aggregation parameter''. Note that the expectation and the variance of a negative binomial distributed variable satisfies
+    \[
+      \sigma^2 = \mu + \alpha \mu^2 = \mu + \frac{\mu^2}{r}
+      .
+    \]
+  \item Denote $\beta$ the \textbf{failure odds}, then
+    \[
+      \begin{aligned}
+        \beta &= \frac{1- p}{p}    \\
+        P\left(X = x\right) &=
+        \frac{\Gamma\left(x + r\right)}{\Gamma\left(r\right)\Gamma\left(x + 1\right)}
+        \left(\frac{\beta}{1 + \beta}\right)^r
+        \left(\frac{1}{1 + \beta}\right)^x,
+        \quad x = 0, 1, \cdots,    \\
+        \mathrm{E}X &= r\beta    \\
+        \mathrm{Var}X &= r\beta\left(1 + \beta\right).
+      \end{aligned}
+    \]
+  \end{itemize}
+\item Geometric distribution is a special case of negative binomial distribution.
 \end{enumerate}
 
 \section{Modeling Counts Data}
