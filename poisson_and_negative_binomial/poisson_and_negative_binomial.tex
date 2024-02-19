@@ -150,6 +150,7 @@ The expectation and variance of $X$ is
     .
   \]
 \item Poisson distribution can be related to Gamma distribution, which is also mentioned in ``gamma\_and\_beta.pdf'' notes.
+\item The conjugate prioir for a Poisson distribution parameter $\lambda$ is Gamma distribution.
 \item A poisson distributed variable can be seen as counts of customer to a store or occurence of some events. And the \textbf{time interval between each count} follows exponential distribution. 
 \end{enumerate}
 
@@ -205,7 +206,54 @@ The variance of a negative binomial/Polya distribution is
 \item Relationship to Poisson and Gamma distribution.
   \begin{itemize}
   \item Related to poisson when $r\to\infty$.
-  \item Related to poisson and gamma distribution.
+  \item Related to poisson and gamma distribution in a hierarchical model:
+    \[
+      \begin{aligned}
+        \lambda &\sim Gamma\left(\alpha, \beta\right) ,\quad
+        f\left(\lambda\right)
+        = \frac{1}{\Gamma(\alpha)\beta^\alpha}
+        \lambda^{\alpha - 1}
+        \mathrm{exp}\left(-\lambda / \beta\right)    \\
+        X|\lambda &\sim Poisson\left(\lambda\right) ,\quad
+        P\left(X = x\middle|\lambda\right) = \frac{\lambda^xe^{-\lambda}}{x!}.
+      \end{aligned}
+    \]
+    Then the marginal distribution of $X$ is
+    \[
+      \begin{aligned}
+        & P\left(X = x\right)
+        = \int_0^\infty P\left(X = x\middle|\lambda\right)f\left(\lambda\right)\mathrm{d}\lambda    \\
+        &= \int_0^\infty
+        \frac{\lambda^xe^{-\lambda}}{x!}
+        \cdot
+        \frac{1}{\Gamma(\alpha)\beta^\alpha}
+        \lambda^{\alpha - 1}
+        \mathrm{exp}\left(-\lambda / \beta\right)
+        \mathrm{d}\lambda    \\
+        &= \frac{1}{x!\Gamma\left(\alpha\right)\beta^\alpha}
+        \int_0^\infty\lambda^{x + \alpha - 1}
+        \mathrm{exp}\left(-\frac{\lambda}{\beta / \left(1 + \beta\right)}\right)
+        \mathrm{d}\lambda
+        \quad\text{The kernel of Gamma$(x + \alpha, \frac{\beta}{1 + \beta})$}    \\
+        &= \frac{
+          \Gamma\left(x + \alpha\right)
+          \left(\frac{\beta}{1 + \beta}\right)^{x + \alpha}
+        }{
+          x!\Gamma\left(\alpha\right)\beta^\alpha
+        }    \\
+        &= \frac{\Gamma\left(x + \alpha\right)}{\Gamma\left(\alpha\right)\Gamma\left(x + 1\right)}
+        \left(\frac{1}{1 + \beta}\right)^{\alpha}
+        \left(1 - \frac{1}{1 + \beta}\right)^x, 
+      \end{aligned}
+    \]
+    which is a negative binomial distribution with parameters $r = \alpha$ and $p = \frac{1}{1 + \beta}$. In this way,
+    \[
+      \begin{aligned}
+        & \mathrm{E}X = \frac{r\left(1 - p\right)}{p} = \alpha\beta    \\
+        & \mathrm{Var}X = \frac{r\left(1 - p\right)}{p^2} = \alpha\beta\left(1 + \beta\right)
+      \end{aligned}
+    \]
+    Note that here $\beta$ is actually the \textbf{failure odds}, which is mentioned in later properties.
   \end{itemize}
 \item Dispersion parameter and other parametrization of negative binomial distribution.
   \begin{itemize}
