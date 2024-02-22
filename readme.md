@@ -20,7 +20,11 @@ Existing topics are:
 
 - Fisher's information
 
-- Gamma and Beta distribution
+- Some random variable distributions:
+
+    - Gamma and Beta distribution
+
+    - Poisson and negative binomial distribution
 
 - misc information, such as STDM and ADAM, etc.
 
