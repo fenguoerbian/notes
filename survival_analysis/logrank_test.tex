@@ -591,6 +591,69 @@ where $\theta_{LR}$ is the NCP for logrank test.
 For more reference about sample size calculation of logrank test, one can refer to \citet{Lu2020p229-244, Jung2012p485-495, Lakatos1992p179-191, Tekindal2018p-, Wu2014p26-33}.
 
 
+\section{Independent Increments}
+\label{sec:indep-incr}
+
+According to Theorem 1 in \citet{Scharfstein1997p1342-1350}, the logrank test statistics are RAL semiparametric efficient and satisfies the independent increments property. To be specific, but not that accurate since I'm not good at stochastic process, (also related to Cox regression),
+we have asymptotic normality for the estimates of the log hazard ratio
+\[
+  \hat{\beta} = \mathrm{log}\left(HR\right) \sim
+  N\left(\beta, \frac{1}{p\left(1 - p\right)n_{evt}}\right)
+  ,
+\]
+where $p$ is the proportion of subjects being allocated in treatment group and $n_{evt}$ is the number of events observed at analysis. The fisher information of the accumulated data is
+\[
+  I\left(\beta\right) = p\left(1 - p\right)n_{evt}
+  ,
+\]
+Please refer to the {\color{red}fisher information notes} in this repo for more details about this concept. The logrank test statistics follows
+\[
+  z = \hat{\beta} * \sqrt{p\left(1 - p\right)n_{evt}}
+  \sim N\left(
+    \beta * \sqrt{p\left(1 - p\right)n_{evt}}, 1
+  \right)
+  .
+\]
+The score? statistic
+\[
+  s = I^{1/2}\left(\beta\right) z
+  \sim N\left(\beta * I^{1/2}\left(\beta\right)
+    ,\quad
+    I\left(\beta\right)
+  \right)
+  ,
+\]
+has the independent increments property. About this increment, let's remind ourselves that these statistics can be computed along with time, therefore we can have $s(t_1), s(t_2), \cdots, s(t_n)$ as time process, and we know that
+\[
+  \left(
+    s\left(t_1\right),\;
+    s\left(t_2\right) - s\left(t_1\right),\;
+    s\left(t_3\right) - s\left(t_2\right),\;
+    \cdots,\;
+    s\left(t_n\right) - s\left(t_{n - 1}\right)
+  \right)^T
+\]
+are independent, that's what we say about independent increments. Therefore
+\[
+  \begin{aligned}
+    Var\left(s\left(t_i\right)\right) &= I\left(t_i\right)
+    ,\quad && i = 1, \cdots, n    \\
+    Cov\left(s\left(t_i\right), s\left(t_j\right) - s\left(t_i\right)\right) &= 0
+    ,\quad && i\leq j    \\
+    Cov\left(s\left(t_i\right), s\left(t_j\right)\right) &= I\left(t_i\right)
+    ,\quad && i\leq j
+    .
+  \end{aligned}
+\]
+Hence
+\[
+  Cov\left(z\left(t_i\right), z\left(t_j\right)\right) = \sqrt{n_{evt,\;t_i}/n_{evt,\;t_j}}
+  ,\quad i \leq j
+  .
+\]
+
+
+
 
 
 \bibliographystyle{plainnat}
