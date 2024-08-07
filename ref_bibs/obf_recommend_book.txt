@@ -1,0 +1,3 @@
+Clinical Trial Biostatistics and Biopharmaceutical Applications
+Walter R. Young and Ding-Geng Chen
+Chapter 8 group sequential design in R
