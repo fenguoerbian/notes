@@ -1,0 +1,9 @@
+1. Mehta paper related:
+   promising zone, optimal promising zone, 
+   cui1999p583-857, chen2004p1023-1038, gao2008p1184-1196
+
+2. conditional power review v1 and v2
+    kundu2023p-
+
+3. PASS and Turnbell book chapter 10
+    Jennison2000p-

@@ -1,0 +1,2 @@
+1. Book Adaptive Design Theory and Implementation Using SAS and R, Second Edition (Mark Chang) (Z-Library)
+chapter 5 method with inverse normal p-values
