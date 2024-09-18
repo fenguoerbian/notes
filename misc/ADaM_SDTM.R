@@ -2,10 +2,10 @@
 knitr::opts_chunk$set(echo = TRUE)
 knitr::knit_hooks$set(purl = knitr::hook_purl)
 
-## ---- echo = FALSE, results='hide', message=FALSE-----------------------------
+## ----echo = FALSE, results='hide', message=FALSE------------------------------
 library(tidyverse)
 
-## ---- echo = FALSE------------------------------------------------------------
+## ----echo = FALSE-------------------------------------------------------------
 mydat <- tribble(
 ~缩写, ~全称, ~中文, 
 "sl"          , "Subject Level"                       , "受试者层面", 
@@ -32,7 +32,21 @@ mydat <- tribble(
 )
 
 
-## ---- echo = FALSE------------------------------------------------------------
+## ----echo = FALSE-------------------------------------------------------------
+knitr::kable(
+    mydat[order(mydat %>% pull("缩写")), ]
+)
+
+## ----echo = FALSE-------------------------------------------------------------
+mydat <- tribble(
+~缩写, ~全称, ~中文, 
+"CEM"          , "Clinical Expoert Management"                       , "临床专家管理",
+"KEE", "Key External Expert", "关键外部专家", 
+"KOL", "Key Opinion Leader", "关键意见领袖"
+)
+
+
+## ----echo = FALSE-------------------------------------------------------------
 knitr::kable(
     mydat[order(mydat %>% pull("缩写")), ]
 )

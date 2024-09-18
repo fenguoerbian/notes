@@ -61,3 +61,19 @@ knitr::kable(
     mydat[order(mydat %>% pull("缩写")), ]
 )
 ```
+
+```{r, echo = FALSE}
+mydat <- tribble(
+~缩写, ~全称, ~中文, 
+"CEM"          , "Clinical Expoert Management"                       , "临床专家管理",
+"KEE", "Key External Expert", "关键外部专家", 
+"KOL", "Key Opinion Leader", "关键意见领袖"
+)
+
+```
+
+```{r, echo = FALSE}
+knitr::kable(
+    mydat[order(mydat %>% pull("缩写")), ]
+)
+```
