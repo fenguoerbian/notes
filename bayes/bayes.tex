@@ -148,7 +148,8 @@ First we introduce some notations:
 There are mainly two types of credible interval: equal tail interval (ETI) and highest (posterior) density interval (HDI). Denote the CI as $[lower, upper]$, then these two ends satisfies different conditions for ETI and HDI:
 \begin{itemize}
 \item For ETI, the CI has equal probability tails on both sides, that is $F\left(lower\right) = (1 - F(upper)) = \alpha / 2$ and the CI is $[lower, upper]$.
-\item For HDI, the CI has equal \textbf{density} on both ends, that is $f\left(lower\right) = f\left(upper\right)$ and $F\left(upper\right) - F\left(lower\right) = 1 - \alpha$. 
+\item For HDI, the CI has equal \textbf{density} on both ends, that is $f\left(lower\right) = f\left(upper\right)$ and $F\left(upper\right) - F\left(lower\right) = 1 - \alpha$.
+  \textbf{Note:} this definition of HDI is not that formal, especially when the distribution is not unimodal.
 \end{itemize}
 \textbf{Note:} sometimes we will use SDI (shortest density interval) to mean HDI, since SDI can be seen as a more robust method to compute HDI\citep{Liu2015p809-819}.
 \par
