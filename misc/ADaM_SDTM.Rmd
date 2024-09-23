@@ -1,7 +1,7 @@
 ---
 title: "ADaM_SDTM"
 author: "Chao Cheng"
-date: "`r format(Sys.Date(), '%b %Y')`"
+date: "`{r} format(Sys.Date(), '%b %Y')`"
 output: html_document
 ---
 
@@ -13,6 +13,9 @@ knitr::knit_hooks$set(purl = knitr::hook_purl)
 ```{r, echo = FALSE, results='hide', message=FALSE}
 library(tidyverse)
 ```
+
+__Note:__ 本文档建议采用`litedown::fuse()`进行编译。
+
 
 # SDTM
 
@@ -56,11 +59,13 @@ mydat <- tribble(
 
 ```
 
+
 ```{r, echo = FALSE}
 knitr::kable(
     mydat[order(mydat %>% pull("缩写")), ]
 )
 ```
+
 
 ```{r, echo = FALSE}
 mydat <- tribble(
@@ -71,6 +76,8 @@ mydat <- tribble(
 )
 
 ```
+
+其他一些缩写对照
 
 ```{r, echo = FALSE}
 knitr::kable(
