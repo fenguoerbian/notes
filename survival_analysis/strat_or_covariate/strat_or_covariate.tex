@@ -1,0 +1,308 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{geometry}
+\geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+\renewcommand{\textfraction}{0.15}
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\bottomfraction}{0.65}
+\renewcommand{\floatpagefraction}{0.60}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{mathrsfs}
+\usepackage{amsthm}
+\usepackage{extarrows}
+\usepackage{bm}
+% \newcommand{\bm}{\symbfit}    % `bm` confilicts with `unicode-math`. In that case use \symbfit for bold math symbols
+\usepackage{graphicx}
+\usepackage[section]{placeins}
+\usepackage{flafter}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{color}
+\usepackage{multirow}
+\usepackage{natbib}
+% \usepackage{enumerate}
+\usepackage{enumitem}    % more flexible than `enumerate` package, the reference will carry the whole label appearance, not just the counter, unlike the `enumerate` package.
+\usepackage{upgreek}    % 'upgreek' letters
+
+% \pdfstringdefDisableCommands{\let\bm=\relax}
+
+\newtheorem{thm}{Theorem}
+\newtheorem{cor}{Corollary}
+\newtheorem{assum}{Assumption}
+\newtheorem{rem}{Remark}
+\newtheorem{lem}{Lemma}
+\newtheorem{prop}{Proposition}
+
+\setcounter{topnumber}{5}    % Maximum number of floats that can appear at the top of a text page; default 2. 
+\setcounter{bottomnumber}{5}   % Maximum number of floats that can appear at the bottom of a text page; default 1. 
+\setcounter{totalnumber}{10}    % Maximum number of floats that can appear on a text page; default 3. 
+
+\DeclareMathOperator*{\argmaxdown}{arg\,max}
+\DeclareMathOperator*{\argmindown}{arg\,min}
+\DeclareMathOperator{\argmax}{arg\,max}
+\DeclareMathOperator{\argmin}{arg\,min}
+
+% cross-reference to other files
+% the externaldocument should be compiled 
+% (and at least twice if you're using xr-hyper)
+% \usepackage{xr-hyper}
+% \usepackage{xr}
+
+% --- external document (ordinary setting) ---
+% \externaldocument{external_tex_file}
+% --- end of ordinary setting ---
+
+% --- external document (overleaf setting) ---
+% externaldocument settings for Overleaf
+% \makeatletter
+% \newcommand*{\addFileDependency}[1]{% argument=file name and extension
+% \typeout{(#1)}
+% \@addtofilelist{#1}
+% \IfFileExists{#1}{}{\typeout{No file #1.}}
+% }
+%   \makeatother
+%   \newcommand*{\myexternaldocument}[1]{%
+%   \externaldocument{#1}%
+%   \addFileDependency{#1.tex}%
+%   \addFileDependency{#1.aux}%
+% }
+%   \myexternaldocument{external_tex_file}
+%   --- end of overleaf setting ---
+
+%   mathtools can be used to define labeling format for equations
+%   one can use \eqref for a reference to a labeled equation.
+\usepackage{mathtools}
+\newtagform{supp}{(S-}{)}    % define a equation labeling format for suppliment
+\usetagform{supp}            % use the supp format
+\usetagform{default}         % use the default format
+
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+% package for hyperlinks
+% It's error-prone because hyper link is quite difficult
+% due to the fact the typesetting environment is complex.
+% So you can disable this package and finish the document.
+% Then sort out the hyperlink thing.
+\usepackage[colorlinks,linkcolor=red,anchorcolor=blue,citecolor=green,CJKbookmarks=True]{hyperref}
+
+% package for displaying highlighted codes
+\usepackage{minted}
+
+% package for input codec and output rendering font
+\usepackage[utf8]{inputenc}    % it is always good practice to use utf8
+% you can also try latin1, latin2, cp1252 and cp1250
+\usepackage[T1]{fontenc}    % the default is T0, which only contains 128 characters
+% you can try T1, T2A, T2B
+% you can refer to https://www.overleaf.com/learn/latex/international_language_support#Font_encoding
+% for more details.
+
+
+\title{Stratification Factor or Covariate}
+\author{Chao Cheng}
+\date{\today}
+
+
+
+\begin{document}
+\maketitle
+\tableofcontents{}
+
+\section{Introduction}
+\label{sec:introduction}
+
+In this note we will talk about the Cox's proportional hazards (Cox's PH) model. Suppose we observe some non-informativly right-censored data $\left(U, \delta\right)$ with covariate vector $Z$. That is, for subject $i$, the covariate vector is $Z_i$, survival time $T_i$ and censoring time $C_i$. The observed data is $\left(U_i, \delta_i\right)$ where $U_i = \mathrm{min}\left(T_i, C_i\right)$ and $\delta_i = 1\left(T_i \leq C_i\right)$. Also $T_i \perp C_i | Z_i$.
+\par
+And now we want to model the relationship between $Z$ and $T$. One way to do that is to incorporate $Z$ into the hazard function $h\left(\cdot\right)$, e.g.,
+\[
+  T \sim Exp\left(\lambda_Z\right)
+  \implies
+  h\left(t\right) = \lambda_Z
+  \overset{\Delta}{=} e^{\alpha + \beta Z} = \lambda_0 e^{\beta Z}
+  ,
+\]
+where $\lambda_0 = e^{\alpha}$ can be viewed as a baseline hazard. If $\beta = 0$ then $Z$ is not associated with $T$.
+\par
+We can generalize this idea as
+\[
+  h\left(t\middle|Z\right)
+  = h_0\left(t\right) \times g\left(Z\right)
+  .
+\]
+So the hazard can be factorized and this model is sometimes called a ``multiplicative intensive model'' or ``multiplicative hazard model'' or ``proportional hazard model'' because this factorization implies that
+\[
+  \frac{
+    h\left(t\middle| Z = z_1\right)}{
+    h\left(t\middle| Z = z_2\right)
+  }
+  = \frac{g\left(z_1\right)}{g\left(z_2\right)}
+  .
+\]
+The hazard ratio is constant with respect to $t$, hence the (constant) proportional hazard. So in our previous model (the exponential survival time), the hazard ratio is
+\[
+  \frac{h\left(t\middle| Z = z_1\right)}{h\left(t\middle|Z = z_2\right)}
+  = e^{\beta\left(z_1 - z_2\right)}
+  .
+\]
+Also this exponential form of $g\left(Z\right)$
+\begin{equation}
+  \label{eq:cox_ph_form}
+  h\left(t\middle|Z\right) = h_0\left(t\right)
+  \cdot e^{\beta Z}  
+\end{equation}
+is the \textbf{Cox's PH} model.
+
+\section{Estimation}
+\label{sec:estimation}
+
+In this section, we will talk about what is the objective function for Cox's model. But we will not talk about the detailed optimization algorithm. \eqref{eq:cox_ph_form} implies that
+\[
+  \begin{aligned}
+    S\left(t\middle|Z\right)
+    =& \mathrm{exp}\left(-H\left(t\middle|Z\right)\right)    \\
+    =& \mathrm{exp}\left(-\int_0^th\left(u\middle|Z\right)\mathrm{d}u\right)    \\
+    =& \mathrm{exp}\left(-\int_0^th_0\left(t\right)\mathrm{d}u \cdot g\left(Z\right)\right)    \\
+    =& \left(S_0\left(t\right)\right)^{g\left(Z\right)}
+    = \left(S_0\left(t\right)\right)^{\mathrm{exp}\left(\beta Z\right)}
+    ,
+  \end{aligned}
+\]
+where $S_0\left(t\right) = \mathrm{exp}\left( - \int_0^t h_0\left(u\right)\mathrm{d}u\right)$, the survival function for $Z = 0$, hence $S\left(t\middle|Z = 0\right)$. Also remember that $f\left(t\middle|Z\right) = h\left(t\middle|Z\right) S\left(t\middle|Z\right)$. Thus, given $n$ independent data $\left(u_i, \delta_i, z_i\right)$, the likelihood ({\color{blue} one can refer to our previous notes about survival analysis.}) is
+\begin{equation}
+  \label{eq:general_full_likelihood}
+    \begin{aligned}
+    L\left(\beta, h_0\left(\cdot\right)\right)
+    =& \prod\limits_{i = 1}^n
+    \left(
+      f\left(u_i\middle|z_i\right)
+    \right)^{\delta_i}
+    \left(
+      S\left(u_i\middle|z_i\right)
+    \right)^{1 - \delta_i}
+    = \prod\limits_{i = 1}^n
+    h\left(u_i\middle|z_i\right)^{\delta_i}
+    S\left(u_i\middle|z_i\right)    \\
+    =& \prod\limits_{i = 1}^n
+    \left(
+      h_0\left(u_i\right)
+      e^{\beta z_i}
+    \right)^{\delta_i}
+    \left(
+      \mathrm{exp}\left(-\int_0^{u_i}h_0\left(t\right)\mathrm{d}t\right)
+    \right)^{\mathrm{exp}\left(\beta z_i\right)}    \\
+    =& \text{function $\left(data, h_0\left(\cdot\right), \beta\right)$}.
+  \end{aligned}
+\end{equation}
+If $h_0\left(\cdot\right)$ is allowed to be ``arbitary'', then the ``parameter space `` is
+\[
+  \mathcal{H} \times \mathcal{R}^p
+  = \left\{
+    \left(h\left(\cdot\right), \beta\right)
+    \middle|
+    h_0\left(\cdot\right) \geq 0,
+    \int_0^\infty h_0\left(t\right)\mathrm{d}t = \infty,
+    \beta \in \mathcal{R}^p
+  \right\}
+  ,
+\]
+where $\int_0^\infty h_0\left(t\right)\mathrm{d}t = \infty$ ensures that $S_0\left(\infty\right) = 0$.
+\par
+In general this likelihood is hard to maximize. And Cox proposed this idea: to factor $L\left(\beta, h_0\left(\cdot\right)\right)$ as
+\[
+  L\left(\beta, h_0\left(\cdot\right)\right)
+  = L_1\left(\beta\right)
+  \times
+  L_2\left(\beta, h_0\left(\cdot\right)\right)
+  ,
+\]
+where $L_1$ only depends on $\beta$ and its maximization ($\hat{\beta}$) enjoys nice properties such as consistency and asymptotic normality while $L_2$ contains relatively little information about $\beta$. And this $L_1$ is called a \textbf{partial likelihood}.
+
+\subsection{What is $L_1\left(\beta\right)$}
+\label{sec:what-is}
+
+In this section we introduce the $L_1$ proposed by Cox. First let's assume there are \textbf{NO tied} nor censoring observations. And define the distinct times of failure $\tau_1 < \tau_2 < \cdots$. Denote
+\[
+  R_j = \left\{i\middle|U_i{\color{red} \geq}\tau_j\right\}
+  = \text{risk set at }\tau_j
+  ,
+\]
+and
+\[
+  Z_{\left(j\right)} = \text{value of Z for the subject who fails at $\tau_j$}
+  .
+\]
+we can reconstruct the data from $\left\{\tau_j\right\}$, $\left\{R_j\right\}$ and $\left\{Z_{\left(j\right)}\right\}$. And $L_1$ is defined as
+\begin{equation}
+  \label{eq:partial_likelihood}
+  L_1\left(\beta\right)
+  \overset{\Delta}{=}
+  \prod\limits_{j}\left\{
+    \frac{e^{\beta Z_{{\color{red}\left(j\right)}}}}{
+      \sum\limits_{l\in R_{j}}e^{\beta Z_{{\color{red}l}}}
+    }
+  \right\}
+  .
+\end{equation}
+
+
+\section{Extensions}
+\label{sec:extensions}
+
+\subsection{Stratified Cox's model}
+\label{sec:strat-coxs-model}
+
+Assume we have two binary covariates: $Z$ for treatment or control, $W$ for male or female. We can incorporate them into the Cox's model as
+\[
+  h\left(t\middle|w, z\right) = h_0\left(t\right)e^{\beta_1 z + \beta_2 w}
+  .
+\]
+Then test for $\beta_1$ would tell us about the treatment effect and test for $\beta_2$ would tell up whether there is difference between male and female. Like we talked in the Logrank-test notes, this model is assumeing constant hazard ratio between both treatment and gender, which means
+\[
+  \begin{aligned}
+    & HR
+    = \frac{h\left(t\middle|z = 0, w = 0\right)}{h\left(t\middle|z = 1, w = 0\right)}
+    = \frac{h\left(t\middle|z = 0, w = 1\right)}{h\left(t\middle|z = 1, w = 1\right)}
+    = e^{\beta_1}    \\
+    & HR
+    = \frac{h\left(t\middle|z = 0, w = 0\right)}{h\left(t\middle|z = 0, w = 1\right)}
+    = \frac{h\left(t\middle|z = 1, w = 0\right)}{h\left(t\middle|z = 1, w = 1\right)}
+    = e^{\beta_2}
+    .
+  \end{aligned}
+\]
+But sometimes we just want to assume the constant hazard ratio between different treatment groups and let the hazard between male and female to be ``arbitrary''. Then we can consider the stratified Cox's model
+\begin{equation}
+  \label{eq:stratified_cox_model}
+  h\left(t\middle|z, w\right)
+  = h\left(t\middle|w\right)
+  e^{\beta z}
+  ,
+\end{equation}
+where $w$ is a categorical variable with $L$ levels. These $L$ levels of $W$ can have arbitrary underlying hazard, yet within each, the treatment relative risk is $e^{\beta}$. For each stratified level, we can construct the partial likelihood as normal, denoted by $L_1^{\left(l\right)}\left(\beta\right)$, then the overall partial likelihood is
+\begin{equation}
+  \label{eq:overall_partial_likelihood}
+  L_1\left(\beta\right)
+  = \prod\limits_{l = 1}^LL_1^{\left(l\right)}\left(\beta\right)
+  .
+\end{equation}
+\textbf{Note: } when $Z$ is binary, the resulting partial likelihood score test for $\beta = 0$ reduced to stratified logrank test.
+
+
+
+\bibliographystyle{plainnat}
+\bibliography{../../ref}
+
+
+
+
+
+\end{document}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
