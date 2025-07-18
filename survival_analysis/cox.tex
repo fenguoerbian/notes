@@ -247,10 +247,166 @@ we can reconstruct the data from $\left\{\tau_j\right\}$, $\left\{R_j\right\}$ a
   .
 \end{equation}
 
-{\color{red}(Cox model assumes the time measurement to be continuous, but here we think about discrete time point for some intuition.)} 
+
+\subsubsection{Intuition: parametric survival distributions}
+\label{sec:intu-param-surv}
+
+Suppose that base hazard $h_0\left(t\right)$ is from Weibul distribution $W\left(p, \lambda\right)$, that is $h_0\left(t\right) = p\lambda^pt^{p - 1}$, then \eqref{eq:general_full_likelihood} becomes
+
+\[
+  \begin{aligned}
+    L\left(\beta, h_0\left(\cdot\right)\right)
+    =& \prod\limits_{i = 1}^n\left(
+       p\lambda^pu_i^{p - 1} e^{\beta z_i}
+       \right)^{\delta_i}
+       \left(
+       \mathrm{exp}\left(
+       -\int_0^{u_i}p\lambda^pu_i^{p - 1}\mathrm{d}t
+       \right)
+       \right)^{\mathrm{exp}\left(\beta z_i\right)}    \\
+    =& \prod\limits_{i = 1}^n\left(
+       p\lambda^pu_i^{p - 1} e^{\beta z_i}
+       \right)^{\delta_i}
+       \mathrm{exp}\left(
+       - \lambda^p u_i^p
+       \mathrm{exp}\left(\beta z_i\right)
+       \right)\\
+  \end{aligned}
+\]
+And the log-likelihood is
+\[
+  \mathrm{log}L = \sum\limits_{i = 1}^n\left\{
+    \delta_i\mathrm{log}\left(
+      p\lambda^pu_i^{p - 1} e^{\beta z_i}
+    \right)
+    - \lambda^p u_i^p
+    \mathrm{exp}\left(\beta z_i\right)
+  \right\}
+\]
+Here we utilize profile-likelihood perspective:
+\begin{enumerate}
+\item Fix $\beta$ and $p$, we have
+  \[
+    \begin{aligned}
+      \frac{\partial\mathrm{log}L}{\partial\lambda}
+      =& \sum\limits_{i = 1}^n\left\{
+      \frac{\delta_ip}{\lambda}
+      - p\lambda^{p - 1}u_i^p\mathrm{exp}\left(\beta z_i\right)
+      \right\}    \\
+      =& \frac{pn_{evt}}{\lambda}
+      - p\lambda^{p - 1}\sum\limits_{i = 1}^nu_i^p\mathrm{exp}\left(\beta z_i\right) 
+    \end{aligned}
+  \]
+  Set this to 0, we have
+  \[
+    \hat{\lambda} = \left(
+      \frac{n_{evt}}{\sum\limits_{i = 1}^nu_i^p\mathrm{exp}\left(\beta z_i\right)}
+    \right)^{1 / p}
+  \]
+\item Plugin $\hat{\lambda}$ and fix $\beta$, we have
+  \[\small
+    \begin{aligned} 
+      & \frac{\partial \mathrm{log}L}{\partial p}    \\
+      =& \frac{\partial}{\partial p}\left\{
+         \sum\limits_{i = 1}^n\left\{
+         \delta_i\left\{
+         \mathrm{log}p
+         + \mathrm{log}\left(
+         \frac{n_{evt}}{\sum\limits_{i = 1}^nu_i^p\mathrm{exp}\left(\beta z_i\right)}
+         \right)
+         + \mathrm{log}u_i^{p - 1} + \beta z_i
+         \right\}
+         - \frac{n_{evt}}{\sum\limits_{i = 1}^nu_i^p\mathrm{exp}\left(\beta z_i\right)}
+         u_i^p \mathrm{exp}\left(\beta z_i\right)
+         \right\}
+         \right\}    \\
+      =& \frac{\partial}{\partial p}\left\{
+         n_{evt}\mathrm{log}p
+         + n_{evt} \mathrm{log}\left(
+         \frac{n_{evt}}{\sum\limits_{i = 1}^nu_i^p\mathrm{exp}\left(\beta z_i\right)}
+         \right)
+         + \sum\limits_{i = 1}^n\delta_i\left(\mathrm{log}u_i^{p - 1} + \beta z_i\right)
+         - \frac{n_{evt}\sum\limits_{i = 1}^nu_i^p\mathrm{exp}\left(\beta z_i\right)}{\sum\limits_{i = 1}^nu_i^p\mathrm{exp}\left(\beta z_i\right)}
+         \right\}    \\
+      =& \frac{n_{evt}}{p}
+         - n_{evt}\frac{\partial}{\partial p} \mathrm{log}\left(
+         \sum\limits_{i = 1}^nu_i^p\mathrm{exp}\left(\beta z_i\right)
+         \right)
+         + \sum\limits_{i = 1}^n\delta_i\mathrm{log}u_i    \\
+      =& \frac{n_{evt}}{p}
+         - \frac{n_{evt}}{\sum\limits_{i = 1}^nu_i^p\mathrm{exp}\left(\beta z_i\right)}
+         \cdot
+         \sum\limits_{i = 1}^n\left(\mathrm{log}u_i\cdot u_i^p \mathrm{exp}\left(\beta z_i\right)\right)
+         + \sum\limits_{i = 1}^n\delta_i\mathrm{log}u_i
+    \end{aligned}
+  \]
+  Set this to 0 to get $\hat{p}$ but {\color{red} unfortunately} there seems no analytical solution to this. 
+\end{enumerate}
+
+\par
+
+Now let's assume a more specil case $p = 1$, that means the survival function is exponential distribution. Then we will have log-likelihood as
+\[
+  \mathrm{log}L = \sum\limits_{i = 1}^n\left\{
+    \delta_i\mathrm{log}\left(\lambda e^{\beta z_i}\right)
+    - \lambda u_i\mathrm{exp}\left(\beta z_i\right)
+  \right\}
+  = n_{evt}\mathrm{log}\lambda + \sum\limits_{i = 1}^n\delta_i\beta z_i
+  - \lambda \sum\limits_{i = 1}^nu_i\mathrm{exp}\left(\beta z_i\right)
+\]
+Again, fix $\beta$ and take derivative will give us
+\[
+  \frac{\partial \mathrm{log}L}{\partial \lambda}
+  = \frac{n_{evt}}{\lambda} - \sum\limits_{i = 1}^nu_i\mathrm{exp}\left(\beta z_i\right)
+\]
+hence
+\[
+  \hat{\lambda} = \frac{n_{evt}}{\sum\limits_{i = 1}^nu_i\mathrm{exp}\left(\beta z_i\right)}
+\]
+Plug in this value will give us the profile log-likelihood of $\beta$ as
+\[
+  \begin{aligned}
+    \mathrm{log}L_{profile}\left(\beta\right)
+    &=&& n_{evt}\mathrm{log}\left(
+       \frac{n_{evt}}{\sum\limits_{i = 1}^nu_i\mathrm{exp}\left(\beta z_i\right)}
+       \right)
+       + \sum\limits_{i = 1}^n\delta_i\beta z_i
+       - \frac{n_{evt}}{\sum\limits_{i = 1}^nu_i\mathrm{exp}\left(\beta z_i\right)}
+       \sum\limits_{i = 1}^nu_i\mathrm{exp}\left(\beta z_i\right)    \\
+    &\underset{w.r.t.\; \beta}{\propto}&& - n_{evt}\mathrm{log}\left(
+                                        \sum\limits_{i = 1}^nu_i\mathrm{exp}\left(\beta z_i\right)
+                                        \right)
+                                        + \sum\limits_{i = 1}^n\delta_i\beta z_i    \\
+    &=&& \sum\limits_{i = 1}^n\delta_i\left(
+         \beta z_i - \mathrm{log}\left(
+         \sum\limits_{i = 1}^nu_i\mathrm{exp}\left(\beta z_i\right)
+         \right)
+         \right)    \\
+    &=&& \sum\limits_{i = 1}^n\delta_i\mathrm{log}\left(
+         \frac{\mathrm{exp}\left(\beta z_i\right)}{\sum\limits_{i = 1}^nu_i\mathrm{exp}\left(\beta z_i\right)}
+         \right)
+  \end{aligned}
+\]
+
+From the previous equation we can see that to maximize $L_{profile}\left(\beta\right)$, which is equivalent to maximize $\mathrm{log}L_{profile}\left(\beta\right)$, is equivalent to maximize
+\[
+  \begin{aligned}
+    & \mathrm{exp}\left(
+      \sum\limits_{i = 1}^n\delta_i\mathrm{log}\left(
+      \frac{\mathrm{exp}\left(\beta z_i\right)}{\sum\limits_{i = 1}^nu_i\mathrm{exp}\left(\beta z_i\right)}
+      \right)
+      \right)    \\
+    =& \prod\limits_{i = 1}^n\left(
+      \frac{\mathrm{exp}\left(\beta z_i\right)}{\sum\limits_{i = 1}^nu_i\mathrm{exp}\left(\beta z_i\right)}
+      \right)^{\delta_i}
+  \end{aligned}
+\]
+
+{\color{red}(Cox model assumes the time measurement to be continuous, but next we think about discrete time point for some intuition.)}
 
 \subsubsection{Intuition: profile likelihood perspective}
 \label{sec:prof-likel-persp}
+
 Note that under this setting (no tie, no censor), the full likelihood \eqref{eq:general_full_likelihood} becomes
 \[
   L\left(\beta, h_0\left(\cdot\right)\right)
