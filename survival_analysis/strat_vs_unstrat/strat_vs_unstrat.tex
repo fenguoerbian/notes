@@ -150,12 +150,12 @@ Then the likelihood is
     h\left(t_i\right)^{\delta_i}S\left(t_i\right)
     \right)    \\
     &= \prod\limits_{i = 1}^n
-      p\lambda_i^{p}t_i^{p - 1}
+      \left(p\lambda_i^{p}t_i^{p - 1}\right)^{\delta_i}
       \mathrm{exp}\left(-\left(\lambda_i t_i\right)^p\right)
   \end{aligned}
 \end{equation}
 
-Note that in \eqref{eq:weibull_likelihood}, we assume all subjects share the same $p$ in the Weibull distribution, but their $\lambda$s can be different. 
+where $\delta_i = 1$ means an event is observed for $i$. Otherwise $\delta_i = 0$ represents censor is observed. Note that in \eqref{eq:weibull_likelihood}, we assume all subjects share the same $p$ in the Weibull distribution, but their $\lambda$s can be different. 
 
 
 
@@ -174,6 +174,115 @@ And if we plug-in the Weibull distribution, that is $h_0\left(t\right) = p\lambd
   = p\lambda_0^pt^{p - 1} \cdot e^{\beta Z}
   = p \left(\lambda_0 e^{\beta Z / p}\right)^p t^{p - 1}
 \]
+
+Here for our purpose, we let $Z_i \in \left\{0, 1\right\}$ denote the treatment(1) or control(0) group. And in this case, the data likelihood \eqref{eq:weibull_likelihood} becomes
+\[
+  \begin{aligned}
+    L\left(t_1, \cdots, t_n\middle| p, \lambda, \beta\right)
+    &= \prod\limits_{i = 1}^n
+    \left(p \left(\lambda e^{\beta Z_i/p}\right)^pt_i^{p - 1}\right)^{\delta_i}
+    \mathrm{exp}\left(-\left(\lambda e^{\beta Z_i/p} t_i\right)^p\right)    \\
+    &= \prod\limits_{i = 1}^n
+    \left(p \lambda^p e^{\beta Z_i} t_i^{p - 1}\right)^{\delta_i}
+    \mathrm{exp}\left(-\left(\lambda t_i\right)^p e^{\beta Z_i}\right)
+  \end{aligned}
+\]
+
+And the loglikelihood is
+\begin{equation}
+  \label{eq:weibull_loglikelihood}
+  \begin{aligned}
+    \mathrm{log}L
+    &= \sum\limits_{i = 1}^n
+      \delta_i\left(
+      \mathrm{log}p + p\mathrm{log}\lambda + \beta Z_i + \left(p - 1\right)t_i
+      \right)
+      - \left(\lambda t_i\right)^p e^{\beta Z_i}    \\
+    &= n_{evt}\left(\mathrm{log}p + p \mathrm{log}\lambda\right)
+      + \sum\limits_{i = 1}^n\delta_i\left(\beta Z_i + \left(p - 1\right)t_i\right)
+      - \lambda^p\sum\limits_{i = 1}^nt_i^pe^{\beta Z_i}
+  \end{aligned}
+\end{equation}
+
+Use the profile likelihood method, first we fix $\beta$ and $p$ to maximize $\mathrm{log}L$ w.r.t $\lambda$:
+\[
+  \begin{aligned}
+    \frac{\partial\mathrm{log}L}{\partial \lambda}
+    = \frac{n_{evt}p}{\lambda}
+    - p\lambda^{p - 1}\sum\limits_{i = 1}^nt_i^pe^{\beta Z_i}
+  \end{aligned}
+\]
+Set this to 0 we have
+\[
+  \hat{\lambda} = \left(
+    \frac{n_{evt}}{\sum\limits_{i = 1}^nt_i^pe^{\beta Z_i}}
+  \right)^{1 / p}
+\]
+Plug this back into \eqref{eq:weibull_loglikelihood} will give us
+\[
+  \begin{aligned}
+    \mathrm{log}L
+    &= n_{evt}\left(
+      \mathrm{log}p + \mathrm{log}n_{evt}
+      - \mathrm{log}\left(\sum\limits_{i = 1}^nt_i^pe^{\beta Z_i}\right)
+      \right)
+      + \sum\limits_{i = 1}^n\delta_i\left(\beta Z_i + \left(p - 1\right)t_i\right)
+      - \frac{n_{evt}}{\sum\limits_{i = 1}^nt_i^pe^{\beta Z_i}} \cdot \sum\limits_{i = 1}^nt_i^pe^{\beta Z_i}    \\
+    &= n_{evt}\left(
+      \mathrm{log}p + \mathrm{log}n_{evt}
+      - \mathrm{log}\left(\sum\limits_{i = 1}^nt_i^pe^{\beta Z_i}\right)
+      \right)
+      + \sum\limits_{i = 1}^n\delta_i\left(\beta Z_i + \left(p - 1\right)t_i\right)
+      - n_{evt}
+  \end{aligned} 
+\]
+Unfortunately, there's no analytical solution to $p$ even when we fixed $\beta$. So let's consider a simpler case where we fix $p = 1$, i.e. Exponential distribution. Then this loglikelihood becomes
+\[
+  \begin{aligned}
+    \mathrm{log}L
+    &= n_{evt}\left(
+      \mathrm{log}n_{evt}
+      - \mathrm{log}\left(\sum\limits_{i = 1}^nt_ie^{\beta Z_i}\right)
+      \right)
+      + \sum\limits_{i = 1}^n\delta_i\beta Z_i
+      - n_{evt}    \\
+    &\overset{w.r.t\; \beta}{\propto}
+      -n_{evt}\mathrm{log}\left(\sum\limits_{i = 1}^nt_ie^{\beta Z_i}\right)
+      +  \sum\limits_{i = 1}^n\delta_i\beta Z_i    \\
+    &= \sum\limits_{i = 1}^n\delta_i\left(
+      \beta Z_i - \mathrm{log}\left(\sum\limits_{i = 1}^nt_ie^{\beta Z_i}\right)
+      \right)    \\
+    &= \sum\limits_{i = 1}^n\delta_i\mathrm{log}
+      \frac{e^{\beta Z_i}}{\sum\limits_{i = 1}^nt_ie^{\beta Z_i}}
+  \end{aligned}
+\]
+Therefore to maximize $\mathrm{log}L$ with respect to $\beta$, is equivalent to maximize the following term
+\begin{equation}
+  \label{eq:beta_mle_objective}
+  \prod\limits_{i = 1}\left(
+    \frac{e^{\beta Z_i}}{\sum\limits_{i = 1}^nt_ie^{\beta Z_i}}
+  \right)^{\delta_i}
+\end{equation}
+
+\textbf{Note:} \eqref{eq:beta_mle_objective} can be seen as objective function for $\beta$'s MLE and it is \textbf{different} from the partial likelihood used in Cox regression.
+
+
+
+\subsection{Stratified setting}
+\label{sec:stratified-setting}
+
+Now let's consider the stratified setting, with $K$ strata. Then for each stratum $k\in\left\{1, \cdots, K\right\}$, the Weibull distribution for control group is $W\left(p_k, \lambda_k\right)$, which means the hazard is
+\[
+  h_{0, k}\left(t\right) = p_k\lambda_k^{p_k}t^{p_k - 1}.
+\]
+
+Assume the constant hazard ratio is $e^\beta$. Then the hazard for treatment group is $h_{1, k}\left(t\right) = h_{0, k}\left(t\right)e^\beta$. Therefore
+\[
+  h_k\left(t\middle|Z\right) = h_{0, k}\left(t\right)e^{\beta Z},\quad Z\in\left\{0, 1\right\}. 
+\]
+
+
+
 
 \bibliographystyle{plainnat}
 \bibliography{../../ref}
