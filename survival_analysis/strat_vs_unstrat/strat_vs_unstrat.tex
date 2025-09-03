@@ -264,7 +264,44 @@ Therefore to maximize $\mathrm{log}L$ with respect to $\beta$, is equivalent to 
   \right)^{\delta_i}
 \end{equation}
 
-\textbf{Note:} \eqref{eq:beta_mle_objective} can be seen as objective function for $\beta$'s MLE and it is \textbf{different} from the partial likelihood used in Cox regression.
+We can take derivative of $\mathrm{log}L$ and try to solve for $\beta$ by setting the derivative to 0:
+\[
+  \begin{aligned}
+    \frac{\partial \mathrm{log}L}{\partial \beta}
+    &= \frac{\partial}{\partial\beta}
+      \sum\limits_{i = 1}^n\delta_i\left(
+      \beta Z_i - \mathrm{log}\left(\sum\limits_{i = 1}^nt_ie^{\beta Z_i}\right)
+      \right)    \\
+    &= n_{evt \,\&\, trt}
+      - \frac{\partial}{\partial\beta}
+      \left(n_{evt} \cdot
+      \mathrm{log}\left(\sum\limits_{i = 1}^nt_ie^{\beta Z_i}\right)
+      \right)    \\
+    &= n_{evt\,\&\,trt}
+      - n_{evt}\cdot \left(
+      \frac{\sum\limits_{i = 1}^nt_iZ_ie^{\beta Z_i}}{\sum\limits_{i = 1}^nt_ie^{\beta Z_i}}
+      \right)    \\
+    &= n_{evt\,\&\,trt}
+      - n_{evt} \cdot
+      \frac{\sum\limits_{i\in\;trt}t_ie^{\beta}}{
+      \sum\limits_{i\in\;trt}t_ie^{\beta} + \sum\limits_{i\in\;ctrl}t_i}
+  \end{aligned}
+\]
+where we use the notation that $Z_i\in\left\{0, 1\right\}$ to indicate control and treatment group and $\delta_i\in\left\{0, 1\right\}$ to indicate observed censor or event. Setting $\frac{\partial\mathrm{log}L}{\partial \beta} = 0$ we have the MLE:
+\begin{equation}
+  \label{eq:beta_mle_exponential}
+  \hat{\beta} = \mathrm{log}\left(
+    \frac{n_{evt\,\&\,trt}}{n_{evt\;\&\;ctrl}}
+    \cdot
+    \frac{\sum\limits_{i\in\;ctrl}t_i}{\sum\limits_{i\in\;trt}t_i}
+  \right)
+\end{equation}
+\textbf{Note:} \eqref{eq:beta_mle_objective} can be seen as objective function for $\beta$'s MLE and it is \textbf{different} from the partial likelihood used in Cox regression, which is
+\[
+  \prod\limits_{i = 1}^n\left(
+    \frac{e^{\beta Z_i}}{\sum\limits_{\left\{j\middle|t_j\geq t_i\right\}}e^{\beta Z_j}}
+  \right)^{\delta_i}
+\]
 
 
 
@@ -281,8 +318,210 @@ Assume the constant hazard ratio is $e^\beta$. Then the hazard for treatment gro
   h_k\left(t\middle|Z\right) = h_{0, k}\left(t\right)e^{\beta Z},\quad Z\in\left\{0, 1\right\}. 
 \]
 
+In this case, assume sample size in each stratum are $n_1, \cdots, n_K$. Then the observed time is
+\[
+  \begin{aligned}
+    \bm{t}
+    &=
+      \left(
+      t_{i,k}
+      ,\;
+      i\in\left\{1, \cdots, n_k\right\}
+      \;
+      k\in\left\{1, \cdots, K\right\}
+      \right)^T    \\
+    &= \left(
+      \bm{t}_1^T, \bm{t}_2^T, \cdots, \bm{t}_K^T
+      \right)^T    \\
+    &= \left(
+      t_{1, 1}, \cdots, t_{n_1, 1};
+      t_{1, 2}, \cdots, t_{n_2, 2};
+      \cdots ;
+      t_{1, K}, \cdots, t_{n_K, K}
+      \right)^T
+  \end{aligned} 
+\]
+The corresponding covariate (treatment allocation) vector is
+\[
+  \begin{aligned}
+    \bm{Z}
+    &= \left(
+      \bm{Z}_1^T, \cdots, \bm{Z}_K^T
+      \right)^T    \\
+    &= \left(
+      z_{1, 1}, \cdots, z_{n_1, 1};
+      z_{1, 2}, \cdots, z_{n_2, 2};
+      \cdots ;
+      z_{1, K}, \cdots, z_{n_K, K}
+      \right)^T
+  \end{aligned}
+\]
+The parameter vectors are
+\[
+  \begin{aligned}
+    & \bm{p} = \left(p_1, \cdots, p_K\right)^T    \\
+    & \bm{\lambda} = \left(\lambda_1, \cdots, \lambda_K\right)^T
+  \end{aligned}
+\]
+And the data likelihood is
+\[
+  \begin{aligned}
+    L\left(
+    \bm{t}; \bm{Z}
+    \middle|
+    \bm{p}, \bm{\lambda}, \beta
+    \right)
+    &= \prod\limits_{k = 1}^K
+      L\left(\bm{t}_k; \bm{Z}_k\middle| p_k, \lambda_k, \beta\right)    \\
+    &= \prod\limits_{k = 1}^K\prod\limits_{i = 1}^{n_k}
+      \left(
+      p_k\lambda_k^{p_k}e^{\beta Z_{i, k}}t_{i, k}^{p_k - 1}
+      \right)^{\delta_{i, k}}
+      \mathrm{exp}\left(
+      - \left(\lambda_k t_{i, k}\right)^{p_k}
+      e^{\beta Z_{i, k}}
+      \right)
+  \end{aligned}
+\]
+And the partial likelihood would be
+\[
+  \begin{aligned}
+    L_1\left(\bm{t}; \bm{Z}\middle|\bm{p}, \bm{\lambda}, \beta\right)
+    &= \prod\limits_{k = 1}^KL_1\left(\bm{t}_k; \bm{Z}_k\middle| p_k, \lambda_k, \beta\right)    \\
+    &= \prod\limits_{k = 1}^K\prod\limits_{i = 1}^{n_k}
+      \left(
+      \frac{
+      e^{\beta Z_{i, k}}}{
+      \sum\limits_{\left\{j\middle|t_{j, k}\geq t_{i, k}\right\}}e^{\beta Z_{j, k}}}
+      \right)^{\delta_{i, k}}
+  \end{aligned}
+\]
 
+\subsection{Unstratified analysis under stratified setting}
+\label{sec:unstr-analys-under}
 
+We use $f_k\left(t\right)$, $F_k\left(t\right)$, $S_k\left(t\right)$ and $h_k\left(t\right)$ to denote the p.d.f, c.d.f, survival function and hazard function of stratum $k$. Then we have marginally, the c.d.f of event time
+\[
+  \begin{aligned}
+    F\left(t\right) = P\left(T \leq t\right)
+    = \sum\limits_{k = 1}^K P\left(T \leq t,\quad \text{T from stratum k}\right)
+    = \sum\limits_{k = 1}^K \pi_k F_k\left(t\right)
+  \end{aligned}
+\]
+where $\pi_k = P\left(\text{T from stratum k}\right)$ denotes the probability that the subject comes from stratum $k$. Therefore
+\[
+  \begin{aligned}
+    f\left(t\right)
+    &= \frac{\partial F}{\partial t} = \sum\limits_{k = 1}^K\pi_kf_k\left(t\right)    \\
+    S\left(t\right)
+    &= 1 - F\left(t\right) = 1 - \sum\limits_{k = 1}^K\pi_kF_k\left(t\right)
+      = \sum\limits_{k = 1}^K\pi_k S_k\left(t\right)    \\
+    h\left(t\right)
+    &= \frac{f\left(t\right)}{S\left(t\right)}
+      = \frac{\sum\limits_{k = 1}^K\pi_kf_k\left(t\right)}{\sum\limits_{k = 1}^K\pi_k S_k\left(t\right)}
+  \end{aligned}
+\]
+
+So for a subject from control group, the hazard function (still based on Weibull distribution) is
+\begin{equation}
+  \label{eq:control_marginal_hazard}
+  h_0\left(t\right) =
+  \frac{
+    \sum\limits_{k = 1}^K\pi_k
+    p_k\lambda_k^{p_k}t^{p_k - 1}
+    \mathrm{exp}\left(-\left(\lambda_kt\right)^{p_k}\right)
+  }{
+    \sum\limits_{k = 1}^K\pi_k
+    \mathrm{exp}\left(-\left(\lambda_kt\right)^{p_k}\right)
+  }
+\end{equation}
+And the hazard function for treatment group is
+\begin{equation}
+  \label{eq:treatment_marginal_hazard}
+  h_1\left(t\right) =
+  \frac{
+    \sum\limits_{k = 1}^K\pi_k
+    p_k\lambda_k^{p_k}t^{p_k - 1}e^\beta
+    \mathrm{exp}\left(-\left(\lambda_kt\right)^{p_k}e^\beta\right)
+  }{
+    \sum\limits_{k = 1}^K\pi_k
+    \mathrm{exp}\left(-\left(\lambda_kt\right)^{p_k}e^\beta\right)
+  }
+\end{equation}
+
+Therefore the \textbf{Hazard Ratio} is
+\begin{equation}
+  \label{eq:marginal_hr}
+  hr\left(t\right) = \frac{h_1\left(t\right)}{h_0\left(t\right)}
+  = \frac{
+    \frac{
+      \sum\limits_{k = 1}^K\pi_k
+      p_k\lambda_k^{p_k}t^{p_k - 1}e^\beta
+      \mathrm{exp}\left(-\left(\lambda_kt\right)^{p_k}e^\beta\right)
+    }{
+      \sum\limits_{k = 1}^K\pi_k
+      \mathrm{exp}\left(-\left(\lambda_kt\right)^{p_k}e^\beta\right)
+    }
+  }{
+    \frac{
+      \sum\limits_{k = 1}^K\pi_k
+      p_k\lambda_k^{p_k}t^{p_k - 1}
+      \mathrm{exp}\left(-\left(\lambda_kt\right)^{p_k}\right)
+    }{
+      \sum\limits_{k = 1}^K\pi_k
+      \mathrm{exp}\left(-\left(\lambda_kt\right)^{p_k}\right)
+    }
+  }, 
+\end{equation}
+which is \textbf{NOT CONSTANT} w.r.t. $t$, meaning the constant hazard ratio assumption for Cox regression is violated.
+\par
+Even for a simple case, where we assume $p_k = 1, k = 1, \cdots, K$, we still have
+\begin{equation}
+  \label{eq:marginal_hr_exponential}
+  hr(t) = \frac{
+    \frac{
+      \sum\limits_{k = 1}^K\pi_k
+      \lambda_ke^\beta
+      \mathrm{exp}\left(-\lambda_kte^\beta\right)
+    }{
+      \sum\limits_{k = 1}^K\pi_k
+      \mathrm{exp}\left(-\lambda_kte^\beta\right)
+    }
+  }{
+    \frac{
+      \sum\limits_{k = 1}^K\pi_k
+      \lambda_k
+      \mathrm{exp}\left(- \lambda_kt\right)
+    }{
+      \sum\limits_{k = 1}^K\pi_k
+      \mathrm{exp}\left(-\lambda_kt\right)
+    }
+  }
+  = \frac{
+    \left(
+      \sum\limits_{k = 1}^K\pi_k
+      \mathrm{exp}\left(-\lambda_kt\right)
+    \right)
+    \left(
+      \sum\limits_{k = 1}^K\pi_k
+      \lambda_ke^\beta
+      \mathrm{exp}\left(-\lambda_kte^\beta\right)
+    \right)
+  }{
+    \left(
+      \sum\limits_{k = 1}^K\pi_k
+      \lambda_k
+      \mathrm{exp}\left(- \lambda_kt\right)
+    \right)
+    \left(
+      \sum\limits_{k = 1}^K\pi_k
+      \mathrm{exp}\left(-\lambda_kte^\beta\right)
+    \right)
+  }, 
+\end{equation}
+which again, is \textbf{NOT CONSTANT} w.r.t. $t$.
+\par
+And this implies that using unstratified analysis under a stratified setting might lead to {\color{red} biased} estimation of hazard ratio. 
 
 \bibliographystyle{plainnat}
 \bibliography{../../ref}
