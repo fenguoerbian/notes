@@ -502,24 +502,134 @@ Even for a simple case, where we assume $p_k = 1, k = 1, \cdots, K$, we still ha
       \sum\limits_{k = 1}^K\pi_k
       \mathrm{exp}\left(-\lambda_kt\right)
     \right)
-    \left(
-      \sum\limits_{k = 1}^K\pi_k
-      \lambda_ke^\beta
-      \mathrm{exp}\left(-\lambda_kte^\beta\right)
-    \right)
   }{
     \left(
       \sum\limits_{k = 1}^K\pi_k
       \lambda_k
       \mathrm{exp}\left(- \lambda_kt\right)
     \right)
+  }
+  \cdot
+  \frac{
+    \left(
+      \sum\limits_{k = 1}^K\pi_k
+      \lambda_k
+      \mathrm{exp}\left(-\lambda_kte^\beta\right)
+    \right)
+  }{
     \left(
       \sum\limits_{k = 1}^K\pi_k
       \mathrm{exp}\left(-\lambda_kte^\beta\right)
     \right)
-  }, 
+  }
+  \cdot
+  e^\beta
+  , 
 \end{equation}
-which again, is \textbf{NOT CONSTANT} w.r.t. $t$.
+which again, is \textbf{NOT CONSTANT} w.r.t. $t$. Further more
+\[
+  \begin{aligned}
+    & \frac{\partial}{\partial t}
+      \frac{
+      \sum\limits_{k = 1}^K\pi_k
+      \mathrm{exp}\left(-\lambda_kt\right)
+      }{
+      \sum\limits_{k = 1}^K\pi_k
+      \lambda_k
+      \mathrm{exp}\left(- \lambda_kt\right)
+      }    \\
+      =& \frac{
+      \left(
+      \sum\limits_{k = 1}^K\pi_k
+      \mathrm{exp}\left(-\lambda_kt\right)
+      \left(-\lambda_k\right)
+      \right)
+      \sum\limits_{k = 1}^K\pi_k
+      \lambda_k
+      \mathrm{exp}\left(- \lambda_kt\right)
+      -
+      \sum\limits_{k = 1}^K\pi_k
+      \mathrm{exp}\left(-\lambda_kt\right)
+      \left(
+      \sum\limits_{k = 1}^K\pi_k
+      \lambda_k
+      \mathrm{exp}\left(- \lambda_kt\right)
+      \left(-\lambda_k\right)
+      \right)
+      }{\left(
+      \sum\limits_{k = 1}^K\pi_k
+      \lambda_k
+      \mathrm{exp}\left(- \lambda_kt\right)
+         \right)^2}    \\
+    =& \frac{\left(
+       \sum\limits_{k = 1}^K\pi_k
+       \mathrm{exp}\left(-\lambda_kt\right)
+       \right)
+       \left(
+       \sum\limits_{k = 1}^K\pi_k
+       \lambda_k^2
+       \mathrm{exp}\left(- \lambda_kt\right)
+       \right)
+       -
+       \left(
+       \sum\limits_{k = 1}^K\pi_k\lambda_k
+       \mathrm{exp}\left(-\lambda_kt\right)
+       \right)^2
+       }{\left(
+       \sum\limits_{k = 1}^K\pi_k
+       \lambda_k
+       \mathrm{exp}\left(- \lambda_kt\right)
+       \right)^2
+       }    \\
+       \geq& 0
+  \end{aligned}
+\]
+This is greater than or equal to 0 due to Cauchy's inequality. Therefore
+\[
+  \begin{aligned}
+    \frac{
+    \sum\limits_{k = 1}^K\pi_k
+    \mathrm{exp}\left(-\lambda_kt e^\beta\right)
+    }{
+    \sum\limits_{k = 1}^K\pi_k
+    \lambda_k
+    \mathrm{exp}\left(- \lambda_kt e^\beta\right)}
+    &{\color{red}\;\geq\;}
+      \frac{
+      \sum\limits_{k = 1}^K\pi_k
+      \mathrm{exp}\left(-\lambda_kt \right)
+      }{
+      \sum\limits_{k = 1}^K\pi_k
+      \lambda_k
+      \mathrm{exp}\left(- \lambda_kt \right)}
+    && \quad \text{if } e^\beta > 1    \\
+    \frac{
+    \sum\limits_{k = 1}^K\pi_k
+    \mathrm{exp}\left(-\lambda_kt e^\beta\right)
+    }{
+    \sum\limits_{k = 1}^K\pi_k
+    \lambda_k
+    \mathrm{exp}\left(- \lambda_kt e^\beta\right)}
+    &{\color{red}\;\leq\;}
+      \frac{
+      \sum\limits_{k = 1}^K\pi_k
+      \mathrm{exp}\left(-\lambda_kt \right)
+      }{
+      \sum\limits_{k = 1}^K\pi_k
+      \lambda_k
+      \mathrm{exp}\left(- \lambda_kt \right)}
+    && \quad \text{if } 0 < e^\beta < 1    \\
+  \end{aligned}
+\]
+which means for \eqref{eq:marginal_hr_exponential} we know that
+\[
+  \begin{aligned}
+    hr(t) & {\color{red}\;\leq\;} e^\beta
+    && \quad \text{if } e^\beta > 1    \\
+        hr(t) & {\color{red}\;\geq\;} e^\beta
+    && \quad \text{if } 0 < e^\beta < 1    \\
+  \end{aligned}
+\]
 \par
 And this implies that using unstratified analysis under a stratified setting might lead to {\color{red} biased} estimation of hazard ratio. 
 
