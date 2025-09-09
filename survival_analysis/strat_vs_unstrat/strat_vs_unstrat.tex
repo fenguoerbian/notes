@@ -114,7 +114,7 @@
 \section{Introduction}
 \label{sec:introduction}
 
-In this note we will talk about the Cox's proportional hazards (Cox's PH) model. And more specifically, what will happen when unstratified analysis is used for a data where stratified analysis is the true model. 
+In this note we will talk about the Cox's proportional hazards (Cox's PH) model. And more specifically, what will happen when unstratified analysis is used for data where stratified setting is the true model. 
 
 \section{A simple parametric model}
 \label{sec:simple-param-model}
@@ -219,7 +219,8 @@ Set this to 0 we have
   \right)^{1 / p}
 \]
 Plug this back into \eqref{eq:weibull_loglikelihood} will give us
-\[
+\begin{equation}
+  \label{eq:weibull_loglikelihood_plugin_lambda}
   \begin{aligned}
     \mathrm{log}L
     &= n_{evt}\left(
@@ -235,8 +236,22 @@ Plug this back into \eqref{eq:weibull_loglikelihood} will give us
       + \sum\limits_{i = 1}^n\delta_i\left(\beta Z_i + \left(p - 1\right)t_i\right)
       - n_{evt}
   \end{aligned} 
+\end{equation}
+Then we fix $\beta$ and taking derivative w.r.t. $p$
+\[
+  \begin{aligned}
+    \frac{\partial\mathrm{log}L}{\partial p}
+    =&
+       \frac{n_{evt}}{p}
+       - \frac{
+       n_{evt} \cdot
+       \sum\limits_{i = 1}^nt_i^pe^{\beta Z_i}\mathrm{log}t_i}{
+       \sum\limits_{i = 1}^nt_i^pe^{\beta Z_i}
+       }
+       + \sum\limits_{i = 1}^{n}\delta_it_i
+  \end{aligned}
 \]
-Unfortunately, there's no analytical solution to $p$ even when we fixed $\beta$. So let's consider a simpler case where we fix $p = 1$, i.e. Exponential distribution. Then this loglikelihood becomes
+Unfortunately, there's no closed form solution to this ($\frac{\partial\mathrm{log}L}{\partial p} = 0$). So let's consider a simpler case where we fix $p = 1$, i.e. Exponential distribution. Then the loglikelihood \eqref{eq:weibull_loglikelihood_plugin_lambda} becomes
 \[
   \begin{aligned}
     \mathrm{log}L
@@ -302,6 +317,7 @@ where we use the notation that $Z_i\in\left\{0, 1\right\}$ to indicate control a
     \frac{e^{\beta Z_i}}{\sum\limits_{\left\{j\middle|t_j\geq t_i\right\}}e^{\beta Z_j}}
   \right)^{\delta_i}
 \]
+And \eqref{eq:beta_mle_exponential} will be \textbf{more efficient} than the Cox results if the underlying data is really following exponential distribution. 
 
 
 
