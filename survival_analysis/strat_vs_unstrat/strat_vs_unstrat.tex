@@ -306,9 +306,9 @@ where we use the notation that $Z_i\in\left\{0, 1\right\}$ to indicate control a
 \begin{equation}
   \label{eq:beta_mle_exponential}
   \hat{\beta} = \mathrm{log}\left(
-    \frac{n_{evt\,\&\,trt}}{n_{evt\;\&\;ctrl}}
+    \frac{n_{evt\,\&\,trt}}{n_{evt\,\&\,ctrl}}
     \cdot
-    \frac{\sum\limits_{i\in\;ctrl}t_i}{\sum\limits_{i\in\;trt}t_i}
+    \frac{\sum\limits_{i\in\,ctrl}t_i}{\sum\limits_{i\in\,trt}t_i}
   \right)
 \end{equation}
 \textbf{Note:} \eqref{eq:beta_mle_objective} can be seen as objective function for $\beta$'s MLE and it is \textbf{different} from the partial likelihood used in Cox regression, which is
@@ -380,7 +380,8 @@ The parameter vectors are
   \end{aligned}
 \]
 And the data likelihood is
-\[
+\begin{equation}
+  \label{eq:stratified_data_likelihood}
   \begin{aligned}
     L\left(
     \bm{t}; \bm{Z}
@@ -397,8 +398,8 @@ And the data likelihood is
       - \left(\lambda_k t_{i, k}\right)^{p_k}
       e^{\beta Z_{i, k}}
       \right)
-  \end{aligned}
-\]
+  \end{aligned}  
+\end{equation}
 And the partial likelihood would be
 \[
   \begin{aligned}
@@ -412,6 +413,108 @@ And the partial likelihood would be
       \right)^{\delta_{i, k}}
   \end{aligned}
 \]
+
+\subsubsection{MLE based on equation \eqref{eq:stratified_data_likelihood}}
+\label{sec:mle-based-}
+
+Like before, we fix $\bm{p}$ and $\beta$. Then we have
+\[
+  \hat{\lambda}_k = \left(
+    \frac{n_{evt, k}}{
+      \sum\limits_{i = 1}^{n_k}t_{i, k}^{p_k}e^{\beta Z_{i, k}}
+    }
+  \right)^{1 / p_{k}}
+  , \quad
+  k = 1, \cdots, K, 
+\]
+since $\lambda_k$s are independent of each other.
+\par
+For $p_k$s, unfortunately like before we have no closed form solution. So again we fixed $\bm{p} = \bm{1}_K$. Then plug-in $\hat{\lambda}_k$s into \eqref{eq:stratified_data_likelihood}, we have the loglikelihood becoming
+\[
+  \begin{aligned}
+    & \mathrm{log}L\left(
+    \bm{t};\bm{Z}
+    \middle|
+    \bm{1}_K, \hat{\bm{\lambda}}, \beta
+    \right)    \\
+    =& \sum\limits_{k = 1}^K\sum\limits_{i = 1}^{n_k}\left(
+       \delta_{i, k}
+       \mathrm{log}\left(
+       \hat{\lambda}_k
+       e^{\beta Z_{i, k}}
+       \right)
+       - \hat{\lambda}_k t_{i, k}
+       e^{\beta Z_{i, k}}
+       \right)    \\
+    =& \sum\limits_{k = 1}^K\sum\limits_{i = 1}^{n_k}\left(
+       \delta_{i, k}\left(
+       \mathrm{log}\,n_{evt, k}
+       - \mathrm{log}\left(\sum\limits_{i = 1}^{n_k}t_{i, k}e^{\beta Z_{i, k}}\right)
+       + \beta Z_{i, k}
+       \right)
+       - \frac{n_{evt, k}}{
+       \sum\limits_{i = 1}^{n_k}t_{i, k}e^{\beta Z_{i, k}}
+       }
+       \cdot
+       t_{i, k}e^{\beta Z_{i, k}}
+       \right)    \\
+    =& \sum\limits_{k = 1}^K\left(
+       n_{evt, k}\mathrm{log}\,n_{evt, k}
+       - n_{evt, k}\mathrm{log}\left(\sum\limits_{i = 1}^{n_k}t_{i, k}e^{\beta Z_{i, k}}\right)
+       + \sum\limits_{i = 1}^{n_k}\delta_{i, k}\beta Z_{i, k}
+       - n_{evt, k}
+       \right)    \\
+    \overset{w.r.t.\;\beta}{\propto}&
+                                      \sum\limits_{k = 1}^K\left(
+                                      - n_{evt, k}
+                                      \mathrm{log}\left(
+                                      \sum\limits_{i = 1}^{n_k}t_{i, k}e^{\beta Z_{i, k}}\right)
+                                      + \sum\limits_{i = 1}^{n_k}\delta_{i, k}\beta Z_{i, k}
+                                      \right)
+  \end{aligned}
+\]
+Therefore
+\[
+  \begin{aligned}
+    &\frac{\partial \mathrm{log}L}{\partial\beta}    \\
+    =& \sum\limits_{k = 1}^{K}\left(
+    - n_{evt, k}\cdot
+    \frac{
+    \sum\limits_{k = 1}^{n_k}t_{i, k}Z_{i, k}e^{\beta Z_{i, k}}
+    }{
+    \sum\limits_{i = 1}^{n_k}t_{i, k}e^{\beta Z_{i, k}}
+    }
+    + \sum\limits_{i = 1}^{n_k}\delta_{i, k}Z_{i, k}
+       \right)    \\
+    =& \sum\limits_{k = 1}^{K}\left(
+       - n_{evt, k}\cdot
+       \frac{
+       \sum\limits_{i\in\,trt, k}t_{i, k}e^\beta
+       }{
+       \sum\limits_{i\in\,trt, k}t_{i, k}e^\beta + \sum\limits_{i\in\,ctrl, k}t_{i, k}
+       }
+       + n_{evt\,\&\,trt, k}
+       \right)    \\
+    =& \sum\limits_{k = 1}^K
+       \frac{
+       - n_{evt\,\&\,trt, k}\sum\limits_{i\in\,trt, k}t_{i, k}e^\beta
+       - n_{evt\,\&\,ctrl, k}\sum\limits_{i\in\,trt, k}t_{i, k}e^\beta
+       +
+       n_{evt\,\&\,trt, k}\sum\limits_{i\in\,trt, k}t_{i, k}e^\beta
+       + n_{evt\,\&\,trt, k}\sum\limits_{i\in\,ctrl, k}t_{i, k}
+       }{
+       \sum\limits_{i\in\,trt, k}t_{i, k}e^\beta + \sum\limits_{i\in\,ctrl, k}t_{i, k}
+       }    \\
+    =& \sum\limits_{k = 1}^K
+       \frac{
+       - n_{evt\,\&\,ctrl, k}\sum\limits_{i\in\,trt, k}t_{i, k}e^\beta
+       + n_{evt\,\&\,trt, k}\sum\limits_{i\in\,ctrl, k}t_{i, k}
+       }{
+       \sum\limits_{i\in\,trt, k}t_{i, k}e^\beta + \sum\limits_{i\in\,ctrl, k}t_{i, k}
+       }    \\
+  \end{aligned}
+\]
+Unfortunately, I don't know how to solve for $\beta$ when letting $\frac{\partial\mathrm{log}L}{\partial\beta} = 0$. Even under $K = 2$, I can see there will be a closed form solution for $\beta$, but it will still be very lengthy and complicated.
 
 \subsection{Unstratified analysis under stratified setting}
 \label{sec:unstr-analys-under}
