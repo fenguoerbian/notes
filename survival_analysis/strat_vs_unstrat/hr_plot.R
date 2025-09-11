@@ -1,7 +1,7 @@
-K <- 6
+K <- 2
 pi_vec <- runif(K)
 pi_vec <- pi_vec / sum(pi_vec)
-lam_vec <- runif(K, min = 2, max = 3)
+lam_vec <- runif(K, min = 0, max = 0.5)
 beta <- -0.23
 
 hrt <- function(t_val, lam_vec, pi_vec, beta){
