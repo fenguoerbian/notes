@@ -1,0 +1,627 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{geometry}
+\geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+\renewcommand{\textfraction}{0.15}
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\bottomfraction}{0.65}
+\renewcommand{\floatpagefraction}{0.60}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{mathrsfs}
+\usepackage{amsthm}
+\usepackage{extarrows}
+\usepackage{bm}
+% \newcommand{\bm}{\symbfit}    % `bm` confilicts with `unicode-math`. In that case use \symbfit for bold math symbols
+\usepackage{graphicx}
+\usepackage[section]{placeins}
+\usepackage{flafter}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{color}
+\usepackage{multirow}
+\usepackage{natbib}
+% \usepackage{enumerate}
+\usepackage{enumitem}    % more flexible than `enumerate` package, the reference will carry the whole label appearance, not just the counter, unlike the `enumerate` package.
+\usepackage{upgreek}    % 'upgreek' letters
+
+% \pdfstringdefDisableCommands{\let\bm=\relax}
+
+\newtheorem{thm}{Theorem}
+\newtheorem{cor}{Corollary}
+\newtheorem{assum}{Assumption}
+\newtheorem{rem}{Remark}
+\newtheorem{lem}{Lemma}
+
+\setcounter{topnumber}{5}    % Maximum number of floats that can appear at the top of a text page; default 2. 
+\setcounter{bottomnumber}{5}   % Maximum number of floats that can appear at the bottom of a text page; default 1. 
+\setcounter{totalnumber}{10}    % Maximum number of floats that can appear on a text page; default 3. 
+
+\DeclareMathOperator*{\argmaxdown}{arg\,max}
+\DeclareMathOperator*{\argmindown}{arg\,min}
+\DeclareMathOperator{\argmax}{arg\,max}
+\DeclareMathOperator{\argmin}{arg\,min}
+
+% cross-reference to other files
+% the externaldocument should be compiled 
+% (and at least twice if you're using xr-hyper)
+% \usepackage{xr-hyper}
+% \usepackage{xr}
+
+% --- external document (ordinary setting) ---
+% \externaldocument{external_tex_file}
+% --- end of ordinary setting ---
+
+% --- external document (overleaf setting) ---
+% externaldocument settings for Overleaf
+% \makeatletter
+% \newcommand*{\addFileDependency}[1]{% argument=file name and extension
+% \typeout{(#1)}
+% \@addtofilelist{#1}
+% \IfFileExists{#1}{}{\typeout{No file #1.}}
+% }
+%   \makeatother
+%   \newcommand*{\myexternaldocument}[1]{%
+%   \externaldocument{#1}%
+%   \addFileDependency{#1.tex}%
+%   \addFileDependency{#1.aux}%
+% }
+%   \myexternaldocument{external_tex_file}
+%   --- end of overleaf setting ---
+
+%   mathtools can be used to define labeling format for equations
+%   one can use \eqref for a reference to a labeled equation.
+\usepackage{mathtools}
+\newtagform{supp}{(S-}{)}    % define a equation labeling format for suppliment
+\usetagform{supp}            % use the supp format
+\usetagform{default}         % use the default format
+
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+% package for hyperlinks
+% It's error-prone because hyper link is quite difficult
+% due to the fact the typesetting environment is complex.
+% So you can disable this package and finish the document.
+% Then sort out the hyperlink thing.
+\usepackage[colorlinks,linkcolor=red,anchorcolor=blue,citecolor=green,CJKbookmarks=True]{hyperref}
+
+% package for displaying highlighted codes
+\usepackage{minted}
+
+% package for input codec and output rendering font
+\usepackage[utf8]{inputenc}    % it is always good practice to use utf8
+% you can also try latin1, latin2, cp1252 and cp1250
+\usepackage[T1]{fontenc}    % the default is T0, which only contains 128 characters
+% you can try T1, T2A, T2B
+% you can refer to https://www.overleaf.com/learn/latex/international_language_support#Font_encoding
+% for more details.
+
+
+\title{T-test}
+\author{Chao Cheng}
+\date{\today}
+
+
+
+\begin{document}
+\maketitle
+\tableofcontents{}
+
+\section{Basic knowledge}
+\label{sec:basic-knowledge}
+
+$\phi\left(x\right)$ and $\Phi\left(x\right)$ are pdf and cdf of standard normal distribution, respectively. We use $Z$ to represent a random variable that follows standard normal distribution and $z_{\alpha}$ the lower $\alpha$ quantile of standard normal distribution. Therefore
+\[
+  P\left(Z \leq z_{\alpha}\right) = \Phi\left(z_{\alpha}\right) = \alpha
+  .
+\]
+
+\begin{thm}
+  \label{thm:sample_thm}
+  Let $x_1, \cdots, x_n$ be a random sample from a population with mean $\mu$ and variance $\sigma^2 <\infty$. Then
+  \begin{enumerate}
+  \item $\mathrm{E}\bar{x} = \mu$.
+  \item $\mathrm{Var}\bar{x} = \sigma^2 / n$.
+  \item $\mathrm{E}S^2 = \sigma^2$, where $S^2 = \frac{1}{n - 1}\sum\limits_{i = 1}^n\left(x_i - \bar{x}\right)^2$.
+  \end{enumerate}
+\end{thm}
+
+\begin{thm}
+  \label{thm:normal_thm}
+  Let $x_1, \cdots, x_n$ be a random sample from $N\left(\mu, \sigma^2\right)$. Then
+  \begin{enumerate}
+  \item $\bar{X} \sim N\left(\mu, \sigma^2 / n\right)$.
+  \item $\bar{X}$ is independent of $S^2$.
+  \item $\left(n - 1\right)S^2 / \sigma^2$ follows a chi-squared distribution with $n - 1$ degree of freedom.
+  \end{enumerate}
+\end{thm}
+
+
+
+\section{One-sample test}
+\label{sec:one-sample}
+
+Consider a random sample $x_1, \cdots, x_n$ from $N\left(\mu, \sigma^2\right)$. The likelihood is
+\[
+  \begin{aligned}
+    f\left(x_1, \cdots, x_n\right)
+    =& \prod\limits_{i = 1}^n
+    \left(2\pi\sigma^2\right)^{-1/2}
+    \mathrm{exp}\left(
+      -\frac{
+        \left(x_i - \mu\right)^2
+      }{2\sigma^2}
+    \right)    \\
+    =& \left(2\pi\sigma^2\right)^{-n / 2}
+    \mathrm{exp}\left(
+      -\frac{\sum\limits_{i = 1}^n\left(x_i - \mu\right)^2}{2\sigma^2}
+    \right)
+    .
+  \end{aligned}
+\]
+We propose the test
+\[
+  H_0:\; \mu = \mu_0
+  \textbf{\quad v.s\quad}
+  H_1:\; \mu \neq \mu_0
+\]
+\subsection{variance known}
+\label{sec:variance-known}
+
+Construct LRT
+\[
+  LR = \frac{
+    \underset{\mu\in H_0}{\mathrm{max}}\;
+    f\left(x_1, \cdots, x_n\middle|\mu\right)
+  }{
+    \underset{\mu\in H_0\cup H_1}{\mathrm{max}}\;
+    f\left(x_1, \cdots, x_n\middle|\mu\right)
+  }
+  =\frac{
+    f\left(x_1, \cdots, x_n\middle|\mu = \mu_0\right)
+  }{
+    f\left(x_1, \cdots, x_n\middle|\mu = \bar{x}\right)
+  }
+  = \mathrm{exp}\left(
+    -\frac{\left(\bar{x} - \mu_0\right)^2}{2\sigma^2 / n}
+  \right)
+\]
+
+Therefore rejecting $H_0$ when LR is smaller than some constant $C$ is equivalent to rejecting $H_0$ when $\left|\bar{x} - \mu_0\right|$ is larger than some other constant $C$. Hence
+\[
+  \text{Reject Region: }
+  \left\{
+    \bar{x}
+    :\quad
+    \left|\bar{x}-\mu_0\right| > C
+  \right\}
+\]
+
+
+
+\subsection{variance unknown}
+\label{sec:variance-unknown}
+
+When $\sigma^2$ is unknown, the MLE under $H_0$ is
+\[
+  \mu_{\left(0\right)} = \mu_0
+  ,\quad
+  \sigma^2_{\left(0\right)} = \frac{1}{n}\sum\limits_{i = 1}^n\left(x_i - \mu_0\right)^2
+  .
+\]
+And the MLE under $H_0\cup H_1$ is
+\[
+  \mu_{\left(0 \cup 1\right)} = \bar{x}
+  ,\quad
+  \sigma^2_{\left(0 \cup 1\right)} = \frac{1}{n}\sum\limits_{i = 1}^n\left(x_i - \bar{x}\right)^2
+  .
+\]
+\textbf{Note: } MLE for $\sigma^2$ offers smaller MSE than $S^2$, but it's biased.
+\par
+Then the likelihood ratio is
+\[
+  LR = \frac{
+    f\left(x_1, \cdots, x_n\middle|\mu = \mu_{\left(0\right)}, \sigma^2 = \sigma^2_{\left(0\right)}\right)
+  }{
+    f\left(x_1, \cdots, x_n\middle|\mu = \mu_{\left(0\cup 1\right)}, \sigma^2 = \sigma^2_{\left(0\cup 1\right)}\right)
+  }
+  = \left(
+    \frac{
+      \sum\limits_{i = 1}^n\left(x_i - \mu_0\right)^2
+    }{
+      \sum\limits_{i = 1}^n\left(x_i - \bar{x}\right)^2
+    }
+  \right)^{-n / 2}
+  \propto \left(
+    \frac{
+      \sum\limits_{i = 1}^n\left(\bar{x} - \mu_0\right)^2
+    }{
+      \sum\limits_{i = 1}^n\left(x_i - \bar{x}\right)^2
+    }
+  \right)^{-n / 2}  
+  ,
+\]
+where for the last part we mainly focus on terms related to $\mu_0$. So to reject $H_0$ when LR is small is equivalent to
+\[
+  \text{Reject Region: }
+  \left\{
+    \bar{x}
+    :\quad
+    \frac{\left|\bar{x}-\mu_0\right|}{\sqrt{\sum\limits_{i = 1}^n\left(x_i - \bar{x}\right)^2}} > C
+  \right\}
+\]
+
+The idea is similar to that in Section~\ref{sec:variance-known}. But we replace $\sigma^2$ with $S^2$.
+
+
+
+\section{Two sample test}
+\label{sec:two-sample-test}
+
+Consider two random samples $x_1, \cdots, x_{n_1} \sim N\left(\mu_1, \sigma_1^2\right)$ and $y_1, \cdots, y_{n_2}\sim N\left(\mu_2, \sigma_2^2\right)$. Then the likelihood of the data is
+\[
+  \begin{aligned}
+    & f\left(x_1, \cdots, x_{n_1}, y_1, \cdots, y_{n_2}
+      \middle|\mu_1, \mu_2, \sigma_1^2, \sigma_2^2\right)    \\
+    =& \left( 2\pi\sigma_1^2\right)^{-n_1 / 2}
+    \left(2\pi\sigma_2^2\right)^{-n_2 / 2}
+    \mathrm{exp}\left(
+      - \frac{\sum\limits_{i = 1}^{n_1}\left(x_i - \mu_1\right)^2}{2\sigma_1^2}
+      - \frac{\sum\limits_{i = 1}^{n_2}\left(y_i - \mu_2\right)^2}{2\sigma_2^2}
+    \right)    \\
+    =& 
+  \end{aligned}
+\]
+We propose the test
+\[
+  H_0:\; \mu_1 = \mu_2
+  \quad\textbf{v.s.}\quad
+  H_1:\; \mu_1 \neq \mu_2
+  .
+\]
+
+\subsection{Two-sample, variance known}
+\label{sec:two-sample-variance}
+When $\sigma_1^2$ and $\sigma_2^2$ are known, the likelihood satisfies
+\[
+  f\left(x_1, \cdots, x_{n_1}, y_1, \cdots, y_{n_2}
+    \middle|\mu_1, \mu_2\right)
+  \propto
+  \mathrm{exp}\left(
+    -\frac{n_1\left(\bar{x} - \mu_1\right)^2}{2\sigma_1^2}
+    -\frac{n_2\left(\bar{y} - \mu_2\right)^2}{2\sigma_2^2}
+  \right)
+  .
+\]
+
+Therefore under $H_0$, the MLE for $\mu_1$ and $\mu_2$ is
+\[
+  \mu_{1\left(0\right)} = \mu_{2\left(0\right)} = \mu_{\left(0\right)}
+  = \frac{
+    \sigma_2^2n_1\bar{x} + \sigma_1^2n_2\bar{y}
+  }{
+    \sigma_2^2n_1 + \sigma_1^2n_2
+  }
+  .
+\]
+And under $H_0\cup H_1$, the MLE for $\mu_1$ and $\mu_2$ is
+\[
+  \mu_{1\left(0\cup1\right)} = \bar{x}
+  ,\quad
+  \mu_{2\left(0\cup1\right)} = \bar{y}
+  .
+\]
+Then the likelihood ratio is 
+\[
+  \begin{aligned}
+    LR =& \frac{
+      \underset{H_0}{\mathrm{max}}\;
+      f\left(\bm{x}, \bm{y}\middle|\mu_1, \mu_2\right)
+    }{
+      \underset{H_0\cup H_1}{\mathrm{max}}\;
+      f\left(\bm{x}, \bm{y}\middle|\mu_1, \mu_2\right)
+    }    \\
+    =& \frac{
+      f\left(\bm{x}, \bm{y}\middle|\mu_1 = \mu_2 = \mu_{\left(0\right)}\right)
+    }{
+      f\left(\bm{x}, \bm{y}\middle|\mu_1 = \mu_{1\left(0\cup1\right)}, \mu_2 = \mu_{2\left(0\cup1\right)}\right)
+    }    \\
+    \propto&
+    \mathrm{exp}\left(
+      -\frac{1}{2}\left(
+        \frac{n_1\left(\bar{x} - \mu_{\left(0\right)}\right)^2}{\sigma_1^2}
+        +\frac{n_2\left(\bar{y} - \mu_{\left(0\right)}\right)^2}{\sigma_2^2}
+      \right)
+    \right)    \\
+    =& \mathrm{exp}\left(
+      -\frac{1}{2}
+      \frac{n_1n_2}{\sigma_2^2n_1 + \sigma_1^2 n_2}
+      \left(\bar{x} - \bar{y}\right)^2
+    \right)
+    .
+  \end{aligned}
+\]
+
+From the idea of LRT, $H_0$ is rejected when $LR$ is small enough, which means the reject rule is
+\[
+  \text{Reject Region: }
+  \left\{
+    \left(\bar{x}, \bar{y}\right)
+    \middle|
+    \left|\bar{x} - \bar{y}\right| > C
+  \right\}
+\]
+
+
+\subsection{Two-sample, variance unknown but equal}
+\label{sec:two-sample-variance-1}
+
+When $\sigma_1$ and $\sigma_2$ are both unknown but equal, denoted by $\sigma$. The likelihood of the data becomes
+\[
+  \begin{aligned}
+    & f\left(
+      x_1, \cdots, x_{n_1}, y_1, \cdots, y_{n_2}
+      \middle|
+      \mu_1, \mu_2, \sigma^2
+    \right)    \\
+    = & \left(
+      2\pi\sigma^2
+    \right)^{-n_1 / 2 - n_2 / 2}
+    \mathrm{exp}\left(
+      -\frac{
+        \sum\limits_{i = 1}^{n_1}\left(x_i - \mu_1\right)^2
+        + \sum\limits_{i = 1}^{n_2}\left(y_i - \mu_2\right)^2
+      }{
+        2\sigma^2
+      }
+    \right)
+    .
+  \end{aligned}
+\]
+So the MLE under $H_0$ is
+\[
+  \mu_{1\left(0\right)} = \mu_{2\left(0\right)} = \mu_{\left(0\right)} = \frac{n_1\bar{x} + n_2\bar{y}}{n_1 + n_2}
+  ,\quad
+  \sigma^2_{\left(0\right)} = \frac{
+    \sum\limits_{i = 1}^{n_1}\left(x_i - \mu_{\left(0\right)}\right)^2
+    + \sum\limits_{i = 1}^{n_2}\left(y_i  - \mu_{\left(0\right)}\right)^2
+  }{
+    n_1 + n_2
+  }
+\]
+And the MLE under $H_0\cup H_1$ is
+\[
+  \mu_{1\left(0\cup1\right)} = \bar{x},\quad \mu_{2\left(0\cup1\right)} = \bar{y}
+  ,\quad
+  \sigma^2_{\left(0\cup1\right)} =
+  \frac{
+    \sum\limits_{i = 1}^{n_1}\left(x_i - \bar{x}\right)^2
+    + \sum\limits_{i = 1}^{n_2}\left(y_i - \bar{y}\right)^2
+  }{
+    n_1 + n_2
+  }
+  .
+\]
+Then the likelihood ratio is
+\[
+  \begin{aligned}
+    LR =& \frac{
+      f\left(\bm{x}, \bm{y}\middle|\mu_1 = \mu_2 = \mu_{\left(0\right)}, \sigma^2 = \sigma_{\left(0\right)}^2\right)
+    }{
+      f\left(\bm{x}, \bm{y}\middle|
+        \mu_1 = \mu_{1\left(0\cup1\right)},
+        \mu_2 = \mu_{2\left(0\cup1\right)},
+        \sigma^2 = \sigma_{\left(0\cup1\right)}^2\right)
+    }    \\
+    =& \left(
+      \frac{\sigma_{\left(0\right)}^2}{\sigma_{\left(0\cup1\right)}^2}
+    \right)^{-n_1 / 2 - n_2 / 2}    \\
+    =& \left(
+      \frac{
+        \sum\limits_{i = 1}^{n_1}\left(x_i - \bar{x} + \bar{x} - \mu_{\left(0\right)}\right)
+        + \sum\limits_{i = 1}^{n_2}\left(y_i - \bar{y} + \bar{y} - \mu_{\left(0\right)}\right)
+      }{
+        \sum\limits_{i = 1}^{n_1}\left(x_i - \bar{x}\right)^2
+        + \sum\limits_{i = 1}^{n_2}\left(y_i - \bar{y}\right)^2
+      }
+    \right)^{-n_1 / 2 - n_2 / 2}    \\
+    =& \left(
+      1 + \frac{
+        n_1\left(\bar{x} - \mu_{\left(0\right)}\right)^2
+        + n_2\left(\bar{y} - \mu_{\left(0\right)}\right)^2
+      }{
+        \sum\limits_{i = 1}^{n_1}\left(x_i - \bar{x}\right)^2
+        + \sum\limits_{i = 1}^{n_2}\left(y_i - \bar{y}\right)^2
+      }
+    \right)^{-n_1 / 2 - n_2 / 2}    \\
+    =& \left(
+      1 + \frac{n_1n_2}{n_1 + n_2}
+      \cdot
+      \frac{\left(\bar{x} - \bar{y}\right)^2}{
+        \sum\limits_{i = 1}^{n_1}\left(x_i - \bar{x}\right)^2
+        + \sum\limits_{i = 1}^{n_2}\left(y_i - \bar{y}\right)^2       
+      }
+    \right)^{-n_1 / 2 - n_2 / 2}
+    .
+  \end{aligned}
+\]
+So to rejact $H_0$ when the likelihood ratio is small enough implies that the reject region is
+\[
+  \text{Reject region: }
+  \left\{
+    \left(\bm{x}, \bm{y}\right)
+    \middle|
+    \frac{\left|\bar{x} - \bar{y}\right|}{
+      \sqrt{
+        \sum\limits_{i = 1}^{n_1}\left(x_i - \bar{x}\right)^2
+        + \sum\limits_{i = 1}^{n_2}\left(y_i - \bar{y}\right)^2 
+      }
+    }
+    > C
+  \right\}
+  .
+\]
+
+\subsubsection{Regional consistency}
+\label{sec:regional-consistency}
+
+We asume there's no difference in regional and global efficacy, which means
+\[
+  \begin{aligned}
+    & x_{r, 1}, \cdots, x_{r, n_{r, 1}} \sim N\left(\mu_1, \sigma^2\right)    \\
+    & x_{o, 1}, \cdots, x_{o, n_{o, 1}} \sim N\left(\mu_1, \sigma^2\right)    \\
+    & y_{r, 1}, \cdots, y_{r, n_{r, 2}} \sim N\left(\mu_2, \sigma^2\right)    \\
+    & y_{o, 1}, \cdots, y_{o, n_{o, 2}} \sim N\left(\mu_2, \sigma^2\right)
+  \end{aligned}
+\]
+where $r$ and $o$ stand for 'region' and 'other' and clearly we have
+\[
+  n_{r, 1} + n_{o, 1} = n_1,\quad n_{r, 2} + n_{o, 2} = n_2
+\]
+For regional and global summary, we have
+\[
+  \begin{aligned}
+    & \bar{x}_{r} \sim N\left(\mu_1, \sigma^2 / n_{r, 1}\right)    \\
+    & \bar{x}_{o} \sim N\left(\mu_1, \sigma^2 / n_{o, 1}\right)    \\
+    & \bar{y}_{r} \sim N\left(\mu_2, \sigma^2 / n_{r, 2}\right)    \\
+    & \bar{y}_{o} \sim N\left(\mu_2, \sigma^2 / n_{o, 2}\right)
+  \end{aligned}
+\]
+and
+\[
+  \begin{aligned}
+    & \bar{x}
+    = \frac{n_{r, 1}}{n_{r, 1} + n_{o, 1}}\bar{x}_r
+    + \frac{n_{o, 1}}{n_{r, 1} + n_{o, 1}} \bar{x}_o
+      \sim N\left(\mu_1, \sigma^2 / n_1\right)    \\
+    & \bar{y}
+      = \frac{n_{r, 2}}{n_{r, 2} + n_{o, 2}} \bar{y}_r
+      + \frac{n_{o, 2}}{n_{r, 2} + n_{o, 2}} \bar{y}_o
+      \sim N\left(\mu_2, \sigma^2 / n_2\right)
+  \end{aligned}
+\]
+And the treatment effect summary follows
+\[
+  \begin{aligned}
+    & \Delta_r = \bar{x}_r - \bar{y}_r
+      \sim N\left(
+      \mu_1 - \mu_2,
+      \left(\frac{1}{n_{r, 1}} + \frac{1}{n_{r, 2}}\right)\sigma^2\right)    \\
+    & \Delta_c = \bar{x}_o - \bar{y}_o
+      \sim N\left(
+      \mu_1 - \mu_2,
+      \left(\frac{1}{n_{o, 1}} + \frac{1}{n_{o, 2}}\right)\sigma^2
+      \right)
+  \end{aligned}
+\]
+And
+\[
+  \begin{aligned}
+    \Delta =& \bar{x} - \bar{y}
+              \sim N\left(\mu_1 - \mu_2,
+              \left(\frac{1}{n_{1}} + \frac{1}{n_{2}}\right)\sigma^2
+              \right)    \\
+    =& \frac{n_{r, 1}}{n_{r, 1} + n_{o, 1}}\bar{x}_r
+       + \frac{n_{o, 1}}{n_{r, 1} + n_{o, 1}} \bar{x}_o
+       - \left(
+       \frac{n_{r, 2}}{n_{r, 2} + n_{o, 2}} \bar{y}_r
+       + \frac{n_{o, 2}}{n_{r, 2} + n_{o, 2}} \bar{y}_o
+       \right)
+  \end{aligned}
+\]
+But unfortunately, $\Delta$ can NOT be easily break into $\Delta_r$ and $\Delta_o$. Now, let's first assume there's a fixed ratio between the two arms, both in region and other areas, which means
+\[
+  n_{r, 1} = k n_{r, 2}, \quad n_{o, 1} = k n_{o, 2}
+\]
+Then
+\[
+  \begin{aligned}
+    & \Delta_r
+      \sim N\left(
+      \mu_1 - \mu_2,
+      \frac{1 + k}{n_{r, 1}}\sigma^2\right)    \\
+    & \Delta_o
+      \sim N\left(
+      \mu_1 - \mu_2,
+      \frac{1 + k}{n_{r, 2}}\sigma^2\right)    \\
+    & \Delta = \frac{n_{r, 1}}{n_{r, 1} + n_{o, 1}}\Delta_r
+      + \frac{n_{o, 1}}{n_{r, 1} + n_{o, 1}}\Delta_o
+      \sim N\left(\mu_1 - \mu_2, \frac{1 + k}{n_1}\sigma^2\right)
+  \end{aligned}
+\]
+
+Considering the show trend crieteria 'Method 1', which is regional treatment improvement keeps certain percentage of global treatment improvement, that is to say for some fixed POSITIVE $\rho$, it's required that
+\[
+  \Delta_r \geq \rho \Delta
+\]
+as a 'show trend criteria'. Then marginally, we have the show trend probability
+\[
+  \begin{aligned}
+    P\left(\Delta_r \geq \rho \Delta\right)
+    =& P\left(
+    \Delta_r \geq \rho \left(
+    \frac{n_{r, 1}}{n_{r, 1} + n_{o, 1}}\Delta_r
+    + \frac{n_{o, 1}}{n_{r, 1} + n_{o, 1}}\Delta_o
+    \right)
+    \right)    \\
+    =& P\left(
+    \frac{
+    n_{r, 1} - \rho n_{r, 1} + n_{o, 1}
+    }{
+    n_{r, 1} + n_{o, 1}
+    }
+    \Delta_r
+    \geq
+    \frac{\rho n_{o, 1}}{n_{r, 1} + n_{o, 1}}\Delta_o
+    \right)
+  \end{aligned}
+\]
+which can be easily calculated since $\Delta_r$ and $\Delta_o$ are independent with known normal distribution.
+
+\subsection{Two-sample, variance unknown and unequal}
+\label{sec:two-sample-variance-2}
+
+For this we refer to the "Welch's unequal variance t-test"\citep{WELCH1947p28-35}. The test statistic is
+\[
+  t = \frac{\bar{x} - \bar{y}}{s_{\bar{\Delta}}}
+  ,
+\]
+where
+\[
+  s_{\bar{\Delta}} = \sqrt{
+    \frac{s_x^2}{n_1} + \frac{s_y^2}{n_2}
+  }
+  .
+\]
+Here $s_x^2 = \frac{1}{n_1 - 1}\sum\limits_{i = 1}^{n_1}\left(x_i - \bar{x}\right)^2$ and $s_y^2 = \frac{1}{n_2- 1}\sum\limits_{i = 1}^{n_2}\left(y_i - \bar{y}\right)^2$ are the unbiased estimator for $\sigma_1^2$ and $\sigma_2^2$. The test statistic approximately follows a t-distribution with degree of freedom being
+\[
+  \mathbf{d.f.} = \frac{
+    \left(\frac{s_x^2}{n_1} + \frac{s_y^2}{n_2}\right)^2
+  }{
+    \frac{\left(s_x^2 / n_1\right)^2}{n_1 - 1}
+    + \frac{\left(s_y^2 / n_2\right)^2}{n_2 - 1}
+  }
+  .
+\]
+
+
+
+
+
+\bibliographystyle{plainnat}
+\bibliography{../ref}
+
+
+
+
+
+\end{document}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
