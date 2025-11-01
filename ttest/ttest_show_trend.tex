@@ -510,7 +510,7 @@ And the treatment effect summary follows
       \sim N\left(
       \mu_1 - \mu_2,
       \left(\frac{1}{n_{r, 1}} + \frac{1}{n_{r, 2}}\right)\sigma^2\right)    \\
-    & \Delta_c = \bar{x}_o - \bar{y}_o
+    & \Delta_o = \bar{x}_o - \bar{y}_o
       \sim N\left(
       \mu_1 - \mu_2,
       \left(\frac{1}{n_{o, 1}} + \frac{1}{n_{o, 2}}\right)\sigma^2
@@ -546,7 +546,7 @@ Then
     & \Delta_o
       \sim N\left(
       \mu_1 - \mu_2,
-      \frac{1 + k}{n_{r, 2}}\sigma^2\right)    \\
+      \frac{1 + k}{n_{o, 1}}\sigma^2\right)    \\
     & \Delta = \frac{n_{r, 1}}{n_{r, 1} + n_{o, 1}}\Delta_r
       + \frac{n_{o, 1}}{n_{r, 1} + n_{o, 1}}\Delta_o
       \sim N\left(\mu_1 - \mu_2, \frac{1 + k}{n_1}\sigma^2\right)
@@ -557,7 +557,12 @@ Considering the show trend crieteria 'Method 1', which is regional treatment imp
 \[
   \Delta_r \geq \rho \Delta
 \]
-as a 'show trend criteria'. Then marginally, we have the show trend probability
+as a 'show trend criteria'.
+
+\subsubsection{Marginal show trend probability}
+\label{sec:marginal-show-trend}
+
+Then marginally, we have the show trend probability
 \[
   \begin{aligned}
     P\left(\Delta_r \geq \rho \Delta\right)
@@ -580,6 +585,57 @@ as a 'show trend criteria'. Then marginally, we have the show trend probability
   \end{aligned}
 \]
 which can be easily calculated since $\Delta_r$ and $\Delta_o$ are independent with known normal distribution.
+
+\subsubsection{Show trend probability conditional on global significance (Z-statistics)}
+\label{sec:show-trend-prob-z-stat}
+
+The Z-statistics version is actually \textbf{assuming $\sigma^2$ is known}. Hence the global test is constructed as to reject $H_0$ when
+\[
+  \frac{\left|\bar{x} - \bar{y}\right|}{
+    \sqrt{\left(\frac{1}{n_1} + \frac{1}{n_2}\right)\sigma^2}
+  }
+  = \frac{\left|\bar{x} - \bar{y}\right|}{
+    \sqrt{\frac{1 + k}{n_1} \cdot \sigma^2}
+  }
+  > z_{1 - \alpha / 2}
+\]
+where we follow the assumption that $n_1 = k n_2$. Therefore the show trend probability given global significance is given by
+\[
+  \begin{aligned}
+    & P\left(
+    \Delta_r \geq \rho\Delta
+    \middle|
+    \left|\Delta\right| > z_{1 - \alpha / 2}
+    \sqrt{\frac{1 + k}{n_1} \cdot \sigma^2}
+    \right)    \\
+    =& P\left(
+       \Delta_r \geq \rho\Delta
+       \middle|
+       \left\{
+       \Delta > z_{1 - \alpha / 2}\sqrt{\frac{1 + k}{n_1} \cdot \sigma^2}
+       \right\}
+       \cup
+       \left\{
+       \Delta < z_{\alpha / 2}\sqrt{\frac{1 + k}{n_1} \cdot \sigma^2}
+       \right\}
+       \right)
+  \end{aligned}
+\]
+
+
+\subsubsection{Show trend probability conditional on global significance (T-statistic)}
+\label{sec:show-trend-prob-t-stat}
+
+From Section~\ref{sec:two-sample-variance-1}, we know the test is constructed as to reject $H_0$ when
+\[
+  \frac{
+    \left|\bar{x} - \bar{y}\right|}{
+    \sqrt{
+      \left(\frac{1}{n_1} + \frac{1}{n_2}\right)
+      S_p^2
+    }}
+  > t_{1 - \alpha / 2}\left(n_1 + n_2 - 2\right)
+\]
 
 \subsection{Two-sample, variance unknown and unequal}
 \label{sec:two-sample-variance-2}
