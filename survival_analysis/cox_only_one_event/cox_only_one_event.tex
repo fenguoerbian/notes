@@ -162,10 +162,62 @@ To maximize \eqref{eq:partial_likelihood_only_one_event}, we can see
     \end{aligned}
   \right.
 \]
-If $Z_j = 1$, \eqref{eq:partial_likelihood_only_one_event} is maximized at $\beta = \infty$. If $Z_j = 0$, \eqref{eq:partial_likelihood_only_one_event} is maximized at $\beta = -\infty$. 
+If $Z_j = 1$, \eqref{eq:partial_likelihood_only_one_event} is maximized at $\beta = \infty$. If $Z_j = 0$, \eqref{eq:partial_likelihood_only_one_event} is maximized at $\beta = -\infty$.
 
+\section{Only One Event in All Strata}
+\label{sec:only-one-event-1}
 
-
+Consider the stratified analysis scenario, where $k = 1, 2, \cdots, K$ denotes the $K$ strata levels. And the partial likelihood in each stratum is denoted as $L_1^{(k)}\left(\beta\right)$. The 'full' (in the sense of across all strata) partial likelihood is
+\begin{equation}
+  \label{eq:stratified_partial_likelihood}
+    L_1\left(\beta\right) = \prod\limits_{k = 1}^KL_1^{(k)}\left(\beta\right).
+\end{equation}
+And if we further assume there's only one event in each and every strata level, then \eqref{eq:stratified_partial_likelihood} becomes
+\[
+  L_1\left(\beta\right)
+  = \prod\limits_{k = 1}^K
+  \frac{e^{\beta Z_{j, k}}}{n_{trt, k}e^{\beta} + n_{ctrl, k}}
+\]
+Without loss of generality, assume for $k = 1, 2, \cdots, m$ the event happened in treatment group. For $k = m + 1, m+2, \cdots, m+n$ the event happened in control group. (Here the notation implies $K = m + n$.) Then the partial likelihood becomes
+\[
+  L_1(\beta)
+  = e^{m\beta}
+  \prod\limits_{k = 1}^{m+n}
+  \frac{1}{n_{trt, k}e^{\beta} + n_{ctrl, k}}
+\]
+And the partial log-likelihood is
+\[
+  l_1(\beta) = \mathrm{Log}L_1(\beta)
+  = m\beta
+  - \sum\limits_{k = 1}^{m+n}\mathrm{log}\left(n_{trt,k}e^{\beta} + n_{ctrl, k}\right)
+\]
+Take derivative and we have
+\begin{equation}
+  \label{eq:partial_loglikelihood_derivative}
+  \frac{\partial l_1\left(\beta\right)}{\partial \beta}
+  = m -
+  \sum\limits_{k = 1}^{m+n}
+  \frac{n_{trt, k}e^\beta}{
+    n_{trt, k}e^{\beta} + n_{ctrl, k}
+  }
+\end{equation}
+We further assume $n_{trt, k} = p n_{ctrl, k}$ for $k = 1, \cdots, K$, which means the treatment-control allocation is identical in each stratum. (This won't be \textbf{exactly} true in real-life but will hold on expectation. And I believe this is good enough for derivation.) Then \eqref{eq:partial_loglikelihood_derivative} becomes
+\[
+  \frac{\partial l_1\left(\beta\right)}{\partial \beta}
+  = m -
+  \sum\limits_{k = 1}^{m+n}
+  \frac{pe^{\beta}}{pe^{\beta} + 1}
+  = m -
+  \left(m + n\right)
+  \frac{pe^{\beta}}{pe^{\beta} + 1}
+\]
+Setting this to zero gives us
+\[
+  \hat{\beta} = \mathrm{log}m - \mathrm{log}\left(np\right)
+  \;\text{and }\;
+  e^{\hat{\beta}} = \frac{m}{np}
+\]
+From this we can see, if for all strata levels, there's only one event in each of them, the estimated $\beta$ and hazard ratio $e^{\beta}$ depends on number of events happened in treatment and control group, and the allocation ratio between these two groups. 
 
 \bibliographystyle{plainnat}
 \bibliography{../../ref}
